@@ -1,14 +1,18 @@
-interface Routes {
+import Deduct from './components/deduct/Deduct';
+
+export interface IRoute {
   path: string;
-  children?: Routes[];
+  children?: IRoute[];
+  component?: any;
 }
 
-const routes: Routes[] = [
+const routes: IRoute[] = [
   {
     path: '',
     children: [
       {
-        path: 'deduct'
+        path: '',
+        component: Deduct
       }
     ]
   }
