@@ -1,13 +1,13 @@
-import React, { useState, SetStateAction, Dispatch } from 'react';
-import QrReader from 'react-qr-reader'
 import { Box } from 'grommet';
+import React, { useState } from 'react';
+import QrReader from 'react-qr-reader';
 
 const Deduct = () => {
-  const [translation, setTranslation]: [string, Dispatch<SetStateAction<string>>] = useState('');
+  const [translation, setTrans] = useState('');
 
   const onScan = (qrTranslation: string | null) => {
     if (qrTranslation) {
-      setTranslation(qrTranslation);
+      setTrans(qrTranslation);
     }
   }
 

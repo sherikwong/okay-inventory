@@ -1,15 +1,14 @@
 
 import { Card } from 'grommet';
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import Routes, { IRoute } from './Routes';
-import Deduct from './components/deduct/Deduct';
+import { history } from './Routes';
 
 
 const App = () => {
   const childRoute = (route: IRoute, i: number) => (
     <div>
-      {route.path}
       <Route exact path={route.path} key={i}>
         {React.createElement(route.component)}
       </Route>
@@ -19,16 +18,15 @@ const App = () => {
 
   const recursiveRoute = (routes: IRoute[]) => routes.map((route, i) => {
     return route.children && route.children.length
-      ? (<BrowserRouter key={i}>
+      ? (<Router key={i} history={history}>
         {route.children.map((child, i) => childRoute(child, i))}
-      </BrowserRouter>)
+      </Router>)
       : childRoute(route, i);
   });
 
   return (
     <Card>
       {recursiveRoute(Routes)}
-
     </Card>
   );
 };
