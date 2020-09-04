@@ -1,5 +1,5 @@
 import React from 'react';
-import OverlayLoader from '../../reusable/OverlayLoader';
+import OverlayLoader from '../../reusable/OverlayLoader/OverlayLoader';
 
 export default () => {
   return (

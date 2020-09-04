@@ -3,13 +3,24 @@ html {
   height: 100%;
   width: 100%;
   margin: 0;
+
 }
 
 body {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 #root {
   flex: 1 2 auto;
+}
+
+
+
+.overflow-container,
+#root,
+#initial-stack>*:first-child {
+  overflow: hidden !important;
+  height: 100vh !important;
 }

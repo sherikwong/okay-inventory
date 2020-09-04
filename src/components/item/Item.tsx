@@ -1,9 +1,6 @@
-import React, { useState, MutableRefObject } from 'react';
+import { Box, Heading } from 'grommet';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Box, Button, Heading, TextInput } from 'grommet';
-import { FormUp, FormDown } from 'grommet-icons';
-import { usePrev } from '../../utils/hooks';
-import OverlayLoader from '../reusable/OverlayLoader';
 import NumberInput from '../reusable/NumberInput';
 
 const Item = () => {
