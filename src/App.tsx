@@ -1,12 +1,11 @@
 
-import { Card, Box, Stack } from 'grommet';
+import { Box, Stack } from 'grommet';
 import React, { useState } from 'react';
-import { Router, Route } from 'react-router-dom';
-import Routes, { IRoute } from './Routes';
-import { history } from './Routes';
+import { Route, Router } from 'react-router-dom';
+import MenuButton from './components/MenuButton';
 import OverlayLoader from './components/reusable/OverlayLoader';
 import OverlayLoaderContext from './contexts/main-loader';
-import MenuButton from './components/MenuButton';
+import Routes, { history, IRoute } from './Routes';
 
 const App = () => {
   const childRoute = (route: IRoute, i: number) => (
@@ -26,11 +25,9 @@ const App = () => {
     <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
       <OverlayLoader show={loadOverlay}>
         <Stack fill={true}>
-          <Card fill={true} margin="large" background="light-1">
-            <Router history={history}>
-              {recursiveRoute(Routes)}
-            </Router>
-          </Card>
+          <Router history={history}>
+            {recursiveRoute(Routes)}
+          </Router>
           <Box fill={true} align="end" justify="end">
             <MenuButton />
           </Box>

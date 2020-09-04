@@ -1,6 +1,6 @@
-import { Button, Nav, Sidebar } from 'grommet';
+import { Button } from 'grommet';
+import { Menu } from 'grommet-icons';
 import React from 'react';
-import { Menu } from 'grommet-icons'
 
 
 const MenuButton = () => (

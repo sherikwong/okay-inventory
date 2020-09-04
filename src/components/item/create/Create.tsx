@@ -1,11 +1,11 @@
-import { Box, TextInput, Stack, Card, CardFooter, CardBody, Button } from 'grommet';
-import { Microphone, Checkmark, Close } from 'grommet-icons';
+import { Button, Card, CardBody, CardFooter, Stack, TextInput } from 'grommet';
+import { Checkmark, Close, Microphone } from 'grommet-icons';
 import QrCode from 'qrcode.react';
 import React, { useRef, useState } from 'react';
 import DictateButton from 'react-dictate-button';
+import Unsplash from 'react-unsplash-wrapper';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
-import Unsplash from 'react-unsplash-wrapper'
 import OverlayLoaderContext from '../../../contexts/main-loader';
 
 const DictationButtonWrapper = styled(DictateButton)`

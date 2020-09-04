@@ -2,7 +2,6 @@ import { Box } from 'grommet';
 import React, { useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { withRouter } from 'react-router-dom';
-import { History } from 'history';
 import OverlayLoaderContext from '../../contexts/main-loader';
 
 const Deduct = ({ history }) => {

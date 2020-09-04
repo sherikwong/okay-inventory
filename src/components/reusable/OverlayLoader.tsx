@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Box, Text, Stack, Paragraph, Heading } from "grommet";
-import Spinner from "./Spinner";
+import { Box, Stack } from "grommet";
+import React from "react";
 import styled from 'styled-components';
+import Spinner from "./Spinner";
 
 const WhiteOverlayBox = styled(Box)`
 background-color: rgba(255, 255, 255, .6);
