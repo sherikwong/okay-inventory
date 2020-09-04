@@ -5,7 +5,7 @@ import { Router, Route } from 'react-router-dom';
 import Routes, { IRoute } from './Routes';
 import { history } from './Routes';
 import OverlayLoader from './components/reusable/OverlayLoader';
-import OverlayLoaderContext from '../main-loader';
+import OverlayLoaderContext from './contexts/main-loader';
 
 const App = () => {
   const childRoute = (route: IRoute, i: number) => (
@@ -23,9 +23,9 @@ const App = () => {
 
   return (
     <Card fill={true}>
-      <OverlayLoaderContext.Provider value={loadOverlay}>
+      <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
 
-        <OverlayLoader>
+        <OverlayLoader show={loadOverlay}>
           <Router history={history}>
             {recursiveRoute(Routes)}
           </Router>

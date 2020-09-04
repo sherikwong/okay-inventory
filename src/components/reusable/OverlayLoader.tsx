@@ -7,11 +7,12 @@ const WhiteOverlayBox = styled(Box)`
 background-color: rgba(255, 255, 255, .6);
 `;
 
-export default ({ children }) => (
+export default (props) => (
   <Stack anchor="center">
-    {children}
-    <WhiteOverlayBox pad="medium" round="medium">
+    {props.children}
+    {props.show && <WhiteOverlayBox pad="medium" round="medium">
       <Spinner />
     </WhiteOverlayBox>
+    }
   </Stack>
 );
