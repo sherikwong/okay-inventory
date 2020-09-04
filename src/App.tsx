@@ -22,17 +22,17 @@ const App = () => {
   const [loadOverlay, setLoadOverlay] = useState(false);
 
   return (
-    <Card fill={true}>
-      <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
+    <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
+      <OverlayLoader show={loadOverlay}>
+        <Card fill={true} margin="large" background="light-1">
 
-        <OverlayLoader show={loadOverlay}>
           <Router history={history}>
             {recursiveRoute(Routes)}
           </Router>
-        </OverlayLoader>
 
-      </OverlayLoaderContext.Provider>
-    </Card>
+        </Card>
+      </OverlayLoader>
+    </OverlayLoaderContext.Provider>
   );
 };
 

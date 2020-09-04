@@ -21,6 +21,7 @@
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
+    "react-unsplash-wrapper": "^1.1.5",
     "react-uuid": "^1.0.2",
     "styled-components": "^5.1.1",
     "typescript": "^4.0.2"

@@ -1,10 +1,12 @@
-import { Box, TextInput } from 'grommet';
-import { Microphone } from 'grommet-icons';
+import { Box, TextInput, Stack, Card, CardFooter, CardBody, Button } from 'grommet';
+import { Microphone, Checkmark, Close } from 'grommet-icons';
 import QrCode from 'qrcode.react';
 import React, { useRef, useState } from 'react';
 import DictateButton from 'react-dictate-button';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
+import Unsplash from 'react-unsplash-wrapper'
+import OverlayLoaderContext from '../../../contexts/main-loader';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -31,17 +33,40 @@ const Create = () => {
 
 
   return (
-    <Box align="center" justify="center">
-      <QrCode
-        value={randomID} />
-      <Box direction="row" align="center">
+    <OverlayLoaderContext.Consumer>
+      {({ loadOverlay, setLoadOverlay }) => {
 
-        <TextInput value={itemName} />
-        <DictationButtonWrapper ref={buttonRef} id="dictation-button" onDictate={onDictate}>
-          <Microphone />
-        </DictationButtonWrapper>
-      </Box>
-    </Box>
+        const onAttemptSave = () => {
+          setLoadOverlay && setLoadOverlay(true);
+        };
+
+        return (<>
+          <CardBody>
+            <Card height="medium" width="medium">
+
+              <Stack>
+                <QrCode
+                  value={randomID} />
+                {itemName && <Unsplash keywords={itemName} img />}
+              </Stack>
+
+            </Card>
+          </CardBody>
+
+          <CardFooter direction="row" align="center" justify="center" background="light-2" pad="large">
+            <TextInput value={itemName} />
+            <DictationButtonWrapper ref={buttonRef} id="dictation-button" onDictate={onDictate}>
+              <Microphone />
+            </DictationButtonWrapper>
+
+            <Button secondary onClick={onAttemptSave} icon={<Checkmark />}></Button>
+            <Button secondary icon={<Close />}></Button>
+
+          </CardFooter>
+        </>
+        );
+      }}
+    </OverlayLoaderContext.Consumer>
   );
 };
 
