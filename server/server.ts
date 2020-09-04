@@ -13,13 +13,15 @@ export class Server {
 
     this.app.use(express.static(path.resolve("./") + "/public"));
 
+    this.app.get("*", (req: Request, res: Response): void => {
+      res.sendFile(path.resolve("./") + "/public/index.html");
+    });
+
     this.app.get("/api", (req: Request, res: Response): void => {
       res.send("You have reached the API!");
     });
 
-    this.app.get("*", (req: Request, res: Response): void => {
-      res.sendFile(path.resolve("./") + "/src/index");
-    });
+
 
   }
   public start(port: number): void {
