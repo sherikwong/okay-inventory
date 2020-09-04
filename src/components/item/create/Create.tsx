@@ -7,6 +7,8 @@ import Unsplash from 'react-unsplash-wrapper';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
 import OverlayLoaderContext from '../../../contexts/main-loader';
+import { } from 'firebase';
+import { itemsDB } from '../../../database/models/items';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -24,6 +26,11 @@ const Create = () => {
       setItemName(res.result.transcript);
     }
   }
+
+  itemsDB.on('value', snapshot => {
+    console.log(snapshot);
+  })
+
 
   const buttonRef = useRef(null);
   const onClick = event => {
