@@ -22,7 +22,7 @@ const Deduct = ({ history }) => {
 
         return (
           <Box>
-            {/* <QrReader onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} /> */}
+            <QrReader onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
           </Box>
         );
       }}
