@@ -10,19 +10,14 @@ export interface IRoute {
 
 const routes: IRoute[] = [
   {
-    path: '',
-    children: [
-      {
-        path: '',
-        component: Deduct
-      },
-      {
-        path: 'item/:id',
-        component: Item
-      }
-    ]
+    path: '/',
+    component: Deduct
+  },
+  {
+    path: '/item',
+    component: Item
   }
-]
+];
 
 export const history = createBrowserHistory();
 

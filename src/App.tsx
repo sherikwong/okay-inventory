@@ -1,32 +1,37 @@
 
 import { Card } from 'grommet';
-import React from 'react';
+import React, { useState } from 'react';
 import { Router, Route } from 'react-router-dom';
 import Routes, { IRoute } from './Routes';
 import { history } from './Routes';
-
+import OverlayLoader from './components/reusable/OverlayLoader';
+import OverlayLoaderContext from '../main-loader';
 
 const App = () => {
   const childRoute = (route: IRoute, i: number) => (
-    <div>
-      <Route exact path={route.path} key={i}>
-        {React.createElement(route.component)}
-      </Route>
-    </div>
+    <Route exact path={route.path} key={i}>
+      {React.createElement(route.component)}
+    </Route>
   );
 
 
   const recursiveRoute = (routes: IRoute[]) => routes.map((route, i) => {
-    return route.children && route.children.length
-      ? (<Router key={i} history={history}>
-        {route.children.map((child, i) => childRoute(child, i))}
-      </Router>)
-      : childRoute(route, i);
+    return childRoute(route, i)
   });
 
+  const [loadOverlay, setLoadOverlay] = useState(false);
+
   return (
-    <Card>
-      {recursiveRoute(Routes)}
+    <Card fill={true}>
+      <OverlayLoaderContext.Provider value={loadOverlay}>
+
+        <OverlayLoader>
+          <Router history={history}>
+            {recursiveRoute(Routes)}
+          </Router>
+        </OverlayLoader>
+
+      </OverlayLoaderContext.Provider>
     </Card>
   );
 };

@@ -1,14 +1,17 @@
 import { Box } from 'grommet';
 import React, { useState } from 'react';
 import QrReader from 'react-qr-reader';
+import { withRouter } from 'react-router-dom';
+import { History } from 'history';
 
-const Deduct = () => {
+const Deduct = ({ history }) => {
   const [translation, setTrans] = useState('');
 
   const onScan = (qrTranslation: string | null) => {
-    if (qrTranslation) {
-      setTrans(qrTranslation);
-    }
+    // if (qrTranslation) {
+    setTrans(qrTranslation as string);
+    history.push(`/item`);
+    // }
   }
 
   return (
@@ -18,4 +21,4 @@ const Deduct = () => {
   );
 }
 
-export default Deduct;
+export default withRouter(Deduct);
