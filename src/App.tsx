@@ -24,7 +24,7 @@ const App = () => {
   return (
     <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
       <OverlayLoader show={loadOverlay}>
-        <Stack fill={true}>
+        <Stack fill={true} id="app-stack">
           <Router history={history}>
             {recursiveRoute(Routes)}
           </Router>

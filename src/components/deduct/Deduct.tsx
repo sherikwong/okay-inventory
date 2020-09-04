@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { withRouter } from 'react-router-dom';
 import OverlayLoaderContext from '../../contexts/main-loader';
+import styled from 'styled-components';
+import './Deduct.scss';
+
 
 const Deduct = ({ history }) => {
   const [translation, setTrans] = useState('');
@@ -20,9 +23,7 @@ const Deduct = ({ history }) => {
         }
 
         return (
-          <Box>
-            <QrReader onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
-          </Box>
+          <QrReader style={{ height: '100%' }} className="container" onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
         );
       }}
     </OverlayLoaderContext.Consumer>

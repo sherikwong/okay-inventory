@@ -8,7 +8,7 @@ background-color: rgba(255, 255, 255, .6);
 `;
 
 export default (props) => (
-  <Stack anchor="center">
+  <Stack anchor="center" fill={true} id="overlay-stack">
     {props.children}
     {props.show && <WhiteOverlayBox pad="medium" round="medium">
       <Spinner />
