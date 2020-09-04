@@ -8,10 +8,6 @@ import OverlayLoaderContext from '../../contexts/main-loader';
 const Deduct = ({ history }) => {
   const [translation, setTrans] = useState('');
 
-
-
-
-
   return (
     <OverlayLoaderContext.Consumer>
       {({ loadOverlay, setLoadOverlay }) => {
@@ -26,7 +22,7 @@ const Deduct = ({ history }) => {
 
         return (
           <Box>
-            <QrReader onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
+            {/* <QrReader onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} /> */}
           </Box>
         );
       }}
