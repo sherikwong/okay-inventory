@@ -1,5 +1,5 @@
 import { ICategory } from './categories';
-export interface Item {
+export interface IItem {
   name: string;
   quantity: number;
   category: ICategory;

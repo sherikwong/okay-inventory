@@ -1,10 +1,11 @@
 import { db } from '.';
+import { BaseDB, IBaseDB } from './base';
 
-export const ITEMS = 'items';
-
-export const itemsDB = db.ref().child(ITEMS);
-
-
-export class ItemsDB {
-
+const ITEMS = 'items';
+class ItemsDB<IItem> extends BaseDB<IItem> implements IBaseDB<IItem> {
+  constructor() {
+    super(ITEMS);
+  }
 }
+
+export const itemsDB = new ItemsDB();

@@ -4,6 +4,7 @@ import React from 'react';
 import DictateButton from 'react-dictate-button';
 import styled from 'styled-components';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
+import { ServerStatusContext, IServerContext, ServerReponse } from './EditItem';
 
 
 const DictationButtonWrapper = styled(DictateButton)`
@@ -12,7 +13,7 @@ const DictationButtonWrapper = styled(DictateButton)`
   margin: 10px;
 `;
 
-const NameInput = ({ value = '', onChange, onStep, suceeds, fails }) => {
+const NameInput = ({ value = '', onChange, onStep }) => {
 
   const onDictate = res => {
     if (res) {
@@ -22,20 +23,30 @@ const NameInput = ({ value = '', onChange, onStep, suceeds, fails }) => {
 
 
   return (
-    <Box pad="large" fill={true}>
+    <ServerStatusContext.Consumer>
+      {(context: IServerContext) => {
 
-      <TextInput value={value} onChange={$event => onChange($event.target.value)} />
+        const suceeds = context.status === ServerReponse.Succeeds;
+        const fails = context.status === ServerReponse.Fails;
 
-      <Box direction="row" justify="center">
+        return (
+          <Box pad="large" fill={true}>
 
-        <DictationButtonWrapper id="dictation-button" onDictate={onDictate}>
-          <Microphone />
-        </DictationButtonWrapper>
+            <TextInput value={value} onChange={$event => onChange($event.target.value)} />
 
-        <SpinnerButton secondary icon={<Next />} onClick={() => onStep(1)} suceeds={suceeds} fails={fails} />
+            <Box direction="row" justify="center">
 
-      </Box>
-    </Box>
+              <DictationButtonWrapper id="dictation-button" onDictate={onDictate}>
+                <Microphone />
+              </DictationButtonWrapper>
+
+              <SpinnerButton onClick={() => onStep(1)} suceeds={suceeds} fails={fails} />
+
+            </Box>
+          </Box>
+        )
+      }}
+    </ServerStatusContext.Consumer>
   );
 }
 

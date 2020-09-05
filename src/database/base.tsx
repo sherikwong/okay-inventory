@@ -1,6 +1,12 @@
 import { db } from './index';
 
-export class BaseDB<T> {
+export interface IBaseDB<T> {
+  get(): Array<T>;
+  add(data: T): void;
+  update(id: string, data: T): void;
+}
+
+export class BaseDB<T> implements IBaseDB<T> {
   private _db: firebase.database.Reference;
   private _items: T[] = [];
 
@@ -17,7 +23,13 @@ export class BaseDB<T> {
   }
 
   public add(data: T): void {
-    // const newKey = this._db.push().key;
-    this._db.set(data).then(res => console.log(res));
+    const newEntry = this._db.push();
+    newEntry.set(data).then(res => console.log(res));
+  }
+
+  public update(id: string, data: T): void {
+    this._db.update({
+      [id]: data
+    });
   }
 }

@@ -1,12 +1,14 @@
 import { Box, Button, Layer } from 'grommet';
 import { Close, Previous } from 'grommet-icons';
-import React, { useState } from 'react';
+import React, { useState, SetStateAction, Context } from 'react';
 import 'react-day-picker/lib/style.css';
 import Categories from './Categories';
 import DateEdit from './Date';
 import NameInput from './Name';
+import { createContext, Dispatch } from 'react';
+import { itemsDB } from '../../../database/items';
 
-enum ServerReponse {
+export enum ServerReponse {
   Succeeds,
   Fails
 }
@@ -17,8 +19,17 @@ enum ItemDetails {
   DATE = 'date'
 }
 
+export interface IServerContext {
+  status?: ServerReponse;
+  toggleStatus?: Dispatch<SetStateAction<ServerReponse>>;
+}
+
+export const ServerStatusContext = createContext({});
+
 const EditItem = ({ toggleEditModal, showEditModal }) => {
   const [step, setStep] = useState(0);
+
+  const [id, setId] = useState('');
   const [details, setDetails] = useState({
     name: '',
     date: new Date().toISOString(),
@@ -26,7 +37,6 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
   });
 
   const updateDetail = (detailType: ItemDetails, val) => {
-    console.log(val);
 
     setDetails({
       ...details,
@@ -34,11 +44,17 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
     });
   }
 
+  const [status, toggleServerReponse] = useState(undefined);
+
   const onStep = direction => {
-    setStep(direction > 0 ? step + 1 : step - 1)
+    console.log('Stepping');
+    if (!id) {
+      itemsDB.add({ name: details.name });
+    }
+
+    setStep(direction > 0 ? step + 1 : step - 1);
   };
 
-  const [serverResponse, setServerReponse] = useState(undefined);
 
 
   const stepsTemplates = [
@@ -50,17 +66,21 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
   return (
     // showEditModal &&
     (
-      <Layer >
-        <Box direction="column" fill={true}>
-          <Box direction="row" justify="between" pad="medium">
-            <Button secondary icon={<Previous />} />
-            <Button secondary icon={<Close />} onClick={() => toggleEditModal(false)} />
+      <ServerStatusContext.Provider value={{ status, toggleServerReponse }}>
+
+        <Layer >
+          <Box direction="column" fill={true}>
+            <Box direction="row" justify="between" pad="medium">
+              <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
+              <Button secondary icon={<Close />} onClick={() => toggleEditModal(false)} />
+            </Box>
+
+            {stepsTemplates[step]}
+
           </Box>
+        </Layer>
 
-          {stepsTemplates[step]}
-
-        </Box>
-      </Layer>
+      </ServerStatusContext.Provider>
     ));
 }
 

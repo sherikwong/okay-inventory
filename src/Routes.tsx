@@ -1,6 +1,5 @@
 import { createBrowserHistory } from 'history';
 import EditItem from './components/Item/EditItem/EditItem';
-import Item from './components/item/Item';
 // import List from './components/list/List';
 
 export interface IRoute {

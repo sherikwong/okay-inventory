@@ -1,9 +1,9 @@
 import { Button } from 'grommet';
+import React, { useState } from 'react';
 import Spinner from '../Spinner';
-import React from 'react';
-import { useState, useEffect } from 'react';
+import { Next } from 'grommet-icons';
 
-const SpinnerButton = (onClick, suceeds, fails, icon) => {
+const SpinnerButton = ({ onClick, suceeds, fails }) => {
   const [loading, setLoading] = useState(false);
 
   const _onClick = () => {
@@ -11,16 +11,17 @@ const SpinnerButton = (onClick, suceeds, fails, icon) => {
     onClick();
   }
 
-  useEffect(() => {
-    setLoading(false);
-  }, [suceeds, fails])
+  // useEffect(() => {
+  //   setLoading(false);
+  // }, [suceeds, fails])
+
+  const innerButton = (<>
+    {loading && <Spinner />}
+    <Next />
+  </>);
 
   return (
-    <Button secondary onClick={_onClick}>
-      {loading && <Spinner />}
-
-      {icon}
-    </Button>
+    <Button secondary onClick={_onClick} children={innerButton} />
   );
 };
 

@@ -22,62 +22,74 @@ const Item = () => {
 
   const [showEditModal, toggleEditModal] = useState(false);
 
-
-  const buttonRef = useRef(null);
-
   const onClickShowModal = boolean => () => {
     toggleEditModal(boolean);
-  }
-
+  };
   return (
     <OverlayLoaderContext.Consumer>
-      {({ loadOverlay, setLoadOverlay }) => {
+      {
+        ({ loadOverlay, setLoadOverlay }) => {
+          return (
+            <Stack fill={true}>
 
-        const onAttemptSave = () => {
-          setLoadOverlay && setLoadOverlay(true);
-        };
+              {itemName && <Unsplash keywords={itemName} img />}
+              <Box align="end" fill={true} justify="end">
+                <Card background="light-1" margin="medium">
+                  <CardBody
+                    pad="medium" direction="row">
+                    <QrCode value={randomID} />
 
-        return (<>
+                    <Box direction="column">
+                      <Heading margin={{ left: 'medium' }}>{itemName}</Heading>
+                      {details.date.toLocaleDateString("en-US")}
+                      {details.category}
+                    </Box>
+                  </CardBody>
+                </Card>
+              </Box>
 
-          <Stack fill={true}>
-
-            {itemName && <Unsplash keywords={itemName} img />}
-            <Box align="end" fill={true} justify="end">
-              <Card background="light-1" margin="medium">
-                <CardBody
-                  pad="medium" direction="row">
-                  <QrCode value={randomID} />
-
-                  <Box direction="column">
-                    <Heading margin={{ left: 'medium' }}>{itemName}</Heading>
-                    {details.date.toLocaleDateString("en-US")}
-                    {details.category}
-                  </Box>
-                </CardBody>
-              </Card>
-            </Box>
+              <EditItem toggleEditModal={toggleEditModal} showEditModal={showEditModal} />
 
 
-          </Stack>
+            </Stack>
+          )
+        }
+      }
 
-
-
-
-
-
-
-          <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />}>
-          </Button>
-
-
-          <EditItem toggleEditModal={toggleEditModal} showEditModal={showEditModal} />
-
-
-        </>
-        );
-      }}
     </OverlayLoaderContext.Consumer>
   );
-};
+}
+
+// return (
+
+//     {({ loadOverlay, setLoadOverlay }) => {
+
+//   const onAttemptSave = () => {
+//     setLoadOverlay && setLoadOverlay(true);
+//   };
+
+//   return (<>
+
+
+
+
+
+
+
+
+
+//     <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />} />
+
+
+
+
+
+//   </>
+//   );
+// }
+// }
+//     </OverlayLoaderContext.Consumer>
+//   );
+// };
 
 export default Item;
