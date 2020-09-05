@@ -16,11 +16,11 @@ const DictationButtonWrapper = styled(DictateButton)`
 const NameInput = ({ value = '', onChange, onStep }) => {
 
   const onDictate = res => {
+    console.log(res);
     if (res) {
       onChange(res.result.transcript);
     }
   }
-
 
   return (
     <ServerStatusContext.Consumer>
@@ -29,7 +29,7 @@ const NameInput = ({ value = '', onChange, onStep }) => {
         const suceeds = context.status === ServerReponse.Succeeds;
         const fails = context.status === ServerReponse.Fails;
 
-        return (
+        return onChange && onStep ? (
           <Box pad="large" fill={true}>
 
             <TextInput value={value} onChange={$event => onChange($event.target.value)} />
@@ -44,7 +44,7 @@ const NameInput = ({ value = '', onChange, onStep }) => {
 
             </Box>
           </Box>
-        )
+        ) : (<></>)
       }}
     </ServerStatusContext.Consumer>
   );

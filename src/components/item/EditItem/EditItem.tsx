@@ -1,14 +1,12 @@
-import { Box, Button, Layer } from 'grommet';
+import { Box, Button } from 'grommet';
 import { Close, Previous } from 'grommet-icons';
-import React, { useState, SetStateAction, Context } from 'react';
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react';
 import 'react-day-picker/lib/style.css';
+import { withRouter } from 'react-router';
+import { itemsDB } from '../../../database/items';
 import Categories from './Categories';
 import DateEdit from './Date';
 import NameInput from './Name';
-import { createContext, Dispatch } from 'react';
-import { itemsDB } from '../../../database/items';
-import { IItem } from '../../../models/items';
-import { withRouter } from 'react-router';
 
 export enum ServerReponse {
   Succeeds,
@@ -28,19 +26,24 @@ export interface IServerContext {
 
 export const ServerStatusContext = createContext({});
 
-const EditItem = (props) => {
-  const { toggleEditModal, showEditModal } = props;
+const EditItem = ({ match }) => {
+  const [id, setId] = useState(match.params.id);
   const [step, setStep] = useState(0);
 
-  const [id, setId] = useState('');
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
     category: ''
   });
+  {
+
+    itemsDB.get(id).then(res => {
+      setDetails({ ...details, ...res });
+    });
+  };
+
 
   const updateDetail = (detailType: ItemDetails, val) => {
-
     setDetails({
       ...details,
       [detailType]: val
@@ -50,7 +53,6 @@ const EditItem = (props) => {
   const [status, toggleServerReponse] = useState(undefined);
 
   const onStep = direction => {
-    console.log('Stepping');
     if (!id) {
       itemsDB.add(details);
     } else {
@@ -61,32 +63,27 @@ const EditItem = (props) => {
   };
 
 
-
   const stepsTemplates = [
     <NameInput onStep={onStep} value={details.name} onChange={value => updateDetail(ItemDetails.NAME, value)} />,
     <Categories onStep={onStep} value={details.category} onChange={value => updateDetail(ItemDetails.CATEGORY, value)} />,
-    <DateEdit toggleEditModal={toggleEditModal} value={details.date} onChange={date => updateDetail(ItemDetails.DATE, date)} />
+    <DateEdit toggleEditModal={() => undefined} value={details.date} onChange={date => updateDetail(ItemDetails.DATE, date)} />
   ];
 
   return (
-    // showEditModal &&
-    (
-      <ServerStatusContext.Provider value={{ status, toggleServerReponse }}>
+    <ServerStatusContext.Provider value={{ status, toggleServerReponse }}>
 
-        <Layer >
-          <Box direction="column" fill={true}>
-            <Box direction="row" justify="between" pad="medium">
-              <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
-              <Button secondary icon={<Close />} onClick={() => toggleEditModal(false)} />
-            </Box>
+      <Box direction="column" fill={true}>
+        <Box direction="row" justify="between" pad="medium">
+          <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
+          <Button secondary icon={<Close />} onClick={() => undefined} />
+        </Box>
 
-            {stepsTemplates[step]}
+        {stepsTemplates[step]}
 
-          </Box>
-        </Layer>
+      </Box>
 
-      </ServerStatusContext.Provider>
-    ));
+    </ServerStatusContext.Provider>
+  );
 }
 
 export default withRouter(EditItem);

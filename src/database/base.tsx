@@ -15,7 +15,7 @@ export class BaseDB<T> implements IBaseDB<T> {
   private _db: firebase.database.Reference;
   private _items: T[] = [];
 
-  constructor(dbName: string) {
+  constructor(protected dbName: string) {
     this._db = db.ref().child(dbName);
   }
 
@@ -24,6 +24,11 @@ export class BaseDB<T> implements IBaseDB<T> {
       this._items = res.val();
     }).then(res => this._items);
 
+  }
+
+  public get(id: string): Promise<any> {
+    return db.ref().child(this.dbName + '/' + id).once('value')
+      .then(snapshot => snapshot && snapshot.exists() ? snapshot.val() : undefined);
   }
 
   public add(data: T): Promise<string | null> {

@@ -18,7 +18,7 @@ const routes: IRoute[] = [
   //   component: Item
   // },
   {
-    path: '/:id',
+    path: '/item/:id',
     component: EditItem
 
   },

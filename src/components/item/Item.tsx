@@ -48,7 +48,7 @@ const Item = () => {
                 </Card>
               </Box>
 
-              <EditItem toggleEditModal={toggleEditModal} showEditModal={showEditModal} />
+              {/* <EditItem toggleEditModal={toggleEditModal} showEditModal={showEditModal} /> */}
 
 
             </Stack>

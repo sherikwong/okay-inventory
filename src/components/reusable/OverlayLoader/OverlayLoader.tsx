@@ -8,7 +8,7 @@ const WhiteOverlayBox = styled(Box)`
 background-color: rgba(255, 255, 255, .6);
 `;
 
-export default (props) => (
+const OverlayLoader = (props) => (
   <Stack anchor="center" fill={true} id="overlay-stack" className="overflow-container">
     {props.children}
     {props.show && <WhiteOverlayBox pad="medium" round="medium">
@@ -17,3 +17,5 @@ export default (props) => (
     }
   </Stack>
 );
+
+export default OverlayLoader;
