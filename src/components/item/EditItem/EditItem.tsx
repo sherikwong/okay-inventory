@@ -5,6 +5,7 @@ import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import Categories from './Categories';
 import NameInput from './Name';
+import DateEdit from './Date';
 
 enum ItemDetails {
   NAME = 'name',
@@ -37,7 +38,7 @@ const EditItem = ({ setCategoriesModal, showCategoriesModal }) => {
   const stepsTemplates = [
     <NameInput onStep={onStep} value={details.name} onChange={value => updateDetail(ItemDetails.NAME, value)} />,
     <Categories onStep={onStep} value={details.category} onChange={value => updateDetail(ItemDetails.CATEGORY, value)} />,
-    <DayPicker onDayClick={date => updateDetail(ItemDetails.DATE, date)} />
+    <DateEdit setCategoriesModal={setCategoriesModal} value={details.date} onChange={date => updateDetail(ItemDetails.DATE, date)} />
   ];
 
   return (
