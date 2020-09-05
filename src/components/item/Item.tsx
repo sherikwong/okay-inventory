@@ -9,10 +9,6 @@ import uuid from 'react-uuid';
 import styled from 'styled-components';
 import OverlayLoaderContext from '../../contexts/main-loader';
 
-const DictationButtonWrapper = styled(DictateButton)`
-  background-color: transparent;
-  border-color: transparent;
-`;
 
 
 const Item = () => {
@@ -27,12 +23,6 @@ const Item = () => {
   });
 
 
-  const onDictate = res => {
-    if (res) {
-      setItemName(res.result.transcript);
-      console.log(itemName);
-    }
-  }
 
 
 
@@ -88,13 +78,11 @@ const Item = () => {
           <CardFooter direction="row" align="center" justify="center" background="light-2">
 
             <Box pad="medium">
-              <TextInput value={itemName} onChange={onInputChange} />
+              {/* <TextInput value={itemName} onChange={onInputChange} /> */}
             </Box>
 
 
-            <DictationButtonWrapper ref={buttonRef} id="dictation-button" onDictate={onDictate}>
-              <Microphone />
-            </DictationButtonWrapper>
+
 
             <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />}>
             </Button>
