@@ -1,0 +1,56 @@
+import { Layer, List, DateInput, Box, Button } from 'grommet';
+import React, { useState } from 'react';
+import { categoriesDB } from '../../../../database/models/categories';
+import CloseButton from '../../../reusable/CloseButton/CloseButton';
+import { Next, Previous } from '../../../../../node_modules/grommet-icons';
+import { Close } from 'grommet-icons';
+
+const DetailsModal = ({ setCategoriesModal, showCategoriesModal }) => {
+  const [step, setStep] = useState(0);
+  const [categories, setCategories] = useState([]);
+
+  const onClickItem = ({ target }) => {
+    const category = target.innerHTML;
+    setStep(1);
+  };
+
+  const onStep = num => () => {
+    setStep(num > 0 ? step + 1 : step - 1);
+  };
+
+  categoriesDB.once('value', res => {
+    const unordered = res.val();
+    const ordered = unordered.sort();
+
+    setCategories(ordered);
+  });
+
+  return (
+    showCategoriesModal && (
+      <Layer>
+        <Box direction="column" justify="between">
+          <Box direction="row" justify={!step ? 'end' : 'between'} pad="medium">
+            {step === 1 && (<Button secondary icon={<Previous />} onClick={onStep(-1)} />)}
+            <Button secondary icon={<Close />} onClick={() => setCategoriesModal(false)} />
+          </Box>
+
+
+
+          {!step && (<List data={categories} onClickItem={onClickItem} />)}
+
+
+          {step === 1 && (
+            <Box pad="medium">
+              <DateInput
+                format="mm/dd/yyyy"
+                value={(new Date()).toISOString()}
+                id="date-input"
+              />
+            </Box>
+          )}
+        </Box>
+      </Layer>
+    ));
+}
+
+export default DetailsModal;

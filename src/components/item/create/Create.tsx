@@ -1,6 +1,6 @@
 import { } from 'firebase';
-import { Button, Card, CardBody, CardFooter, Layer, Stack, TextInput } from 'grommet';
-import { Checkmark, Close, Microphone, MoreVertical } from 'grommet-icons';
+import { Button, Card, CardBody, CardFooter, Stack, TextInput } from 'grommet';
+import { Microphone, MoreVertical } from 'grommet-icons';
 import QrCode from 'qrcode.react';
 import React, { useRef, useState } from 'react';
 import DictateButton from 'react-dictate-button';
@@ -8,7 +8,8 @@ import Unsplash from 'react-unsplash-wrapper';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
 import OverlayLoaderContext from '../../../contexts/main-loader';
-import CategoryModal from './Category/Category';
+import './Create.scss';
+import DetailsModal from './Details/Details';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -65,8 +66,7 @@ const Create = () => {
             </Card>
           </CardBody>
 
-          <CardFooter direction="row" align="center" justify="center" background="light-1orga
-          2" pad="large">
+          <CardFooter direction="row" align="center" justify="center" background="light-2" pad="large">
 
             <TextInput value={itemName} onChange={onInputChange} />
 
@@ -75,13 +75,13 @@ const Create = () => {
               <Microphone />
             </DictationButtonWrapper>
 
-            <Button secondary onClick={onAttemptSave} icon={<Checkmark />}></Button>
-            <Button secondary icon={<Close />}></Button>
+            {/* <Button secondary onClick={onAttemptSave} icon={<Checkmark />}></Button> */}
+            {/* <Button secondary icon={<Close />}></Button> */}
             <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />}>
             </Button>
 
 
-              <CategoryModal setCategoriesModal={setCategoriesModal} showCategoriesModal={showCategoriesModal}/>
+            <DetailsModal setCategoriesModal={setCategoriesModal} showCategoriesModal={showCategoriesModal} />
 
 
           </CardFooter>
