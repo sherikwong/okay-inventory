@@ -9,9 +9,29 @@ const DetailsModal = ({ setCategoriesModal, showCategoriesModal }) => {
   const [step, setStep] = useState(0);
   const [categories, setCategories] = useState([]);
 
-  const onClickItem = ({ target }) => {
+  const [details, setDetails] = useState({
+    date: new Date().toISOString(),
+    category: ''
+  });
+
+  const onClickCategory = ({ target }) => {
     const category = target.innerHTML;
+
+    setDetails({
+      ...details,
+      category
+    });
+
     setStep(1);
+  };
+
+  const onDateInput = ({ value }) => {
+    setDetails({
+      ...details,
+      date: value
+    })
+
+    setCategoriesModal(false);
   };
 
   const onStep = num => () => {
@@ -36,15 +56,15 @@ const DetailsModal = ({ setCategoriesModal, showCategoriesModal }) => {
 
 
 
-          {!step && (<List data={categories} onClickItem={onClickItem} />)}
+          {!step && (<List data={categories} onClickItem={onClickCategory} />)}
 
 
           {step === 1 && (
             <Box pad="medium">
               <DateInput
-                format="mm/dd/yyyy"
-                value={(new Date()).toISOString()}
-                id="date-input"
+                format="mm/dd"
+                value={details.date}
+                onChange={onDateInput}
               />
             </Box>
           )}
