@@ -22,32 +22,7 @@ const NameInput = ({ value = '', onChange, onStep }) => {
     }
   }
 
-  return onChange && onStep ? (
-    <ServerStatusContext.Consumer>
-      {(context: IServerContext) => {
-
-        const suceeds = context.status === ServerReponse.Succeeds;
-        const fails = context.status === ServerReponse.Fails;
-
-        return (
-          <Box pad="large" fill={true}>
-
-            <TextInput value={value} onChange={$event => onChange($event.target.value)} />
-
-            <Box direction="row" justify="center">
-
-              <DictationButtonWrapper id="dictation-button" onDictate={onDictate}>
-                <Microphone />
-              </DictationButtonWrapper>
-
-              <SpinnerButton onClick={() => onStep(1)} suceeds={suceeds} fails={fails} />
-
-            </Box>
-          </Box>
-        )
-      }}
-    </ServerStatusContext.Consumer>
-  ) : (<></>);
+  return (<></>);
 }
 
 export default NameInput;

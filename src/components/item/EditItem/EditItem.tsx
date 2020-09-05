@@ -9,6 +9,7 @@ import { categoriesDB, CATEGORIES } from '../../../database/categories';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import Tags from '../../reusable/Tags/Tags';
+import { ServerResponse } from 'http';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -60,29 +61,39 @@ const EditItem = ({ match }) => {
   }, []);
 
   const updateDetail = (detailType: ItemDetails, val) => {
+    const updated = {};
+
+    updated[detailType] = detailType === ItemDetails.CATEGORY ? [...val].filter(el => el) : val;
+
     setDetails({
       ...details,
-      [detailType]: val
+      ...updated
     });
   }
 
-  const [status, toggleServerReponse] = useState(undefined);
-  const succeeds = status === ServerReponse.Succeeds;
-  const fails = status === ServerReponse.Fails;
+  const [status, toggleServerReponse] = useState(false);
 
 
   const onStep = direction => {
+
+    const setLoader = (promise: Promise<any>) => promise
+      .then(res => {
+        toggleServerReponse(false);
+      }).catch(error => {
+        toggleServerReponse(false);
+
+      });
+
     if (!id) {
-      itemsDB.add(details);
+      setLoader(itemsDB.add(details));
     } else {
-      itemsDB.update(id, details);
+      setLoader(itemsDB.update(id, details));
     }
 
     setStep(direction > 0 ? step + 1 : step - 1);
   };
 
   const onDictate = res => {
-    console.log(res);
     if (res) {
       updateDetail(ItemDetails.NAME, res.result.transcript);
     }
@@ -99,26 +110,8 @@ const EditItem = ({ match }) => {
   };
 
   const stepsTemplates = [
-    (<Box pad="large" fill={true}>
-
-      <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} />
-
-      <Box direction="row" justify="center">
-
-        <DictationButtonWrapper id="dictation-button" onDictate={onDictate}>
-          <Microphone />
-        </DictationButtonWrapper>
-
-        <SpinnerButton onClick={() => onStep(1)} suceeds={succeeds} fails={fails} />
-
-      </Box>
-    </Box>),
-
-    (
-      <Box pad="large" fill={true}>
-        <Tags value={details.tags} suggestions={categories} onSelect={newTag => addTags(newTag)} onRemove={() => undefined} />
-      </Box>
-    ),
+    <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} />,
+    <Tags value={details.tags} suggestions={categories} onSelect={newTag => addTags(newTag)} onRemove={() => undefined} />,
     // <DateEdit toggleEditModal={() => undefined} value={declose alltails.date} onChange = { date => updateDetail(ItemDetails.DATE, date) } />
   ];
 
@@ -128,9 +121,19 @@ const EditItem = ({ match }) => {
         <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
         <Button secondary icon={<Close />} onClick={() => undefined} />
       </Box>
+      <Box pad="large" fill={true}>
 
-      {stepsTemplates[step]}
+        {stepsTemplates[step]}
 
+        <Box direction="row" justify="center">
+
+          <DictationButtonWrapper id="dictation-button" onDictate={onDictate}>
+            <Microphone />
+          </DictationButtonWrapper>
+
+          <SpinnerButton onClick={() => onStep(1)} onFinished={status} />
+        </Box>
+      </Box>
     </Box>
   );
 }
