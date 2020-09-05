@@ -6,6 +6,11 @@ import Categories from './Categories';
 import DateEdit from './Date';
 import NameInput from './Name';
 
+enum ServerReponse {
+  Succeeds,
+  Fails
+}
+
 enum ItemDetails {
   NAME = 'name',
   CATEGORY = 'category',
@@ -32,6 +37,8 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
   const onStep = direction => {
     setStep(direction > 0 ? step + 1 : step - 1)
   };
+
+  const [serverResponse, setServerReponse] = useState(undefined);
 
 
   const stepsTemplates = [

@@ -12,14 +12,13 @@ const DictationButtonWrapper = styled(DictateButton)`
   margin: 10px;
 `;
 
-const NameInput = ({ value = '', onChange, onStep }) => {
+const NameInput = ({ value = '', onChange, onStep, suceeds, fails }) => {
 
   const onDictate = res => {
     if (res) {
       onChange(res.result.transcript);
     }
   }
-
 
 
   return (
@@ -33,7 +32,7 @@ const NameInput = ({ value = '', onChange, onStep }) => {
           <Microphone />
         </DictationButtonWrapper>
 
-        <SpinnerButton secondary icon={<Next />} onClick={() => onStep(1)} />
+        <SpinnerButton secondary icon={<Next />} onClick={() => onStep(1)} suceeds={suceeds} fails={fails} />
 
       </Box>
     </Box>
