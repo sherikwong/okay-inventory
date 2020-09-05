@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import NumberInput from '../reusable/NumberInput';
 
-const Item = () => {
+const Adjust = () => {
   const [itemName, setItemName] = useState('Beans');
 
   const onChange = newNum => {
@@ -18,4 +18,4 @@ const Item = () => {
   );
 }
 
-export default withRouter(Item);
+export default withRouter(Adjust);
