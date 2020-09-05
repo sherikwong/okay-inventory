@@ -22,14 +22,14 @@ const NameInput = ({ value = '', onChange, onStep }) => {
     }
   }
 
-  return (
+  return onChange && onStep ? (
     <ServerStatusContext.Consumer>
       {(context: IServerContext) => {
 
         const suceeds = context.status === ServerReponse.Succeeds;
         const fails = context.status === ServerReponse.Fails;
 
-        return onChange && onStep ? (
+        return (
           <Box pad="large" fill={true}>
 
             <TextInput value={value} onChange={$event => onChange($event.target.value)} />
@@ -44,10 +44,10 @@ const NameInput = ({ value = '', onChange, onStep }) => {
 
             </Box>
           </Box>
-        ) : (<></>)
+        )
       }}
     </ServerStatusContext.Consumer>
-  );
+  ) : (<></>);
 }
 
 export default NameInput;
