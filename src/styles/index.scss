@@ -9,7 +9,8 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  font-family: 'Quicksand', sans-serif;
+  // overflow: hidden;
 }
 
 #root {
@@ -18,9 +19,9 @@ body {
 
 
 
-.overflow-container,
-#root,
-#initial-stack>*:first-child {
-  overflow: hidden !important;
-  height: 100vh !important;
-}
+// .overflow-container,
+// #root,
+// #initial-stack>*:first-child {
+//   overflow: hidden !important;
+//   height: 100vh !important;
+// }

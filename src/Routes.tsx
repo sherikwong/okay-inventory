@@ -1,5 +1,3 @@
-import Deduct from './components/deduct/Deduct';
-import Item from './components/item/Item';
 import { createBrowserHistory } from 'history';
 import Create from './components/item/create/Create';
 // import List from './components/list/List';
@@ -23,6 +21,7 @@ const routes: IRoute[] = [
   {
     path: '/',
     component: Create
+
   },
 ];
 

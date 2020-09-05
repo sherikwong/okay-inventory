@@ -1,9 +1,7 @@
-import { Box } from 'grommet';
 import React, { useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { withRouter } from 'react-router-dom';
 import OverlayLoaderContext from '../../contexts/main-loader';
-import styled from 'styled-components';
 import './Deduct.scss';
 
 

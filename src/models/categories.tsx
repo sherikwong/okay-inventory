@@ -1,12 +1,12 @@
-export enum Categories {
+export enum Category {
   DAIRY,
   FRUIT,
-  VEGETABLES,
+  VEGETABLE,
   MEAT,
   LEGUMES
 }
 
-export enum Meat_Types {
+export enum Meat_Type {
   CHICKEN,
   PORK,
   TURKEY,
@@ -14,4 +14,8 @@ export enum Meat_Types {
   FISH,
   SHELLFISH,
   DUCK
+}
+
+export interface ICategory {
+  category: ICategory;
 }

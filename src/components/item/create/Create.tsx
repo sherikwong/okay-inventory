@@ -1,5 +1,6 @@
-import { Button, Card, CardBody, CardFooter, Stack, TextInput } from 'grommet';
-import { Checkmark, Close, Microphone } from 'grommet-icons';
+import { } from 'firebase';
+import { Button, Card, CardBody, CardFooter, Layer, Stack, TextInput } from 'grommet';
+import { Checkmark, Close, Microphone, MoreVertical } from 'grommet-icons';
 import QrCode from 'qrcode.react';
 import React, { useRef, useState } from 'react';
 import DictateButton from 'react-dictate-button';
@@ -7,8 +8,7 @@ import Unsplash from 'react-unsplash-wrapper';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
 import OverlayLoaderContext from '../../../contexts/main-loader';
-import { } from 'firebase';
-import { itemsDB } from '../../../database/models/items';
+import CategoryModal from './Category/Category';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -19,25 +19,25 @@ const DictationButtonWrapper = styled(DictateButton)`
 const Create = () => {
   const randomID = uuid();
   const [itemName, setItemName] = useState('');
+  const [showCategoriesModal, setCategoriesModal] = useState(false);
 
   const onDictate = res => {
     if (res) {
-      console.log(res);
       setItemName(res.result.transcript);
+      console.log(itemName);
     }
   }
 
-  itemsDB.on('value', snapshot => {
-    console.log(snapshot);
-  })
+  const onInputChange = $event => {
+    setItemName($event.target.value);
+  }
 
 
   const buttonRef = useRef(null);
-  const onClick = event => {
-    console.log(event);
-    console.log(buttonRef)
-  }
 
+  const onClickShowModal = boolean => () => {
+    setCategoriesModal(boolean);
+  }
 
   return (
     <OverlayLoaderContext.Consumer>
@@ -60,16 +60,30 @@ const Create = () => {
             </Card>
           </CardBody>
 
-          <CardFooter direction="row" align="center" justify="center" background="light-2" pad="large">
-            <TextInput value={itemName} />
+          <CardFooter direction="row" align="center" justify="center" background="light-1orga
+          2" pad="large">
+
+            <TextInput value={itemName} onChange={onInputChange} />
+
+
             <DictationButtonWrapper ref={buttonRef} id="dictation-button" onDictate={onDictate}>
               <Microphone />
             </DictationButtonWrapper>
 
             <Button secondary onClick={onAttemptSave} icon={<Checkmark />}></Button>
             <Button secondary icon={<Close />}></Button>
+            <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />}>
+            </Button>
+
+
+              <CategoryModal setCategoriesModal={setCategoriesModal} showCategoriesModal={showCategoriesModal}/>
+
 
           </CardFooter>
+
+
+
+
         </>
         );
       }}
