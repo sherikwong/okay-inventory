@@ -41,7 +41,7 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
   ];
 
   return (
-    showEditModal &&
+    // showEditModal &&
     (
       <Layer >
         <Box direction="column" fill={true}>

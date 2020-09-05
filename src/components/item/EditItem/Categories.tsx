@@ -1,6 +1,6 @@
 import { List } from 'grommet';
 import React, { useState } from 'react';
-import { categoriesDB } from '../../../database/models/categories';
+import { categoriesDB } from '../../../database/categories';
 
 
 const Categories = ({ value, onChange, onStep }) => {

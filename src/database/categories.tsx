@@ -1,4 +1,4 @@
-import { db } from '../index';
+import { db } from '.';
 
 export const CATEGORIES = 'categories';
 

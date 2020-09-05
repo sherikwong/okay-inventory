@@ -1,8 +1,9 @@
-import { Box, Button, TextInput } from 'grommet';
-import { Microphone, Previous, Next } from 'grommet-icons';
+import { Box, TextInput } from 'grommet';
+import { Microphone, Next } from 'grommet-icons';
 import React from 'react';
 import DictateButton from 'react-dictate-button';
 import styled from 'styled-components';
+import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 
 
 const DictationButtonWrapper = styled(DictateButton)`
@@ -19,6 +20,8 @@ const NameInput = ({ value = '', onChange, onStep }) => {
     }
   }
 
+
+
   return (
     <Box pad="large" fill={true}>
 
@@ -30,7 +33,7 @@ const NameInput = ({ value = '', onChange, onStep }) => {
           <Microphone />
         </DictationButtonWrapper>
 
-        <Button secondary icon={<Next />} onClick={() => onStep(1)} />
+        <SpinnerButton secondary icon={<Next />} onClick={() => onStep(1)} />
 
       </Box>
     </Box>
