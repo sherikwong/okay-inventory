@@ -7,7 +7,7 @@ export interface IBaseDB<T> {
 }
 
 export interface IBaseModel {
-  dateCreated: Date;
+  dateCreated?: Date;
   dateModified?: Date;
 }
 

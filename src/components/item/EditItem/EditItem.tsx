@@ -8,6 +8,7 @@ import NameInput from './Name';
 import { createContext, Dispatch } from 'react';
 import { itemsDB } from '../../../database/items';
 import { IItem } from '../../../models/items';
+import { withRouter } from 'react-router';
 
 export enum ServerReponse {
   Succeeds,
@@ -27,13 +28,14 @@ export interface IServerContext {
 
 export const ServerStatusContext = createContext({});
 
-const EditItem = ({ toggleEditModal, showEditModal }) => {
+const EditItem = (props) => {
+  const { toggleEditModal, showEditModal } = props;
   const [step, setStep] = useState(0);
 
   const [id, setId] = useState('');
   const [details, setDetails] = useState({
     name: '',
-    date: new Date().toISOString(),
+    date: new Date(),
     category: ''
   });
 
@@ -50,9 +52,8 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
   const onStep = direction => {
     console.log('Stepping');
     if (!id) {
-      const newEntry: IItem = { name: details.name } as IItem;
-
-      itemsDB.add(newEntry);
+      itemsDB.add(details);
+    } else {
 
     }
 
@@ -88,4 +89,4 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
     ));
 }
 
-export default EditItem;
+export default withRouter(EditItem);

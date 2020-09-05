@@ -15,7 +15,3 @@ export enum Meat_Type {
   SHELLFISH,
   DUCK
 }
-
-export interface ICategory {
-  category: ICategory;
-}
