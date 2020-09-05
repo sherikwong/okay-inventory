@@ -1,6 +1,6 @@
 import { } from 'firebase';
-import { Button, Card, CardBody, CardFooter, Stack, TextInput } from 'grommet';
-import { Microphone, MoreVertical } from 'grommet-icons';
+import { Box, Button, Card, CardBody, CardFooter, Stack, TextInput } from 'grommet';
+import { Checkmark, Close, Microphone, MoreVertical } from 'grommet-icons';
 import QrCode from 'qrcode.react';
 import React, { useRef, useState } from 'react';
 import DictateButton from 'react-dictate-button';
@@ -22,6 +22,11 @@ const Create = () => {
   const [itemName, setItemName] = useState('');
   const [showCategoriesModal, setCategoriesModal] = useState(false);
   const [category, setCategory] = useState();
+  const [details, setDetails] = useState({
+    name: '',
+    date: '',
+    category: ''
+  });
 
 
   const onDictate = res => {
@@ -35,8 +40,8 @@ const Create = () => {
     setItemName($event.target.value);
   }
 
-  const onSelectCategory = selected => {
-    setCategory(selected);
+  const onFinishedDetails = selected => {
+
   }
 
   const buttonRef = useRef(null);
@@ -54,29 +59,47 @@ const Create = () => {
         };
 
         return (<>
-          <CardBody>
+
+          <Box direction="row" justify="between">
+
+
+            <Button secondary onClick={onAttemptSave} icon={<Checkmark />}></Button>
+
+            <Button secondary icon={<Close />}></Button>
+
+
+          </Box>
+
+          <CardBody pad="medium">
             <Card height="medium" width="medium">
 
-              <Stack>
-                <QrCode
-                  value={randomID} />
-                {itemName && <Unsplash keywords={itemName} img />}
+              <Stack fill={true}>
+                <Box
+                  align="end" fill={true} justify="end">
+
+                  {itemName && <Unsplash keywords={itemName} img />}
+
+                  <Box pad="medium">
+                    <QrCode value={randomID} />
+                  </Box>
+                </Box>
+
               </Stack>
 
             </Card>
           </CardBody>
 
-          <CardFooter direction="row" align="center" justify="center" background="light-2" pad="large">
+          <CardFooter direction="row" align="center" justify="center" background="light-2">
 
-            <TextInput value={itemName} onChange={onInputChange} />
+            <Box pad="medium">
+              <TextInput value={itemName} onChange={onInputChange} />
+            </Box>
 
 
             <DictationButtonWrapper ref={buttonRef} id="dictation-button" onDictate={onDictate}>
               <Microphone />
             </DictationButtonWrapper>
 
-            {/* <Button secondary onClick={onAttemptSave} icon={<Checkmark />}></Button> */}
-            {/* <Button secondary icon={<Close />}></Button> */}
             <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />}>
             </Button>
 

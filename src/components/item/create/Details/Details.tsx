@@ -4,6 +4,8 @@ import { categoriesDB } from '../../../../database/models/categories';
 import CloseButton from '../../../reusable/CloseButton/CloseButton';
 import { Next, Previous } from '../../../../../node_modules/grommet-icons';
 import { Close } from 'grommet-icons';
+import DayPicker from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 
 const DetailsModal = ({ setCategoriesModal, showCategoriesModal }) => {
   const [step, setStep] = useState(0);
@@ -25,10 +27,10 @@ const DetailsModal = ({ setCategoriesModal, showCategoriesModal }) => {
     setStep(1);
   };
 
-  const onDateInput = ({ value }) => {
+  const onDateInput = date => {
     setDetails({
       ...details,
-      date: value
+      date
     })
 
     setCategoriesModal(false);
@@ -55,16 +57,13 @@ const DetailsModal = ({ setCategoriesModal, showCategoriesModal }) => {
           </Box>
 
 
-
           {!step && (<List data={categories} onClickItem={onClickCategory} />)}
 
 
           {step === 1 && (
             <Box pad="medium">
-              <DateInput
-                format="mm/dd"
-                value={details.date}
-                onChange={onDateInput}
+              <DayPicker
+                onDayClick={onDateInput}
               />
             </Box>
           )}

@@ -20,6 +20,8 @@
     "polished": "^3.6.6",
     "qrcode.react": "^1.0.0",
     "react": "^16.13.1",
+    "react-calendar": "^3.1.0",
+    "react-day-picker": "^7.4.8",
     "react-dictate-button": "^1.2.2",
     "react-dom": "^16.13.1",
     "react-native-barcode-mask": "^1.2.4",
