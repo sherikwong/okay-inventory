@@ -24,3 +24,6 @@ const Categories = ({ value, onChange, onStep }) => {
 }
 
 export default Categories;
+
+
+// https://codesandbox.io/s/3y0wzv59om?file=/components/Tag.js:164-551

@@ -1,11 +1,10 @@
 import { Box, Button, Layer } from 'grommet';
 import { Close, Previous } from 'grommet-icons';
 import React, { useState } from 'react';
-import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import Categories from './Categories';
-import NameInput from './Name';
 import DateEdit from './Date';
+import NameInput from './Name';
 
 enum ItemDetails {
   NAME = 'name',
@@ -13,7 +12,7 @@ enum ItemDetails {
   DATE = 'date'
 }
 
-const EditItem = ({ setCategoriesModal, showCategoriesModal }) => {
+const EditItem = ({ toggleEditModal, showEditModal }) => {
   const [step, setStep] = useState(0);
   const [details, setDetails] = useState({
     name: '',
@@ -38,17 +37,17 @@ const EditItem = ({ setCategoriesModal, showCategoriesModal }) => {
   const stepsTemplates = [
     <NameInput onStep={onStep} value={details.name} onChange={value => updateDetail(ItemDetails.NAME, value)} />,
     <Categories onStep={onStep} value={details.category} onChange={value => updateDetail(ItemDetails.CATEGORY, value)} />,
-    <DateEdit setCategoriesModal={setCategoriesModal} value={details.date} onChange={date => updateDetail(ItemDetails.DATE, date)} />
+    <DateEdit toggleEditModal={toggleEditModal} value={details.date} onChange={date => updateDetail(ItemDetails.DATE, date)} />
   ];
 
   return (
-    // showCategoriesModal &&
+    showEditModal &&
     (
       <Layer >
         <Box direction="column" fill={true}>
           <Box direction="row" justify="between" pad="medium">
             <Button secondary icon={<Previous />} />
-            <Button secondary icon={<Close />} onClick={() => setCategoriesModal(false)} />
+            <Button secondary icon={<Close />} onClick={() => toggleEditModal(false)} />
           </Box>
 
           {stepsTemplates[step]}

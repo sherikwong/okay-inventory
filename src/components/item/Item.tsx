@@ -1,39 +1,32 @@
 import { } from 'firebase';
-import { Box, Button, Card, CardBody, CardFooter, Stack, TextInput } from 'grommet';
-import { Checkmark, Close, Microphone, MoreVertical } from 'grommet-icons';
+import { Box, Button, Stack, Heading, Card, CardBody } from 'grommet';
+import { MoreVertical } from 'grommet-icons';
 import QrCode from 'qrcode.react';
 import React, { useRef, useState } from 'react';
-import DictateButton from 'react-dictate-button';
 import Unsplash from 'react-unsplash-wrapper';
 import uuid from 'react-uuid';
-import styled from 'styled-components';
 import OverlayLoaderContext from '../../contexts/main-loader';
+import EditItem from './EditItem/EditItem';
 
 
 
 const Item = () => {
   const randomID = uuid();
-  const [itemName, setItemName] = useState('');
-  const [showCategoriesModal, setCategoriesModal] = useState(false);
-  const [category, setCategory] = useState();
-  const [details, setDetails] = useState({
-    name: '',
-    date: '',
-    category: ''
-  });
-
-
-
-
-
-  const onFinishedDetails = selected => {
-
+  const details = {
+    name: 'Chicken Thighs',
+    date: new Date(),
+    category: 'protein'
   }
+
+  const itemName = details.name;
+
+  const [showEditModal, toggleEditModal] = useState(false);
+
 
   const buttonRef = useRef(null);
 
   const onClickShowModal = boolean => () => {
-    setCategoriesModal(boolean);
+    toggleEditModal(boolean);
   }
 
   return (
@@ -46,54 +39,38 @@ const Item = () => {
 
         return (<>
 
-          <Box direction="row" justify="between">
+          <Stack fill={true}>
 
+            {itemName && <Unsplash keywords={itemName} img />}
+            <Box align="end" fill={true} justify="end">
+              <Card background="light-1" margin="medium">
+                <CardBody
+                  pad="medium" direction="row">
+                  <QrCode value={randomID} />
 
-            <Button secondary onClick={onAttemptSave} icon={<Checkmark />}></Button>
-
-            <Button secondary icon={<Close />}></Button>
-
-
-          </Box>
-
-          <CardBody pad="medium">
-            <Card height="medium" width="medium">
-
-              <Stack fill={true}>
-                <Box
-                  align="end" fill={true} justify="end">
-
-                  {itemName && <Unsplash keywords={itemName} img />}
-
-                  <Box pad="medium">
-                    <QrCode value={randomID} />
+                  <Box direction="column">
+                    <Heading margin={{ left: 'medium' }}>{itemName}</Heading>
+                    {details.date.toLocaleDateString("en-US")}
+                    {details.category}
                   </Box>
-                </Box>
-
-              </Stack>
-
-            </Card>
-          </CardBody>
-
-          <CardFooter direction="row" align="center" justify="center" background="light-2">
-
-            <Box pad="medium">
-              {/* <TextInput value={itemName} onChange={onInputChange} /> */}
+                </CardBody>
+              </Card>
             </Box>
 
 
+          </Stack>
 
 
-            <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />}>
-            </Button>
 
 
-            {/* <EditItem setCategoriesModal={setCategoriesModal} showCategoriesModal={showCategoriesModal} /> */}
 
 
-          </CardFooter>
+
+          <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />}>
+          </Button>
 
 
+          <EditItem toggleEditModal={toggleEditModal} showEditModal={showEditModal} />
 
 
         </>
