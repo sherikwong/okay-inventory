@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { categoriesDB } from '../../../database/models/categories';
 
 
-const Categories = ({ value, onChange }) => {
+const Categories = ({ value, onChange, onStep }) => {
   const [categories, setCategories] = useState([]);
 
   categoriesDB.once('value', res => {
@@ -13,8 +13,13 @@ const Categories = ({ value, onChange }) => {
     setCategories(ordered);
   });
 
+  const onClick = $event => {
+    onChange($event.target.innerHTML);
+    onStep(1)
+  }
+
   return (
-    <List data={categories} onClickItem={$event => onChange($event.target.innerHTML)} />
+    <List data={categories} onClickItem={onClick} />
   );
 }
 
