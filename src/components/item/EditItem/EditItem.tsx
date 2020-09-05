@@ -50,9 +50,9 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
   const onStep = direction => {
     console.log('Stepping');
     if (!id) {
-      const newEntry: IItem = { name: details.name };
+      const newEntry: IItem = { name: details.name } as IItem;
 
-      itemsDB.add(newEntry); Y
+      itemsDB.add(newEntry);
 
     }
 

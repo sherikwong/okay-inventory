@@ -1,7 +1,7 @@
 import { db } from './index';
 
 export interface IBaseDB<T> {
-  getAll(): Array<T>;
+  getAll(): Promise<T[]>;
   add(data: T): void;
   update(id: string, data: T): void;
 }
@@ -19,26 +19,25 @@ export class BaseDB<T> implements IBaseDB<T> {
     this._db = db.ref().child(dbName);
   }
 
-  public getAll(): T[] {
-    this._db.once('value', res => {
+  public getAll(): Promise<T[]> {
+    return this._db.once('value', res => {
       this._items = res.val();
-    })
+    }).then(res => this._items);
 
-    return this._items;
   }
 
-  public add(data: T): string | null {
+  public add(data: T): Promise<string | null> {
     const newEntry = this._db.push();
 
     // TODO: SK: Revisit bracket notation;
     data['dateCreated'] = new Date();
 
-    newEntry.set(data);
-    return newEntry.key;
+    return newEntry.set(data)
+      .then(() => newEntry.key);
   }
 
-  public update(id: string, data: T): void {
-    this._db.update({
+  public update(id: string, data: T): Promise<void> {
+    return this._db.update({
       [id]: data
     });
   }
