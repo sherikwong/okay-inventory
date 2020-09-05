@@ -7,9 +7,7 @@ import DictateButton from 'react-dictate-button';
 import Unsplash from 'react-unsplash-wrapper';
 import uuid from 'react-uuid';
 import styled from 'styled-components';
-import OverlayLoaderContext from '../../../contexts/main-loader';
-import './Create.scss';
-import DetailsModal from './Details/Details';
+import OverlayLoaderContext from '../../contexts/main-loader';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -17,7 +15,7 @@ const DictationButtonWrapper = styled(DictateButton)`
 `;
 
 
-const Create = () => {
+const Item = () => {
   const randomID = uuid();
   const [itemName, setItemName] = useState('');
   const [showCategoriesModal, setCategoriesModal] = useState(false);
@@ -36,9 +34,7 @@ const Create = () => {
     }
   }
 
-  const onInputChange = $event => {
-    setItemName($event.target.value);
-  }
+
 
   const onFinishedDetails = selected => {
 
@@ -104,7 +100,7 @@ const Create = () => {
             </Button>
 
 
-            <DetailsModal setCategoriesModal={setCategoriesModal} showCategoriesModal={showCategoriesModal} />
+            {/* <EditItem setCategoriesModal={setCategoriesModal} showCategoriesModal={showCategoriesModal} /> */}
 
 
           </CardFooter>
@@ -119,4 +115,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Item;
