@@ -1,15 +1,14 @@
-import { Box, Button, TextInput, List } from 'grommet';
+import { Box, Button, TextInput } from 'grommet';
 import { Close, Microphone, Previous } from 'grommet-icons';
-import React, { createContext, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import 'react-day-picker/lib/style.css';
 import DictateButton from 'react-dictate-button';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
-import { categoriesDB, CATEGORIES } from '../../../database/categories';
+import { categoriesDB } from '../../../database/categories';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import Tags from '../../reusable/Tags/Tags';
-import { ServerResponse } from 'http';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -17,10 +16,6 @@ const DictationButtonWrapper = styled(DictateButton)`
   margin: 10px;
 `;
 
-export enum ServerReponse {
-  Succeeds,
-  Fails
-}
 
 enum ItemDetails {
   NAME = 'name',
@@ -28,10 +23,6 @@ enum ItemDetails {
   DATE = 'date'
 }
 
-export interface IServerContext {
-  status?: ServerReponse;
-  toggleStatus?: Dispatch<SetStateAction<ServerReponse>>;
-}
 
 export const ServerStatusContext = createContext({});
 
@@ -39,7 +30,7 @@ const EditItem = ({ match }) => {
   const [id, setId] = useState(match.params.id);
   const [step, setStep] = useState(0);
   const [categories, setCategories] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
@@ -61,23 +52,22 @@ const EditItem = ({ match }) => {
   }, []);
 
   const updateDetail = (detailType: ItemDetails, val) => {
-    const updated = {};
-
-    updated[detailType] = detailType === ItemDetails.CATEGORY ? [...val].filter(el => el) : val;
-
     setDetails({
       ...details,
-      ...updated
+      [detailType]: val
     });
   }
 
-  const [loading, setLoading] = useState(false);
-
 
   const onStep = direction => {
+    let detailsWithTagsAsArray = {
+      ...details,
+      tags: [...details.tags].filter(el => el)
+    };
+
     let promise = id
-      ? itemsDB.update(id, details)
-      : itemsDB.add(details);
+      ? itemsDB.update(id, detailsWithTagsAsArray)
+      : itemsDB.add(detailsWithTagsAsArray);
 
     promise.then(res => {
       setLoading(false);
@@ -93,9 +83,9 @@ const EditItem = ({ match }) => {
     }
   }
 
-  const addTags = tag => {
+  const alterTags = direction => tag => {
     const tags = new Set(details.tags);
-    tags.add(tag);
+    tags[direction > 0 ? 'add' : 'delete'](tag);
     setDetails({
       ...details,
       tags
@@ -104,7 +94,7 @@ const EditItem = ({ match }) => {
 
   const stepsTemplates = [
     <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} />,
-    <Tags value={details.tags} suggestions={categories} onSelect={newTag => addTags(newTag)} onRemove={() => undefined} />,
+    <Tags value={details.tags} suggestions={categories} onSelect={alterTags(1)} onRemove={alterTags(-1)} />,
     // <DateEdit toggleEditModal={() => undefined} value={declose alltails.date} onChange = { date => updateDetail(ItemDetails.DATE, date) } />
   ];
 
