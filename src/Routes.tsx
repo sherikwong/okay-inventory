@@ -1,7 +1,5 @@
 import { createBrowserHistory } from 'history';
-import EditItem from './components/Item/EditItem/EditItem';
-// import List from './components/list/List';
-
+import List from './components/List/List';
 export interface IRoute {
   path: string;
   children?: IRoute[];
@@ -9,7 +7,7 @@ export interface IRoute {
 }
 
 const routes: IRoute[] = [
-  // { path: '/', component: List },
+  { path: '/', component: List },
   // // {
   // //   path: '/',
   // //   component: Deduct
@@ -18,11 +16,11 @@ const routes: IRoute[] = [
   //   path: '/item',
   //   component: Item
   // },
-  {
-    path: '/',
-    component: EditItem
+  // {
+  //   path: '/',
+  //   component: EditItem
 
-  },
+  // },
 ];
 
 export const history = createBrowserHistory();

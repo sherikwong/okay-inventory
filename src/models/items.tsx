@@ -1,7 +1,8 @@
 import { ICategory } from './categories';
-export interface IItem {
-  name: string;
-  quantity: number;
-  category: ICategory;
-  date: Date;
+import { IBaseModel } from '../database/base';
+export interface IItem extends IBaeModel {
+  name?: string;
+  quantity?: number;
+  category?: ICategory;
+  date?: Date;
 }

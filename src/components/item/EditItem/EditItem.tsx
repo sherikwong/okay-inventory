@@ -7,6 +7,7 @@ import DateEdit from './Date';
 import NameInput from './Name';
 import { createContext, Dispatch } from 'react';
 import { itemsDB } from '../../../database/items';
+import { IItem } from '../../../models/items';
 
 export enum ServerReponse {
   Succeeds,
@@ -49,7 +50,10 @@ const EditItem = ({ toggleEditModal, showEditModal }) => {
   const onStep = direction => {
     console.log('Stepping');
     if (!id) {
-      itemsDB.add({ name: details.name });
+      const newEntry: IItem = { name: details.name };
+
+      itemsDB.add(newEntry); Y
+
     }
 
     setStep(direction > 0 ? step + 1 : step - 1);
