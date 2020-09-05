@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Box, TextInput } from "grommet";
 
 import Tag from "./Tag";
+import { useEffect } from 'react';
 
 const renderTags = (tags, onRemove) => {
   return (
@@ -16,9 +17,13 @@ const renderTags = (tags, onRemove) => {
   );
 };
 
-const Tags = ({ suggestions, value, onRemove, onSelect }) => {
-  const [values, setValues] = useState([]);
+const Tags = ({ suggestions, value, onRemove, onSelect, }) => {
+  const [values, setValues] = useState([...value]);
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    setValues([...value]);
+  }, [value])
 
   return (
     <Box

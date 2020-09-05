@@ -42,7 +42,7 @@ const EditItem = ({ match }) => {
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
-    tags: ['']
+    tags: new Set()
   });
 
 
@@ -89,12 +89,13 @@ const EditItem = ({ match }) => {
   }
 
   const addTags = tag => {
-    console.log(tag);
-    const draftTags = [...details.tags, tag];
+    const tags = new Set(details.tags);
+    tags.add(tag);
     setDetails({
       ...details,
-      tags: draftTags
-    })
+      tags
+    });
+    console.log(tags);
   };
 
   const stepsTemplates = [
