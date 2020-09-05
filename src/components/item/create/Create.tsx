@@ -20,6 +20,8 @@ const Create = () => {
   const randomID = uuid();
   const [itemName, setItemName] = useState('');
   const [showCategoriesModal, setCategoriesModal] = useState(false);
+  const [category, setCategory] = useState();
+
 
   const onDictate = res => {
     if (res) {
@@ -32,6 +34,9 @@ const Create = () => {
     setItemName($event.target.value);
   }
 
+  const onSelectCategory = selected => {
+    setCategory(selected);
+  }
 
   const buttonRef = useRef(null);
 
