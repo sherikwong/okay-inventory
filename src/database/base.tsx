@@ -31,7 +31,7 @@ export class BaseDB<T> implements IBaseDB<T> {
       .then(snapshot => snapshot && snapshot.exists() ? snapshot.val() : undefined);
   }
 
-  public add(data: T): Promise<string | null> {
+  public add(data: T): Promise<any> {
     const newEntry = this._db.push();
 
     // TODO: SK: Revisit bracket notation;
@@ -41,7 +41,7 @@ export class BaseDB<T> implements IBaseDB<T> {
       .then(() => newEntry.key);
   }
 
-  public update(id: string, data: T): Promise<void> {
+  public update(id: string, data: T): Promise<any> {
     return this._db.update({
       [id]: data
     });

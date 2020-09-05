@@ -71,26 +71,20 @@ const EditItem = ({ match }) => {
     });
   }
 
-  const [status, toggleServerReponse] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const onStep = direction => {
+    let promise = id
+      ? itemsDB.update(id, details)
+      : itemsDB.add(details);
 
-    const setLoader = (promise: Promise<any>) => promise
-      .then(res => {
-        toggleServerReponse(false);
-      }).catch(error => {
-        toggleServerReponse(false);
-
-      });
-
-    if (!id) {
-      setLoader(itemsDB.add(details));
-    } else {
-      setLoader(itemsDB.update(id, details));
-    }
-
-    setStep(direction > 0 ? step + 1 : step - 1);
+    promise.then(res => {
+      setLoading(false);
+      setStep(direction > 0 ? step + 1 : step - 1);
+    }).catch(error => {
+      setLoading(false);
+    });
   };
 
   const onDictate = res => {
@@ -106,7 +100,6 @@ const EditItem = ({ match }) => {
       ...details,
       tags
     });
-    console.log(tags);
   };
 
   const stepsTemplates = [
@@ -131,7 +124,7 @@ const EditItem = ({ match }) => {
             <Microphone />
           </DictationButtonWrapper>
 
-          <SpinnerButton onClick={() => onStep(1)} onFinished={status} />
+          <SpinnerButton onClick={() => onStep(1)} loading={loading} setLoading={setLoading} />
         </Box>
       </Box>
     </Box>
