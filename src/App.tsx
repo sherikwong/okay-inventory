@@ -5,9 +5,12 @@ import { Route, Router } from 'react-router-dom';
 import './App.scss';
 import OverlayLoader from './components/reusable/OverlayLoader/OverlayLoader';
 import OverlayLoaderContext from './contexts/main-loader';
-import Routes, { history, IRoute } from './Routes';
 import ModalContext from './components/modal/ModalContext';
 import Modal from './components/modal/Modal';
+import List from './components/List/List';
+import { createBrowserHistory } from 'history';
+import Item from './components/Item/Item';
+import EditItem from './components/Item/EditItem/EditItem';
 
 const theme = {
   calendar: {
@@ -17,17 +20,10 @@ const theme = {
   }
 };
 
+
+const history = createBrowserHistory();
+
 const App = () => {
-  const childRoute = (route: IRoute, i: number) => (
-    <Route exact path={route.path} key={i}>
-      {React.createElement(route.component)}
-    </Route>
-  );
-
-
-  const recursiveRoute = (routes: IRoute[]) => routes.map((route, i) => {
-    return childRoute(route, i)
-  });
 
   const [loadOverlay, setLoadOverlay] = useState(false);
   const [showModal, toggleModal] = useState(false);
@@ -40,7 +36,16 @@ const App = () => {
           <OverlayLoader show={loadOverlay}>
             <Stack fill={true} className="overflow-container" id="initial-stack">
               <Router history={history}>
-                {recursiveRoute(Routes)}
+
+
+
+
+                <Route path="/item/:id/edit" component={EditItem} />
+                <Route path="/item/:id" component={Item} />
+                <Route exact path="/items/new" component={EditItem} />
+                <Route path="/items" component={List} />
+                <Route exact path="/" component={List} />
+
               </Router>
               {/* <Box align="end" justify="end">
             <NavButtons />

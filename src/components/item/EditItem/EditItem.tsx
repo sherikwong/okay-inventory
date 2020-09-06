@@ -42,7 +42,7 @@ enum ItemDetails {
 export const ServerStatusContext = createContext({});
 
 const EditItem = ({ match, history }) => {
-  const [id, setId] = useState(match.params.id);
+  const [id, setId] = useState(match && match.params && match.params.id ? match.params.id : '');
   const [step, setStep] = useState(0);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -57,9 +57,11 @@ const EditItem = ({ match, history }) => {
 
 
   useEffect(() => {
-    itemsDB.get(id).then(res => {
-      setDetails({ ...details, ...res });
-    });
+    if (id) {
+      itemsDB.get(id).then(res => {
+        setDetails({ ...details, ...res });
+      });
+    }
 
     categoriesDB.once('value', res => {
       const unordered = res.val();
@@ -119,7 +121,7 @@ const EditItem = ({ match, history }) => {
       date: new Date(dateString)
     });
 
-    onStep(0);
+    history.push('/');
   }
 
   const stepsTemplates = [
@@ -136,11 +138,15 @@ const EditItem = ({ match, history }) => {
   ];
 
   return (
-    <Box direction="column" fill={true}>
+    <Box direction="column" fill={true} id="edit-item">
       <Box direction="row" justify="between" pad="medium">
-        {step > 0 ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} /> : <Button secondary icon={<Menu />} onClick={$event => history.push('/items')} />}
+        {step > 0
+          ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
+          : <Button secondary icon={<Menu />} onClick={$event => history.push('/')} />
+        }
         <Button secondary icon={<Close />} onClick={() => undefined} />
       </Box>
+
       <Box pad="large" fill={true} justify="between">
         {(step === 1 && details.tags) && renderTags([...details.tags], alterTags(-1))}
 

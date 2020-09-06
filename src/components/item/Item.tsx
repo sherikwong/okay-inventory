@@ -22,17 +22,21 @@ const Item = ({ match, history }) => {
   });
 
 
+  if (!id) {
+
+    history.push('/');
+  }
+
+
   useEffect(() => {
-    itemsDB.get(id).then(res => {
-      setDetails({ ...details, ...res });
-      setNum(res.quantity ? res.quantity : 0);
-    });
+    if (id) {
+      itemsDB.get(id).then(res => {
+        setDetails({ ...details, ...res });
+        setNum(res.quantity ? res.quantity : 0);
+      });
+    }
   }, []);
 
-
-  const onClickShowModal = boolean => () => {
-    toggleEditModal(boolean);
-  };
 
   const onUpdateQty = direction => () => {
     setNum(direction > 0 ? num + 1 : num - 1);
@@ -55,7 +59,7 @@ const Item = ({ match, history }) => {
         ({ loadOverlay, setLoadOverlay }) => {
           return (
             <Swipeable onSwipedUp={onUpdateQty(1)} onSwipedDown={onUpdateQty(-1)} onSwipedRight={navToEdit}>
-              <Stack fill={true} className="item-stack">
+              <Stack fill={true} className="item-stack" id="item">
 
                 {details.name && <SizedUnsplash keywords={imageTags} width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />}
 
