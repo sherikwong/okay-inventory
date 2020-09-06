@@ -10,9 +10,9 @@ const renderTag = (children, onRemove) => (
     direction="row"
     align="center"
     round="xsmall"
-    pad="xsmall"
-    gap="xsmall"
-    margin="xxsmall"
+    pad="small"
+    gap="small"
+    margin="small"
   >
     <Text size="small">{children}</Text>
     {onRemove && (

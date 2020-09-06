@@ -9,6 +9,7 @@ import { categoriesDB } from '../../../database/categories';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import Tags from '../../reusable/Tags/Tags';
+import { renderTags } from '../../reusable/Tags/Tags';
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
@@ -18,6 +19,25 @@ const DictationButtonWrapper = styled(DictateButton)`
     height: 10vh;
     width: 10vh;
   }
+
+  }
+`;
+
+const DictationActiveBackground = styled(Box)`
+transition: 1s;
+box-shadow: 0 0 0 1px #00C781;
+border-radius: 50%;
+position: absolute;
+height: 1px;
+width: 1px;
+z-index: -1;
+background-color: #00C781;
+transform: scale(0);
+
+&.active {
+  transform: scale(1000);
+  transition: 1s;
+}
 `;
 
 const StepHeading = styled(Heading)`
@@ -38,6 +58,7 @@ const EditItem = ({ match }) => {
   const [step, setStep] = useState(0);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isDictating, setDictating] = useState(false);
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
@@ -85,9 +106,14 @@ const EditItem = ({ match }) => {
   };
 
   const onDictate = res => {
-    if (res) {
+    setDictating(false);
+    if (res && res.result) {
       updateDetail(ItemDetails.NAME, res.result.transcript);
     }
+  }
+
+  const onDictationStart = $event => {
+    setDictating(true);
   }
 
   const alterTags = direction => tag => {
@@ -112,20 +138,24 @@ const EditItem = ({ match }) => {
         <Button secondary icon={<Close />} onClick={() => undefined} />
       </Box>
       <Box pad="large" fill={true} justify="between">
+        {(step === 1 && details.tags) && renderTags([...details.tags], alterTags(-1))}
+
 
         <Box fill={true} justify="center">
           <StepHeading>{stepsTemplates[step].name}</StepHeading>
-          {stepsTemplates[step].template}
+          <Box direction="row" align="center">
+            {stepsTemplates[step].template}
+            <Box pad={{ left: 'medium' }}>
+              <SpinnerButton onClick={() => onStep(1)} loading={loading} setLoading={setLoading} />
+            </Box>
+          </Box>
         </Box>
 
-        <Box direction="row" justify="between" align="end">
-          <Box></Box>
-
-          <DictationButtonWrapper id="dictation-button" onDictate={onDictate}>
+        <Box direction="row" justify="center" align="end">
+          <DictationActiveBackground className={isDictating ? 'active-background active' : 'active-background'} />
+          <DictationButtonWrapper id="dictation-button" onDictate={onDictate} onClick={onDictationStart} >
             <Microphone />
           </DictationButtonWrapper>
-
-          <SpinnerButton onClick={() => onStep(1)} loading={loading} setLoading={setLoading} />
         </Box>
       </Box>
     </Box>
