@@ -1,5 +1,5 @@
 import { Box, Button, Calendar, Heading, TextInput } from 'grommet';
-import { Close, Microphone, Previous } from 'grommet-icons';
+import { Close, Microphone, Previous, Menu } from 'grommet-icons';
 import React, { createContext, useEffect, useState } from 'react';
 import 'react-day-picker/lib/style.css';
 import DictateButton from 'react-dictate-button';
@@ -41,7 +41,7 @@ enum ItemDetails {
 
 export const ServerStatusContext = createContext({});
 
-const EditItem = ({ match }) => {
+const EditItem = ({ match, history }) => {
   const [id, setId] = useState(match.params.id);
   const [step, setStep] = useState(0);
   const [categories, setCategories] = useState([]);
@@ -138,7 +138,7 @@ const EditItem = ({ match }) => {
   return (
     <Box direction="column" fill={true}>
       <Box direction="row" justify={step > 0 ? 'between' : 'end'} pad="medium">
-        {step > 0 && <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />}
+        {step > 0 ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} /> : <Button secondary icon={<Menu />} onClick={$event => history.push('/items')} />}
         <Button secondary icon={<Close />} onClick={() => undefined} />
       </Box>
       <Box pad="large" fill={true} justify="between">
