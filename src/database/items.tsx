@@ -16,8 +16,8 @@ class ItemsDB extends BaseDB<IItem> implements IItemsDB {
     return db.ref().child(this.dbName + '/' + id).once('value')
       .then(snapshot => {
         const data = snapshot && snapshot.exists() ? snapshot.val() : undefined;
-        data.tags = new Set(data.tags);
-        return data;
+
+        return data && { ...data, tags: new Set(data.tags) };
       });
   }
 

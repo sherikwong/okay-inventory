@@ -9,11 +9,7 @@ export interface IRoute {
 }
 
 const routes: IRoute[] = [
-  // { path: '/', component: List },
-  // // {
-  // //   path: '/',
-  // //   component: Deduct
-  // // },
+  { path: '/items', component: List },
   {
     path: '/item/:id',
     component: Item

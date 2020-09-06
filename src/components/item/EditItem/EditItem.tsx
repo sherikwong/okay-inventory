@@ -137,7 +137,7 @@ const EditItem = ({ match, history }) => {
 
   return (
     <Box direction="column" fill={true}>
-      <Box direction="row" justify={step > 0 ? 'between' : 'end'} pad="medium">
+      <Box direction="row" justify="between" pad="medium">
         {step > 0 ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} /> : <Button secondary icon={<Menu />} onClick={$event => history.push('/items')} />}
         <Button secondary icon={<Close />} onClick={() => undefined} />
       </Box>

@@ -2,53 +2,50 @@ import React, { useState } from 'react';
 import { itemsDB } from '../../database/items';
 import { IItem } from '../../models/items';
 import './List.scss';
+import { DataTable, Text } from 'grommet';
+import { useEffect } from 'react';
+import { renderTags } from '../reusable/Tags/Tags';
 
 const List = () => {
   const [items, setItems] = useState([] as IItem[]);
 
-  itemsDB.getAll()
-    .then(items => setItems(items))
-    .catch(error => console.error(error));
 
+  useEffect(() => {
+    itemsDB.getAll()
+      .then(items => setItems(items))
+      .catch(error => console.error(error));
+
+  }, [])
+
+  console.log(items);
+
+  const columns = [
+    {
+      property: 'name',
+      primary: true,
+      header: (
+        <Text>Name</Text>
+      ),
+    },
+    {
+      property: 'tags',
+      primary: true,
+      header: (
+        <Text>Tags</Text>
+      ),
+      render: entry => renderTags(entry.tags)
+    },
+    {
+      property: 'quantity',
+      header: (
+        <Text>#</Text>
+      ),
+    }
+  ];
 
 
   return (
-    <>
-      {/* {items.map(item => (
-
-      ))} */}
-      {/*
-      <DataTable
-  columns={[
-    {
-      property: 'name',
-      header: <Text>Name</Text>,
-      primary: true,
-    },
-    {
-      property: 'percent',
-      header: 'Complete',
-      render: datum => (
-        <Box pad={{ vertical: 'xsmall' }}>
-          <Meter
-            values={[{ value: datum.percent }]}
-            thickness="small"
-            size="small"
-          />
-        </Box>
-      ),
-    },
-  ]}
-  data={[
-    { name: 'Alan', percent: 20 },
-    { name: 'Bryan', percent: 30 },
-    { name: 'Chris', percent: 40 },
-    { name: 'Eric', percent: 80 },
-  ]}
-/> */}
-    </>
-
-
+    <DataTable columns={columns} data={Object.values(items)} />
 
   );
 };
