@@ -64,10 +64,10 @@ const EditItem = ({ match, history }) => {
     }
 
     tagsDB.getAll().then(res => {
-      const unordered = res.val();
-      const ordered = unordered.sort();
+      // const unordered = res.val();
+      // const ordered = unordered.sort();
 
-      settags(ordered);
+      // settags(ordered);
     });
   }, []);
 

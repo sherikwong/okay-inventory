@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { renderTags } from '../reusable/Tags/Tags';
 import { Add } from 'grommet-icons';
 import { withRouter } from 'react-router-dom';
-import { Swipeable } from 'react-swipeable/types';
+import { Swipeable } from 'react-swipeable';
 import styled from 'styled-components';
 
 const FilledSwipable = styled(Swipeable)`

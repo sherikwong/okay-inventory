@@ -8,25 +8,21 @@ import { itemsDB } from '../../database/items';
 import { renderTags } from '../reusable/Tags/Tags';
 import { SizedUnsplash, ContrastingButton, HugeArrowButtons, Header, Number, QrCodeWrapper, BlackOverlay, DummyQRCode } from './Item.styles';
 import { IItem } from '../../models/items';
-import { useSwipeable, Swipeable } from 'react-swipeable/types'
+import { Swipeable } from 'react-swipeable'
 
 
 const Item = ({ match, history }) => {
-  const [id, setId] = useState(match.params.id);
+  const id = match.params.id;
   const [num, setNum] = useState(0);
-  const [showEditModal, toggleEditModal] = useState(false);
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
     tags: new Set(),
   });
 
-
   if (!id) {
-
     history.push('/');
   }
-
 
   useEffect(() => {
     if (id) {
@@ -50,7 +46,6 @@ const Item = ({ match, history }) => {
   const navToEdit = () => {
     history.push(`/item/${id}/edit`);
   }
-
 
   const imageTags = [...details.name.split(' '), ...details.tags].join(',');
   return (
@@ -102,10 +97,6 @@ const Item = ({ match, history }) => {
 
 
                 </Box>
-
-                {/* <EditItem toggleEditModal={toggleEditModal} showEditModal={showEditModal} /> */}
-
-
               </Stack>
             </Swipeable>
           )

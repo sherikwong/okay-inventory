@@ -1,5 +1,4 @@
-import { BaseDB } from './base';
-
+import { BaseDB, IBaseDB } from './base';
 export const TAGS = 'tags';
 
 export interface ITag {
