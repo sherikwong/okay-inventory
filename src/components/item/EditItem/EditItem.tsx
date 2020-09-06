@@ -1,4 +1,4 @@
-import { Box, Button, TextInput } from 'grommet';
+import { Box, Button, TextInput, Heading } from 'grommet';
 import { Close, Microphone, Previous } from 'grommet-icons';
 import React, { createContext, useEffect, useState } from 'react';
 import 'react-day-picker/lib/style.css';
@@ -14,8 +14,15 @@ const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
   border-color: transparent;
   margin: 10px;
+  svg, button {
+    height: 10vh;
+    width: 10vh;
+  }
 `;
 
+const StepHeading = styled(Heading)`
+  margin: 10px 0;
+`;
 
 enum ItemDetails {
   NAME = 'name',
@@ -93,8 +100,8 @@ const EditItem = ({ match }) => {
   };
 
   const stepsTemplates = [
-    <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} />,
-    <Tags value={details.tags} suggestions={categories} onSelect={alterTags(1)} onRemove={alterTags(-1)} />,
+    { name: 'Name', template: <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} /> },
+    { name: 'Tags', template: <Tags value={details.tags} suggestions={categories} onSelect={alterTags(1)} onRemove={alterTags(-1)} /> },
     // <DateEdit toggleEditModal={() => undefined} value={declose alltails.date} onChange = { date => updateDetail(ItemDetails.DATE, date) } />
   ];
 
@@ -104,11 +111,15 @@ const EditItem = ({ match }) => {
         <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
         <Button secondary icon={<Close />} onClick={() => undefined} />
       </Box>
-      <Box pad="large" fill={true}>
+      <Box pad="large" fill={true} justify="between">
 
-        {stepsTemplates[step]}
+        <Box fill={true} justify="center">
+          <StepHeading>{stepsTemplates[step].name}</StepHeading>
+          {stepsTemplates[step].template}
+        </Box>
 
-        <Box direction="row" justify="center">
+        <Box direction="row" justify="between" align="end">
+          <Box></Box>
 
           <DictationButtonWrapper id="dictation-button" onDictate={onDictate}>
             <Microphone />
