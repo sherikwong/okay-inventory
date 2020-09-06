@@ -1,51 +1,90 @@
-import { } from 'firebase';
-import { Box, Button, Stack, Heading, Card, CardBody } from 'grommet';
-import { MoreVertical } from 'grommet-icons';
+
+import { Box, Stack } from 'grommet';
+import { Down, Edit, Menu, Up } from 'grommet-icons';
 import QrCode from 'qrcode.react';
-import React, { useRef, useState } from 'react';
-import Unsplash from 'react-unsplash-wrapper';
-import uuid from 'react-uuid';
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import OverlayLoaderContext from '../../contexts/main-loader';
-import EditItem from './EditItem/EditItem';
+import { itemsDB } from '../../database/items';
+import { renderTags } from '../reusable/Tags/Tags';
+import { SizedUnsplash, ContrastingButton, HugeArrowButtons, Header, Number, QrCodeWrapper } from './Item.styles';
 
 
-
-const Item = () => {
-  const randomID = uuid();
-  const details = {
-    name: 'Chicken Thighs',
-    date: new Date(),
-    category: 'protein'
-  }
-
-  const itemName = details.name;
-
+const Item = ({ match }) => {
+  const [id, setId] = useState(match.params.id);
+  const [num, setNum] = useState(0);
   const [showEditModal, toggleEditModal] = useState(false);
+  const [details, setDetails] = useState({
+    name: '',
+    date: new Date(),
+    tags: new Set(),
+  });
+
+
+  useEffect(() => {
+    itemsDB.get(id).then(res => {
+      setDetails({ ...details, ...res });
+      setNum(res.quantity ? res.quantity : 0);
+    });
+  }, []);
+
 
   const onClickShowModal = boolean => () => {
     toggleEditModal(boolean);
   };
+
+  const onClickArrow = direction => () => {
+    setNum(direction > 0 ? num + 1 : num - 1);
+
+    itemsDB.update(id, {
+      ...details,
+      quantity: num
+    })
+  }
+
+
+  const imageTags = [...details.name.split(' '), ...details.tags].join(',');
   return (
     <OverlayLoaderContext.Consumer>
       {
         ({ loadOverlay, setLoadOverlay }) => {
           return (
-            <Stack fill={true}>
+            <Stack fill={true} className="item-stack">
 
-              {itemName && <Unsplash keywords={itemName} img />}
-              <Box align="end" fill={true} justify="end">
-                <Card background="light-1" margin="medium">
-                  <CardBody
-                    pad="medium" direction="row">
-                    <QrCode value={randomID} />
+              {details.name && <SizedUnsplash keywords={imageTags} width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />}
 
-                    <Box direction="column">
-                      <Heading margin={{ left: 'medium' }}>{itemName}</Heading>
-                      {details.date.toLocaleDateString("en-US")}
-                      {details.category}
-                    </Box>
-                  </CardBody>
-                </Card>
+              <Box align="center" fill={true} justify="between">
+                <Box direction="row" justify="between" pad="large" fill="horizontal">
+                  <ContrastingButton secondary icon={<Menu />} />
+                  <HugeArrowButtons secondary size="large" icon={<Up />} onClick={onClickArrow(1)} />
+                  <ContrastingButton secondary icon={<Edit />} />
+                </Box>
+
+
+                <Box direction="column" fill={true} align="center">
+                  {/* <FlipNumbers height={100} width={100} color="red" background="transparent" play perspective={100} numbers={String(num)} /> */}
+                  <Number> {num}</Number>
+                  {/* https://codepen.io/liborgabrhel/pen/JyJzjb */}
+
+                  <Header className="header-wrapper">
+                    {details.name.toUpperCase()}
+                  </Header>
+                  {details.date && details.date.toLocaleDateString && details.date.toLocaleDateString("en-US")}
+
+                  <HugeArrowButtons secondary size="large" icon={<Down />} onClick={onClickArrow(-1)} />
+                </Box>
+
+                <Box direction="row">
+                  <QrCodeWrapper>
+                    <QrCode value={id} size={50} />
+                  </QrCodeWrapper>
+
+                  {renderTags
+                    ([...details.tags], () => undefined)}
+                </Box>
+
+
+
               </Box>
 
               {/* <EditItem toggleEditModal={toggleEditModal} showEditModal={showEditModal} /> */}
@@ -56,40 +95,7 @@ const Item = () => {
         }
       }
 
-    </OverlayLoaderContext.Consumer>
+    </OverlayLoaderContext.Consumer >
   );
 }
-
-// return (
-
-//     {({ loadOverlay, setLoadOverlay }) => {
-
-//   const onAttemptSave = () => {
-//     setLoadOverlay && setLoadOverlay(true);
-//   };
-
-//   return (<>
-
-
-
-
-
-
-
-
-
-//     <Button secondary onClick={onClickShowModal(true)} icon={<MoreVertical />} />
-
-
-
-
-
-//   </>
-//   );
-// }
-// }
-//     </OverlayLoaderContext.Consumer>
-//   );
-// };
-
-export default Item;
+export default withRouter(Item);

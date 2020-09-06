@@ -75,16 +75,9 @@ const EditItem = ({ match }) => {
 
 
   const onStep = (direction) => {
-    let detailsWithTagsAsArray = {
-      ...details,
-      tags: [...details.tags].filter(el => el)
-    };
-
-    console.log(detailsWithTagsAsArray);
-
     let promise = id
-      ? itemsDB.update(id, detailsWithTagsAsArray)
-      : itemsDB.add(detailsWithTagsAsArray);
+      ? itemsDB.update(id, details)
+      : itemsDB.add(details);
 
     promise.then(res => {
       setLoading(false);
@@ -174,3 +167,6 @@ const EditItem = ({ match }) => {
 }
 
 export default withRouter(EditItem);
+
+
+// https://loading.io/pattern/m-wave

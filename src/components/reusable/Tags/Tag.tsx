@@ -6,15 +6,20 @@ import { FormClose } from "grommet-icons";
 
 const renderTag = (children, onRemove) => (
   <Box
-    background="brand"
+    background="status-warning"
     direction="row"
     align="center"
     round="xsmall"
-    pad="small"
+    pad={{
+      top: 'small',
+      bottom: 'small',
+      left: 'medium',
+      right: 'medium'
+    }}
     gap="small"
     margin="small"
   >
-    <Text size="small">{children}</Text>
+    <Text size="small" weight="bold">{children}</Text>
     {onRemove && (
       <Box background={{ color: "white", opacity: "strong" }} round="full">
         <FormClose color='brand' style={{ width: "12px", height: "12px" }} />

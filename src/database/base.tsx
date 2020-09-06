@@ -12,8 +12,8 @@ export interface IBaseModel {
 }
 
 export class BaseDB<T> implements IBaseDB<T> {
-  private _db: firebase.database.Reference;
-  private _items: T[] = [];
+  protected _db: firebase.database.Reference;
+  protected _items: T[] = [];
 
   constructor(protected dbName: string) {
     this._db = db.ref().child(dbName);
