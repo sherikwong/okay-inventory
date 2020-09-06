@@ -4,7 +4,7 @@ import { Box, Button, Text } from "grommet";
 
 import { FormClose } from "grommet-icons";
 
-const renderTag = (children, onRemove) => (
+const renderTag = (children, onRemove?) => (
   <Box
     background="status-warning"
     direction="row"

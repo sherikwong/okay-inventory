@@ -3,7 +3,7 @@ import { Button } from 'grommet';
 import Unsplash from 'react-unsplash-wrapper';
 
 export const Number = styled.span`
-  mix-blend-mode: exclusion;
+  mix-blend-mode: difference;
   font-weight: 700;
   margin: 0 0 0 10px;
   font-size: 200px;
@@ -12,7 +12,7 @@ export const Number = styled.span`
   filter: drop-shadow(.05em .05em black);
 `;
 export const Header = styled.span`
-  mix-blend-mode: exclusion;
+  mix-blend-mode: difference;
   font-weight: 700;
   margin: 0 0 0 10px;
   font-size: 70px;
@@ -26,7 +26,7 @@ padding: 10px;
 border-radius: 10px;
 svg {
   color: white;
-  mix-blend-mode: color-dodge;
+  mix-blend-mode: difference;
 }
 `;
 
@@ -38,7 +38,7 @@ align-content: center;
 
 svg {
   fill: white;
-  mix-blend-mode: color-dodge;
+  mix-blend-mode: difference;
     height: 6vh;
     width: 6vh;
   }
