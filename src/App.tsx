@@ -1,5 +1,5 @@
 
-import { Stack } from 'grommet';
+import { Grommet, Stack } from 'grommet';
 import React, { useState } from 'react';
 import { Route, Router } from 'react-router-dom';
 import './App.scss';
@@ -8,6 +8,14 @@ import OverlayLoaderContext from './contexts/main-loader';
 import Routes, { history, IRoute } from './Routes';
 import ModalContext from './components/modal/ModalContext';
 import Modal from './components/modal/Modal';
+
+const theme = {
+  calendar: {
+    medium: {
+      daySize: 'calc(100vw/8)'
+    }
+  }
+};
 
 const App = () => {
   const childRoute = (route: IRoute, i: number) => (
@@ -25,25 +33,26 @@ const App = () => {
   const [showModal, toggleModal] = useState(false);
 
   return (
-    <ModalContext.Provider value={{ showModal, toggleModal }}>
+    <Grommet theme={theme}>
+      <ModalContext.Provider value={{ showModal, toggleModal }}>
 
-      <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
-        <OverlayLoader show={loadOverlay}>
-          <Stack fill={true} className="overflow-container" id="initial-stack">
-            <Router history={history}>
-              {recursiveRoute(Routes)}
-            </Router>
-            {/* <Box align="end" justify="end">
+        <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
+          <OverlayLoader show={loadOverlay}>
+            <Stack fill={true} className="overflow-container" id="initial-stack">
+              <Router history={history}>
+                {recursiveRoute(Routes)}
+              </Router>
+              {/* <Box align="end" justify="end">
             <NavButtons />
           </Box> */}
-          </Stack>
-        </OverlayLoader>
-      </OverlayLoaderContext.Provider>
+            </Stack>
+          </OverlayLoader>
+        </OverlayLoaderContext.Provider>
 
-      <Modal showModal={showModal} toggleModal={toggleModal} />
+        <Modal showModal={showModal} toggleModal={toggleModal} />
 
-
-    </ModalContext.Provider>
+      </ModalContext.Provider>
+    </Grommet>
   );
 };
 

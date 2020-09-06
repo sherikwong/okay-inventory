@@ -1,4 +1,4 @@
-import { Box, Button, TextInput, Heading } from 'grommet';
+import { Box, Button, Calendar, Heading, TextInput } from 'grommet';
 import { Close, Microphone, Previous } from 'grommet-icons';
 import React, { createContext, useEffect, useState } from 'react';
 import 'react-day-picker/lib/style.css';
@@ -8,36 +8,23 @@ import styled from 'styled-components';
 import { categoriesDB } from '../../../database/categories';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
-import Tags from '../../reusable/Tags/Tags';
-import { renderTags } from '../../reusable/Tags/Tags';
+import Tags, { renderTags } from '../../reusable/Tags/Tags';
+
+// const CalendarWithTopMargin = styled(Calendar)
 
 const DictationButtonWrapper = styled(DictateButton)`
   background-color: transparent;
   border-color: transparent;
   margin: 10px;
   svg, button {
+    transition: .2s;
     height: 10vh;
     width: 10vh;
   }
 
+  &.active svg {
+    stroke: #00C781;
   }
-`;
-
-const DictationActiveBackground = styled(Box)`
-transition: 1s;
-box-shadow: 0 0 0 1px #00C781;
-border-radius: 50%;
-position: absolute;
-height: 1px;
-width: 1px;
-z-index: -1;
-background-color: #00C781;
-transform: scale(0);
-
-&.active {
-  transform: scale(1000);
-  transition: 1s;
-}
 `;
 
 const StepHeading = styled(Heading)`
@@ -87,11 +74,13 @@ const EditItem = ({ match }) => {
   }
 
 
-  const onStep = direction => {
+  const onStep = (direction) => {
     let detailsWithTagsAsArray = {
       ...details,
       tags: [...details.tags].filter(el => el)
     };
+
+    console.log(detailsWithTagsAsArray);
 
     let promise = id
       ? itemsDB.update(id, detailsWithTagsAsArray)
@@ -99,7 +88,7 @@ const EditItem = ({ match }) => {
 
     promise.then(res => {
       setLoading(false);
-      setStep(direction > 0 ? step + 1 : step - 1);
+      direction && setStep(direction > 0 ? step + 1 : step - 1);
     }).catch(error => {
       setLoading(false);
     });
@@ -107,13 +96,15 @@ const EditItem = ({ match }) => {
 
   const onDictate = res => {
     setDictating(false);
+    console.log(res);
+
     if (res && res.result) {
       updateDetail(ItemDetails.NAME, res.result.transcript);
     }
   }
 
-  const onDictationStart = $event => {
-    setDictating(true);
+  const onDictationToggle = $event => {
+    setDictating(!isDictating);
   }
 
   const alterTags = direction => tag => {
@@ -125,16 +116,32 @@ const EditItem = ({ match }) => {
     });
   };
 
+  const onSelectDate = dateString => {
+    setDetails({
+      ...details,
+      date: new Date(dateString)
+    });
+
+    onStep(0);
+  }
+
   const stepsTemplates = [
     { name: 'Name', template: <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} /> },
     { name: 'Tags', template: <Tags value={details.tags} suggestions={categories} onSelect={alterTags(1)} onRemove={alterTags(-1)} /> },
-    // <DateEdit toggleEditModal={() => undefined} value={declose alltails.date} onChange = { date => updateDetail(ItemDetails.DATE, date) } />
+    {
+      name: 'Date', template: <Calendar
+        margin={{ top: 'xlarge' }}
+        size="medium"
+        date={(details.date && details.date.toISOString ? details.date : new Date()).toISOString()}
+        onSelect={onSelectDate}
+      />
+    }
   ];
 
   return (
     <Box direction="column" fill={true}>
-      <Box direction="row" justify="between" pad="medium">
-        <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
+      <Box direction="row" justify={step > 0 ? 'between' : 'end'} pad="medium">
+        {step > 0 && <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />}
         <Button secondary icon={<Close />} onClick={() => undefined} />
       </Box>
       <Box pad="large" fill={true} justify="between">
@@ -142,18 +149,22 @@ const EditItem = ({ match }) => {
 
 
         <Box fill={true} justify="center">
-          <StepHeading>{stepsTemplates[step].name}</StepHeading>
-          <Box direction="row" align="center">
-            {stepsTemplates[step].template}
-            <Box pad={{ left: 'medium' }}>
-              <SpinnerButton onClick={() => onStep(1)} loading={loading} setLoading={setLoading} />
+          <Box pad={{ bottom: '25vh' }}>
+
+            <StepHeading>{stepsTemplates[step].name}</StepHeading>
+
+            <Box direction="row" align="center">
+              {stepsTemplates[step].template}
+
+              {step !== 2 && <Box pad={{ left: 'medium' }}>
+                <SpinnerButton onClick={() => onStep(1)} loading={loading} setLoading={setLoading} />
+              </Box>}
             </Box>
           </Box>
         </Box>
 
         <Box direction="row" justify="center" align="end">
-          <DictationActiveBackground className={isDictating ? 'active-background active' : 'active-background'} />
-          <DictationButtonWrapper id="dictation-button" onDictate={onDictate} onClick={onDictationStart} >
+          <DictationButtonWrapper id="dictation-button" onDictate={onDictate} onClick={onDictationToggle} className={isDictating ? 'active' : ''}>
             <Microphone />
           </DictationButtonWrapper>
         </Box>
