@@ -1,15 +1,11 @@
-import { Box, Button, Calendar, Heading, TextInput } from 'grommet';
-import { Close, Microphone, Previous, Menu } from 'grommet-icons';
+import { Heading } from 'grommet';
 import React, { createContext, useEffect, useState } from 'react';
 import 'react-day-picker/lib/style.css';
 import DictateButton from 'react-dictate-button';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
-import { categoriesDB } from '../../../database/categories';
-import { itemsDB } from '../../../database/items';
-import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
-import Tags, { renderTags } from '../../reusable/Tags/Tags';
-import { IItem } from '../../../models/items';
+import { tagsDB } from '../../../database/tags';
+import Tags from '../../reusable/Tags/Tags';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
@@ -34,7 +30,7 @@ const StepHeading = styled(Heading)`
 
 enum ItemDetails {
   NAME = 'name',
-  CATEGORY = 'category',
+  TAG = 'tag',
   DATE = 'date'
 }
 
@@ -47,7 +43,7 @@ const EditItem = ({ match, history }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    categoriesDB.once('value', res => {
+    tagsDB.once('value', res => {
       const unordered = res.val();
       const ordered = unordered.sort();
 
@@ -56,7 +52,7 @@ const EditItem = ({ match, history }) => {
   }, []);
 
   return (
-    <Tags value={details.tags} suggestions={categories} onSelect={alterTags(1)} onRemove={alterTags(-1)} />
+    <Tags value={details.tags} suggestions={tags} onSelect={alterTags(1)} onRemove={alterTags(-1)} />
   );
 }
 

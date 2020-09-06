@@ -1,4 +1,4 @@
-import { db } from './index';
+import { db } from '.';
 
 export interface IBaseDB<T> {
   getAll(): Promise<T[]>;

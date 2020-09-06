@@ -5,9 +5,9 @@ import './List.scss';
 import { DataTable, Text, Box, Button } from 'grommet';
 import { useEffect } from 'react';
 import { renderTags } from '../reusable/Tags/Tags';
-import { Add } from '../../../node_modules/grommet-icons';
+import { Add } from 'grommet-icons';
 import { withRouter } from 'react-router-dom';
-import { Swipeable } from 'react-swipeable';
+import { Swipeable } from 'react-swipeable/types';
 import styled from 'styled-components';
 
 const FilledSwipable = styled(Swipeable)`

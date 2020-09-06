@@ -5,11 +5,11 @@ import 'react-day-picker/lib/style.css';
 import DictateButton from 'react-dictate-button';
 import { withRouter } from 'react-router';
 import styled from 'styled-components';
-import { categoriesDB } from '../../../database/categories';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import Tags, { renderTags } from '../../reusable/Tags/Tags';
 import { IItem } from '../../../models/items';
+import { tagsDB } from '../../../database/tags';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
@@ -34,7 +34,7 @@ const StepHeading = styled(Heading)`
 
 enum ItemDetails {
   NAME = 'name',
-  CATEGORY = 'category',
+  TAG = 'tag',
   DATE = 'date'
 }
 
@@ -44,7 +44,7 @@ export const ServerStatusContext = createContext({});
 const EditItem = ({ match, history }) => {
   const [id, setId] = useState(match && match.params && match.params.id ? match.params.id : '');
   const [step, setStep] = useState(0);
-  const [categories, setCategories] = useState([]);
+  const [tags, settags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isDictating, setDictating] = useState(false);
   const initialTagsSet: Set<string> = new Set();
@@ -63,11 +63,11 @@ const EditItem = ({ match, history }) => {
       });
     }
 
-    categoriesDB.once('value', res => {
+    tagsDB.getAll().then(res => {
       const unordered = res.val();
       const ordered = unordered.sort();
 
-      setCategories(ordered);
+      settags(ordered);
     });
   }, []);
 
@@ -126,7 +126,7 @@ const EditItem = ({ match, history }) => {
 
   const stepsTemplates = [
     { name: 'Name', template: <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} /> },
-    { name: 'Tags', template: <Tags value={details.tags} suggestions={categories} onSelect={alterTags(1)} onRemove={alterTags(-1)} /> },
+    { name: 'Tags', template: <Tags value={details.tags} suggestions={tags} onSelect={alterTags(1)} onRemove={alterTags(-1)} /> },
     {
       name: 'Date', template: <Calendar
         margin={{ top: 'xlarge' }}

@@ -8,7 +8,7 @@ import { itemsDB } from '../../database/items';
 import { renderTags } from '../reusable/Tags/Tags';
 import { SizedUnsplash, ContrastingButton, HugeArrowButtons, Header, Number, QrCodeWrapper, BlackOverlay, DummyQRCode } from './Item.styles';
 import { IItem } from '../../models/items';
-import { useSwipeable, Swipeable } from 'react-swipeable'
+import { useSwipeable, Swipeable } from 'react-swipeable/types'
 
 
 const Item = ({ match, history }) => {
