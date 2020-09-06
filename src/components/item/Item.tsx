@@ -1,4 +1,3 @@
-
 import { Box, Stack } from 'grommet';
 import { Down, Edit, Menu, Up } from 'grommet-icons';
 import QrCode from 'qrcode.react';
@@ -8,6 +7,7 @@ import OverlayLoaderContext from '../../contexts/main-loader';
 import { itemsDB } from '../../database/items';
 import { renderTags } from '../reusable/Tags/Tags';
 import { SizedUnsplash, ContrastingButton, HugeArrowButtons, Header, Number, QrCodeWrapper } from './Item.styles';
+import { IItem } from '../../models/items';
 
 
 const Item = ({ match }) => {
@@ -37,7 +37,7 @@ const Item = ({ match }) => {
     setNum(direction > 0 ? num + 1 : num - 1);
 
     itemsDB.update(id, {
-      ...details,
+      ...details as IItem,
       quantity: num
     })
   }

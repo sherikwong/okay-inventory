@@ -9,6 +9,7 @@ import { categoriesDB } from '../../../database/categories';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import Tags, { renderTags } from '../../reusable/Tags/Tags';
+import { IItem } from '../../../models/items';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
@@ -46,10 +47,12 @@ const EditItem = ({ match }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isDictating, setDictating] = useState(false);
+  const initialTagsSet: Set<string> = new Set();
+
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
-    tags: new Set()
+    tags: initialTagsSet
   });
 
 
@@ -67,17 +70,19 @@ const EditItem = ({ match }) => {
   }, []);
 
   const updateDetail = (detailType: ItemDetails, val) => {
-    setDetails({
+    const updated: IItem = {
       ...details,
       [detailType]: val
-    });
+    };
+
+    setDetails(updated as any);
   }
 
 
   const onStep = (direction) => {
     let promise = id
-      ? itemsDB.update(id, details)
-      : itemsDB.add(details);
+      ? itemsDB.update(id, details as IItem)
+      : itemsDB.add(details as IItem);
 
     promise.then(res => {
       setLoading(false);
@@ -89,7 +94,6 @@ const EditItem = ({ match }) => {
 
   const onDictate = res => {
     setDictating(false);
-    console.log(res);
 
     if (res && res.result) {
       updateDetail(ItemDetails.NAME, res.result.transcript);
