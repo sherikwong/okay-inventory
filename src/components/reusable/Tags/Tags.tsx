@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 export const renderTags = (tags, onRemove?) => {
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
-      {tags.map((tag, index) => (
+      {tags && tags.map((tag, index) => (
         <Tag key={tag} onRemove={onRemove ? () => onRemove(index) : undefined}>
           {tag}
         </Tag>

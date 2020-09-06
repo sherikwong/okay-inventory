@@ -62,7 +62,7 @@ const List = ({ history }) => {
 
   const onClickRow = ({ datum }) => {
     console.log(datum, history);
-    history.push(`/item/${datum.id}/edit`);
+    history.push(`/item/${datum.id}`);
   };
 
   return (

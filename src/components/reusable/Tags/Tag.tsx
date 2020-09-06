@@ -19,7 +19,7 @@ const renderTag = (children, onRemove?) => (
     gap="small"
     margin="small"
   >
-    <Text size="small" weight="bold">{children}</Text>
+    <Text size="small" weight="bold"># {children}</Text>
     {onRemove && (
       <Box background={{ color: "white", opacity: "strong" }} round="full">
         <FormClose color='brand' style={{ width: "12px", height: "12px" }} />

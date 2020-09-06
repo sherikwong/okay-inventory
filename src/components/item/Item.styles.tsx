@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from 'grommet';
+import { Button, Box } from 'grommet';
 import Unsplash from 'react-unsplash-wrapper';
 
 export const Number = styled.span`
@@ -25,7 +25,7 @@ export const ContrastingButton = styled(Button)`
 padding: 10px;
 border-radius: 10px;
 svg {
-  color: white;
+  stroke: white;
   mix-blend-mode: difference;
 }
 `;
@@ -37,7 +37,7 @@ display: flex;
 align-content: center;
 
 svg {
-  fill: white;
+  stroke: white;
   mix-blend-mode: difference;
     height: 6vh;
     width: 6vh;
@@ -47,8 +47,18 @@ svg {
 
 export const QrCodeWrapper = styled.div`
   height: 50px;
-  width: 50px
+  width: 50px;
+  padding: 4px;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, .7);
 `;
+export const DummyQRCode = styled.div`
+  height: 50px;
+  width: 50px;
+  padding: 4px;
+`;
+
+
 
 export const SizedUnsplash = styled(Unsplash)`
 &, div {
@@ -56,3 +66,7 @@ export const SizedUnsplash = styled(Unsplash)`
   width: 100vh;
   }
 `;
+
+export const BlackOverlay = styled(Box)`
+background-color: rgba(0, 0, 0, .5)
+`

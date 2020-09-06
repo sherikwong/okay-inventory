@@ -144,7 +144,7 @@ const EditItem = ({ match, history }) => {
           ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
           : <Button secondary icon={<Menu />} onClick={$event => history.push('/')} />
         }
-        <Button secondary icon={<Close />} onClick={() => undefined} />
+        <Button secondary icon={<Close />} onClick={() => history.push(id ? `/item/${id}` : '/')} />
       </Box>
 
       <Box pad="large" fill={true} justify="between">

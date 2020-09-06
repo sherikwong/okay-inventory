@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import OverlayLoaderContext from '../../contexts/main-loader';
 import { itemsDB } from '../../database/items';
 import { renderTags } from '../reusable/Tags/Tags';
-import { SizedUnsplash, ContrastingButton, HugeArrowButtons, Header, Number, QrCodeWrapper } from './Item.styles';
+import { SizedUnsplash, ContrastingButton, HugeArrowButtons, Header, Number, QrCodeWrapper, BlackOverlay, DummyQRCode } from './Item.styles';
 import { IItem } from '../../models/items';
 import { useSwipeable, Swipeable } from 'react-swipeable'
 
@@ -39,7 +39,7 @@ const Item = ({ match, history }) => {
 
 
   const onUpdateQty = direction => () => {
-    setNum(direction > 0 ? num + 1 : num - 1);
+    setNum(direction > 0 ? num + 1 : num > 0 ? num - 1 : num);
 
     itemsDB.update(id, {
       ...details as IItem,
@@ -63,34 +63,41 @@ const Item = ({ match, history }) => {
 
                 {details.name && <SizedUnsplash keywords={imageTags} width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />}
 
+                <BlackOverlay fill={true}></BlackOverlay>
+
                 <Box align="center" fill={true} justify="between">
-                  <Box direction="row" justify="between" pad="large" fill="horizontal">
+                  <Box direction="row" justify="between" pad="medium" fill="horizontal">
                     <ContrastingButton secondary icon={<Menu />} />
-                    <HugeArrowButtons secondary size="large" icon={<Up />} onClick={onUpdateQty(1)} />
                     <ContrastingButton secondary icon={<Edit />} onClick={navToEdit} />
                   </Box>
 
 
-                  <Box direction="column" fill={true} align="center">
+                  <Box direction="column" fill={true} align="center" justify="between">
+                    <HugeArrowButtons secondary size="large" icon={<Up />} onClick={onUpdateQty(1)} />
                     {/* <FlipNumbers height={100} width={100} color="red" background="transparent" play perspective={100} numbers={String(num)} /> */}
-                    <Number> {num}</Number>
-                    {/* https://codepen.io/liborgabrhel/pen/JyJzjb */}
+                    <Box>
+                      <Number> {num}</Number>
+                      {/* https://codepen.io/liborgabrhel/pen/JyJzjb */}
 
-                    <Header className="header-wrapper">
-                      {details.name.toUpperCase()}
-                    </Header>
-                    {details.date && details.date.toLocaleDateString && details.date.toLocaleDateString("en-US")}
+                      <Header className="header-wrapper">
+                        {details.name.toUpperCase()}
+                      </Header>
+                      {details.date && details.date.toLocaleDateString && details.date.toLocaleDateString("en-US")}
 
-                    <HugeArrowButtons secondary size="large" icon={<Down />} onClick={onUpdateQty(-1)} />
+
+
+                      {renderTags([...details.tags])}
+                    </Box>
+
+                    <Box direction="row" justify="between" fill="horizontal" pad="medium">
+                      <QrCodeWrapper>
+                        <QrCode bgColor="transparent" value={id} size={50} />
+                      </QrCodeWrapper>
+                      <HugeArrowButtons secondary size="large" icon={<Down />} onClick={onUpdateQty(-1)} />
+                      <DummyQRCode> </DummyQRCode>
+                    </Box>
                   </Box>
 
-                  <Box direction="row">
-                    <QrCodeWrapper>
-                      <QrCode value={id} size={50} />
-                    </QrCodeWrapper>
-
-                    {renderTags([...details.tags])}
-                  </Box>
 
 
 
