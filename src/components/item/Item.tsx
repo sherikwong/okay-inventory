@@ -67,7 +67,7 @@ const Item = ({ match, history }) => {
 
                 <Box align="center" fill={true} justify="between">
                   <Box direction="row" justify="between" pad="medium" fill="horizontal">
-                    <ContrastingButton secondary icon={<Menu />} />
+                    <ContrastingButton secondary icon={<Menu />} onClick={() => history.push('/')} />
                     <ContrastingButton secondary icon={<Edit />} onClick={navToEdit} />
                   </Box>
 
@@ -75,7 +75,7 @@ const Item = ({ match, history }) => {
                   <Box direction="column" fill={true} align="center" justify="between">
                     <HugeArrowButtons secondary size="large" icon={<Up />} onClick={onUpdateQty(1)} />
                     {/* <FlipNumbers height={100} width={100} color="red" background="transparent" play perspective={100} numbers={String(num)} /> */}
-                    <Box>
+                    <Box align="center">
                       <Number> {num}</Number>
                       {/* https://codepen.io/liborgabrhel/pen/JyJzjb */}
 
