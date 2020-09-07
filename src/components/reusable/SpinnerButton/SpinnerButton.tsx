@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import Spinner from '../Spinner';
 import { Next } from 'grommet-icons';
 
-const SpinnerButton = ({ onClick, loading, setLoading }) => {
+const SpinnerButton = ({ onClick, loading, setLoading, icon = Next }) => {
   const innerButton = (<>
     {loading && <Spinner />}
-    {!loading && <Next />}
+    {!loading && React.createElement(icon)}
   </>);
 
   const _onClick = () => {

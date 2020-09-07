@@ -4,15 +4,25 @@ import { Box, TextInput } from "grommet";
 
 import Tag from "./Tag";
 import { useEffect } from 'react';
+import { ITag } from '../../../database/tags';
 
-export const renderTags = (tags, onRemove?) => {
+interface ITagsCollection {
+  [key: string]: ITag;
+}
+
+export const renderTags = (tags: ITagsCollection, onRemove?) => {
+  console.log(tags);
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
-      {tags && tags.map((tag, index) => (
-        <Tag key={tag} onRemove={onRemove ? () => onRemove(index) : undefined}>
-          {tag}
-        </Tag>
-      ))}
+      {tags && Object.entries(tags).map((entry, index) => {
+
+        return (
+
+          <Tag key={entry[0]} onRemove={onRemove ? () => onRemove(index) : undefined}>
+            {/* {ent/ry[1]['name']} */}
+          </Tag>
+        )
+      })}
     </Box>
   );
 };

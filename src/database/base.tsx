@@ -13,7 +13,7 @@ export interface IBaseModel {
 
 export class BaseDB<T> implements IBaseDB<T> {
   protected _db: firebase.database.Reference;
-  protected _items: T[] = [];
+  protected items: T[] = [];
 
   constructor(protected dbName: string) {
     this._db = db.ref().child(dbName);
@@ -21,8 +21,8 @@ export class BaseDB<T> implements IBaseDB<T> {
 
   public getAll(): Promise<T[]> {
     return this._db.once('value', res => {
-      this._items = res.val();
-    }).then(res => this._items);
+      this.items = res.val();
+    }).then(res => this.items);
 
   }
 

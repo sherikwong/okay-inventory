@@ -17,7 +17,7 @@ const Item = ({ match, history }) => {
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
-    tags: new Set(),
+    tags: {},
   });
 
   if (!id) {

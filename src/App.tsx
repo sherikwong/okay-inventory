@@ -11,6 +11,7 @@ import List from './components/List/List';
 import { createBrowserHistory } from 'history';
 import Item from './components/Item/Item';
 import EditItem from './components/Item/EditItem/EditItem';
+import Tags from './components/Item/EditItem/Tags';
 
 const theme = {
   calendar: {
@@ -38,13 +39,14 @@ const App = () => {
               <Router history={history}>
 
 
+                <Route path="/" component={Tags} />
 
 
-                <Route path="/item/:id/edit" component={EditItem} />
+                {/* <Route path="/item/:id/edit" component={EditItem} />
                 <Route path="/item/:id" component={Item} />
                 <Route exact path="/items/new" component={EditItem} />
                 <Route path="/items" component={List} />
-                <Route exact path="/" component={List} />
+                <Route exact path="/" component={List} /> */}
 
               </Router>
               {/* <Box align="end" justify="end">

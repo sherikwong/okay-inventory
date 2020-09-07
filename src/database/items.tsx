@@ -17,12 +17,12 @@ class ItemsDB extends BaseDB<IItem> implements IItemsDB {
       .then(snapshot => {
         const data = snapshot && snapshot.exists() ? snapshot.val() : undefined;
 
-        return data && { ...data, tags: new Set(data.tags) };
+        return data;
       });
   }
 
   public update(id: string, data: IItem): Promise<any> {
-    data.tags = data.tags ? [...data.tags].filter(el => el) : undefined;
+    // data.tags = data.tags ? [...data.tags].filter(el => el) : undefined;
 
     return this._db.update({
       [id]: data

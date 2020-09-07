@@ -26,6 +26,7 @@
     "react-day-picker": "^7.4.8",
     "react-dictate-button": "^1.2.2",
     "react-dom": "^16.13.1",
+    "react-draggable": "^4.4.3",
     "react-flip-numbers": "^3.0.5",
     "react-native-barcode-mask": "^1.2.4",
     "react-number-ticker": "^1.0.4",

@@ -44,15 +44,14 @@ export const ServerStatusContext = createContext({});
 const EditItem = ({ match, history }) => {
   const [id, setId] = useState(match && match.params && match.params.id ? match.params.id : '');
   const [step, setStep] = useState(0);
-  const [tags, settags] = useState([]);
+  const [tags, settags] = useState({});
   const [loading, setLoading] = useState(false);
   const [isDictating, setDictating] = useState(false);
-  const initialTagsSet: Set<string> = new Set();
 
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
-    tags: initialTagsSet
+    tags: {}
   });
 
 
@@ -106,14 +105,14 @@ const EditItem = ({ match, history }) => {
     setDictating(!isDictating);
   }
 
-  const alterTags = direction => tag => {
-    const tags = new Set(details.tags);
-    tags[direction > 0 ? 'add' : 'delete'](tag);
-    setDetails({
-      ...details,
-      tags
-    });
-  };
+  // const alterTags = direction => tag => {
+  //   const tags = new Set(details.tags);
+  //   tags[direction > 0 ? 'add' : 'delete'](tag);
+  //   setDetails({
+  //     ...details,
+  //     tags
+  //   });
+  // };
 
   const onSelectDate = dateString => {
     setDetails({
@@ -126,7 +125,7 @@ const EditItem = ({ match, history }) => {
 
   const stepsTemplates = [
     { name: 'Name', template: <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} /> },
-    { name: 'Tags', template: <Tags value={details.tags} suggestions={tags} onSelect={alterTags(1)} onRemove={alterTags(-1)} /> },
+    // { name: 'Tags', template: <Tags value={details.tags} suggestions={tags} onSelect={alterTags(1)} onRemove={alterTags(-1)} /> },
     {
       name: 'Date', template: <Calendar
         margin={{ top: 'xlarge' }}
@@ -148,7 +147,7 @@ const EditItem = ({ match, history }) => {
       </Box>
 
       <Box pad="large" fill={true} justify="between">
-        {(step === 1 && details.tags) && renderTags([...details.tags], alterTags(-1))}
+        {(step === 1 && details.tags) && renderTags(details.tags, alterTags(-1))}
 
 
         <Box fill={true} justify="center">
