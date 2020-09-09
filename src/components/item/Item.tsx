@@ -3,12 +3,12 @@ import { Down, Edit, Menu, Up } from 'grommet-icons';
 import QrCode from 'qrcode.react';
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Swipeable } from 'react-swipeable';
 import OverlayLoaderContext from '../../contexts/main-loader';
 import { itemsDB } from '../../database/items';
-import { renderTags } from '../reusable/Tags/Tags';
-import { SizedUnsplash, ContrastingButton, HugeArrowButtons, Header, Number, QrCodeWrapper, BlackOverlay, DummyQRCode } from './Item.styles';
 import { IItem } from '../../models/items';
-import { useSwipeable, Swipeable } from 'react-swipeable'
+import { renderTags } from '../reusable/Tags/Tags';
+import { BlackOverlay, ContrastingButton, DummyQRCode, Header, HugeArrowButtons, Number, QrCodeWrapper, SizedUnsplash } from './Item.styles';
 
 
 const Item = ({ match, history }) => {
