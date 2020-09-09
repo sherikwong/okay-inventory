@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "12.16.1"
+  },
   "dependencies": {
     "@types/express": "^4.17.8",
     "@types/jest": "^26.0.13",
@@ -44,7 +47,8 @@
     "start-server": "npx ts-node server/index.ts -w",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "git push heroku master"
   },
   "browserslist": {
     "production": [
