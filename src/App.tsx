@@ -44,8 +44,8 @@ const App = () => {
                 {/* <Route path="/item/:id/edit" component={EditItem} /> */}
                 {/* <Route path="/item/:id" component={Item} /> */}
                 {/* <Route exact path="/items/new" component={EditItem} /> */}
-                {/* {/* <Route path="/items" component={List} /> */}
-                <Route exact path="/" component={List} /> */}
+
+                <Route exact path="/" component={List} />
 
               </Router>
               {/* <Box align="end" justify="end">
