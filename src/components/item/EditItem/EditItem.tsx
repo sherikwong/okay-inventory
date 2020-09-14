@@ -34,7 +34,7 @@ const StepHeading = styled(Heading)`
 
 enum ItemDetails {
   NAME = 'name',
-  TAG = 'tag',
+  TAG = 'tags',
   DATE = 'date'
 }
 
@@ -52,7 +52,7 @@ const EditItem = ({ match, history }) => {
   const [details, setDetails] = useState({
     name: '',
     date: new Date(),
-    tags: {}
+    tags: new Set([] as any)
   });
 
 
@@ -104,13 +104,17 @@ const EditItem = ({ match, history }) => {
     setDictating(!isDictating);
   }
 
-  const alterTags = direction => tag => {
-    // const tags = new Set(details.tags);
-    // tags[direction > 0 ? 'add' : 'delete'](tag);
-    // setDetails({
-    //   ...details,
-    //   tags
-    // });
+  const alterTags = (tag, direction)  => {
+    const tags = new Set([...details.tags]);
+
+    tags[direction > 0 ? 'add' : 'delete'](tag.value);
+
+    setDetails({
+      ...details,
+      tags
+    });
+
+    console.log(tags);
   };
 
   const onSelectDate = dateString => {
@@ -125,10 +129,18 @@ const EditItem = ({ match, history }) => {
   const stepsTemplates = [
     { name: 'Name', template: <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} /> },
     {
-      name: 'Tags', template: <TextInput value={search} suggestions={Object.entries(tags).map(([key, value]) => ({
-        label: value.name,
-        value: key
-      }))} />
+      name: 'Tags', template:
+        <TextInput
+          value={search}
+          suggestions={Object.entries(tags).map(([key, value]) => ({
+            label: value.name,
+            value: key
+          }))}
+          onSelect={$event => {
+            console.log($event.suggestion);
+            alterTags($event.suggestion, 1);
+          }}
+        />
     },
     {
       name: 'Date', template: <Calendar
