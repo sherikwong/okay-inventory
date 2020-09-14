@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../", "build", "index.html"));
 });
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(express.static(path.join(__dirname, "..", "build")));
 
 const port = process.env.PORT || 5000;
