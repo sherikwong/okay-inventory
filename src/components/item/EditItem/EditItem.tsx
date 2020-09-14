@@ -147,7 +147,7 @@ const EditItem = ({ match, history }) => {
       </Box>
 
       <Box pad="large" fill={true} justify="between">
-        {(step === 1 && details.tags) && renderTags(details.tags, alterTags(-1))}
+        {/* {(step === 1 && details.tags) && renderTags(details.tags)} */}
 
 
         <Box fill={true} justify="center">

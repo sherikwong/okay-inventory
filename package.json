@@ -47,10 +47,11 @@
   },
   "scripts": {
     "build": "react-scripts build",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "git push heroku master",
-    "start": "npm run build && ts-node-dev ./server/index.tsx"
+    "start-server": "npm run build && ts-node-dev ./server/index.tsx"
   },
   "browserslist": {
     "production": [

@@ -10,6 +10,7 @@ import Modal from './components/modal/Modal';
 // import List from './components/List/List';
 import { createBrowserHistory } from 'history';
 import List from './components/List';
+import Tags from './components/Item/EditItem/Tags';
 // import Item from './components/Item/Item';
 // import EditItem from './components/Item/EditItem/EditItem';
 

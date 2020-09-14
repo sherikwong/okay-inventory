@@ -47,7 +47,7 @@ const Item = ({ match, history }) => {
     history.push(`/item/${id}/edit`);
   }
 
-  const imageTags = [...details.name.split(' '), ...details.tags].join(',');
+  // const imageTags = [...details.name.split(' '), ...details.tags].join(',');
   return (
     <OverlayLoaderContext.Consumer>
       {
@@ -56,7 +56,7 @@ const Item = ({ match, history }) => {
             <Swipeable onSwipedUp={onUpdateQty(1)} onSwipedDown={onUpdateQty(-1)} onSwipedRight={navToEdit}>
               <Stack fill={true} className="item-stack" id="item">
 
-                {details.name && <SizedUnsplash keywords={imageTags} width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />}
+                {/* {details.name && <SizedUnsplash keywords={imageTags} width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />} */}
 
                 <BlackOverlay fill={true}></BlackOverlay>
 
@@ -81,7 +81,7 @@ const Item = ({ match, history }) => {
 
 
 
-                      {renderTags([...details.tags])}
+                      {/* {renderTags([...details.tags])} */}
                     </Box>
 
                     <Box direction="row" justify="between" fill="horizontal" pad="medium">
