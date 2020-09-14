@@ -18,17 +18,7 @@ const FilledSwipable = styled(Swipeable)`
 
 const List = ({ history }) => {
   const [items, setItems] = useState([] as IItem[]);
-
-
-  useEffect(() => {
-    itemsDB.getAll()
-      .then(items => setItems(
-        Object.entries(items).map(([id, item]) => ({ ...item, id }))
-      )).catch(error => console.error(error));
-
-  }, [])
-
-  const columns = [
+  let columns = [
     {
       property: 'name',
       primary: true,
@@ -50,13 +40,22 @@ const List = ({ history }) => {
         <Text>#</Text>
       ),
     }
-  ];
+  ];;
+
+
+  useEffect(() => {
+    itemsDB.getAll()
+      .then(items => setItems(
+        Object.entries(items).map(([id, item]) => ({ ...item, id }))
+      )).catch(error => console.error(error));
+
+
+
+  }, [])
 
   const createNew = () => {
     history.push('/items/new')
   }
-
-
 
 
   const onClickRow = ({ datum }) => {

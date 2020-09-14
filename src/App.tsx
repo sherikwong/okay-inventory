@@ -11,6 +11,8 @@ import Modal from './components/modal/Modal';
 import { createBrowserHistory } from 'history';
 import List from './components/List';
 import Tags from './components/Item/EditItem/Tags';
+import EditItem from './components/Item/EditItem/EditItem';
+import Item from './components/Item/Item';
 // import Item from './components/Item/Item';
 // import EditItem from './components/Item/EditItem/EditItem';
 
@@ -40,12 +42,11 @@ const App = () => {
               <Router history={history}>
 
 
-                <Route path="/" component={Tags} />
+                {/* <Route path="/" component={Tags} /> */}
 
-
-                {/* <Route path="/item/:id/edit" component={EditItem} /> */}
-                {/* <Route path="/item/:id" component={Item} /> */}
-                {/* <Route exact path="/items/new" component={EditItem} /> */}
+                <Route path="/item/:id/edit" component={EditItem} />
+                <Route path="/item/:id" component={Item} />
+                <Route exact path="/items/new" component={EditItem} />
 
                 <Route exact path="/" component={List} />
 

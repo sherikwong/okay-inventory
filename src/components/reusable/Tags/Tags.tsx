@@ -15,11 +15,10 @@ export const renderTags = (tags: ITagsCollection, onRemove?) => {
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
       {tags && Object.entries(tags).map((entry, index) => {
-
         return (
 
           <Tag key={entry[0]} onRemove={onRemove ? () => onRemove(index) : undefined}>
-            {/* {ent/ry[1]['name']} */}
+            {entry[1].name}
           </Tag>
         )
       })}
@@ -27,14 +26,15 @@ export const renderTags = (tags: ITagsCollection, onRemove?) => {
   );
 };
 
-const Tags = ({ suggestions, value, onRemove, onSelect, }) => {
+const TagsInput = ({ suggestions, value, onRemove, onSelect, }) => {
   const [values, setValues] = useState([...value]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     setValues([...value]);
-  }, [value])
 
+
+  }, [value, suggestions])
   return (
 
     <TextInput
@@ -47,12 +47,9 @@ const Tags = ({ suggestions, value, onRemove, onSelect, }) => {
         onSelect(suggestion);
       }
       }
-      suggestions={suggestions.filter(
-        suggestion =>
-          suggestion.toLowerCase().indexOf(search.toLowerCase()) >= 0
-      )}
+      suggestions={suggestions}
     />
   );
 }
 
-export default Tags;
+export default TagsInput;

@@ -7,9 +7,9 @@ import { withRouter } from 'react-router';
 import styled from 'styled-components';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
-import Tags, { renderTags } from '../../reusable/Tags/Tags';
+import TagsInput, { renderTags } from '../../reusable/Tags/Tags';
 import { IItem } from '../../../models/items';
-import { tagsDB } from '../../../database/tags';
+import { tagsDB, ITag } from '../../../database/tags';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
@@ -44,9 +44,10 @@ export const ServerStatusContext = createContext({});
 const EditItem = ({ match, history }) => {
   const [id, setId] = useState(match && match.params && match.params.id ? match.params.id : '');
   const [step, setStep] = useState(0);
-  const [tags, settags] = useState({});
+  const [tags, setTags] = useState([] as { [id: string]: ITag }[]);
   const [loading, setLoading] = useState(false);
   const [isDictating, setDictating] = useState(false);
+  const [search, setSearch] = useState('');
 
   const [details, setDetails] = useState({
     name: '',
@@ -63,10 +64,8 @@ const EditItem = ({ match, history }) => {
     }
 
     tagsDB.getAll().then(res => {
-      // const unordered = res.val();
-      // const ordered = unordered.sort();
-
-      // settags(ordered);
+      setTags(res as any);
+      console.log(res);
     });
   }, []);
 
@@ -105,14 +104,14 @@ const EditItem = ({ match, history }) => {
     setDictating(!isDictating);
   }
 
-  // const alterTags = direction => tag => {
-  //   const tags = new Set(details.tags);
-  //   tags[direction > 0 ? 'add' : 'delete'](tag);
-  //   setDetails({
-  //     ...details,
-  //     tags
-  //   });
-  // };
+  const alterTags = direction => tag => {
+    // const tags = new Set(details.tags);
+    // tags[direction > 0 ? 'add' : 'delete'](tag);
+    // setDetails({
+    //   ...details,
+    //   tags
+    // });
+  };
 
   const onSelectDate = dateString => {
     setDetails({
@@ -125,7 +124,12 @@ const EditItem = ({ match, history }) => {
 
   const stepsTemplates = [
     { name: 'Name', template: <TextInput value={details.name} onChange={$event => updateDetail(ItemDetails.NAME, $event.target.value)} /> },
-    // { name: 'Tags', template: <Tags value={details.tags} suggestions={tags} onSelect={alterTags(1)} onRemove={alterTags(-1)} /> },
+    {
+      name: 'Tags', template: <TextInput value={search} suggestions={Object.entries(tags).map(([key, value]) => ({
+        label: value.name,
+        value: key
+      }))} />
+    },
     {
       name: 'Date', template: <Calendar
         margin={{ top: 'xlarge' }}
