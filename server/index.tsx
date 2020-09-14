@@ -11,8 +11,10 @@ app.get("/", (req, res) => {
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "..", "build")));
 
+const port = process.env.PORT || 5000;
+
 // start express server on port 5000
-app.listen(process.env.PORT || 5000, () => {
+app.listen(port, () => {
   console.log("server started on port 5000");
 });
 
