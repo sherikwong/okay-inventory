@@ -10,6 +10,7 @@ import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import TagsInput, { renderTags } from '../../reusable/Tags/Tags';
 import { tagsDB, ITag } from '../../../database/tags';
 import { IItem } from '../../../models/items';
+import { ITagsCollection } from '../../reusable/Tags/Tags';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
@@ -59,7 +60,7 @@ const EditItem = ({ match, history }) => {
   useEffect(() => {
     if (id) {
       itemsDB.get(id).then(res => {
-        setDetails({ ...res, tags: new Set(Object.keys(res.tags)) });
+        setDetails({ ...res, tags: new Set(res.tags) });
       });
     }
 
@@ -77,23 +78,20 @@ const EditItem = ({ match, history }) => {
     setDetails(updated as any);
   }
 
-
   const onStep = (direction) => {
-    console.log(details.tags);
-    // const tagsObjObj = [...details.tags].map((id: string) => ({ [id]: tags[id] })) as ITag[];
+    let updatedDetails = { ...details, tags: [...details.tags].filter(id => tags[id as string]) } as IItem;
 
-    // const alteredDetails = { ...details, tagsObjObj };
+    console.log(updatedDetails);
+    let promise = id
+      ? itemsDB.update(id, updatedDetails)
+      : itemsDB.add(updatedDetails);
 
-    // let promise = id
-    //   ? itemsDB.update(id, alteredDetails)
-    //   : itemsDB.add(alteredDetails);
-
-    // promise.then(res => {
-    //   setLoading(false);
-    //   direction && setStep(direction > 0 ? step + 1 : step - 1);
-    // }).catch(error => {
-    //   setLoading(false);
-    // });
+    promise.then(res => {
+      setLoading(false);
+      direction && setStep(direction > 0 ? step + 1 : step - 1);
+    }).catch(error => {
+      setLoading(false);
+    });
   };
 
   const onDictate = res => {
@@ -117,8 +115,6 @@ const EditItem = ({ match, history }) => {
       ...details,
       tags
     });
-
-    console.log(tags);
   };
 
   const onSelectDate = dateString => {
@@ -156,6 +152,15 @@ const EditItem = ({ match, history }) => {
     }
   ];
 
+  // const renderedTags = (): ITagsCollection => {
+  //   return [...details.tags].reduce((id, obj) => {
+  //     (obj as ITagsCollection)[id as string] = tags[id as string];
+  //     return obj;
+  //   }, {} as ITagsCollection) as ITagsCollection;
+  // }
+  const cb = id => tags[id as string];
+  console.log('Edit items', [...details.tags].filter(cb).map(cb));
+
   return (
     <Box direction="column" fill={true} id="edit-item">
       <Box direction="row" justify="between" pad="medium">
@@ -167,7 +172,7 @@ const EditItem = ({ match, history }) => {
       </Box>
 
       <Box pad="large" fill={true} justify="between">
-        {/* {(step === 1 && details.tags) && renderTags(details.tags)} */}
+        {/* {(step === 1 && details.tags) && renderTags(getMatchingTags())} */}
 
 
         <Box fill={true} justify="center">

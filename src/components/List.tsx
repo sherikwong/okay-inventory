@@ -18,7 +18,12 @@ const FilledSwipable = styled(Swipeable)`
 
 const List = ({ history }) => {
   const [items, setItems] = useState([] as IItem[]);
+
+  // let columns;
+
+  // useEffect(() => {
   let columns = [
+    // columns = [
     {
       property: 'name',
       primary: true,
@@ -40,7 +45,8 @@ const List = ({ history }) => {
         <Text>#</Text>
       ),
     }
-  ];;
+  ];
+  // }, [items])
 
 
   useEffect(() => {

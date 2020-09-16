@@ -6,22 +6,22 @@ import Tag from "./Tag";
 import { useEffect } from 'react';
 import { ITag } from '../../../database/tags';
 
-interface ITagsCollection {
+export interface ITagsCollection {
   [key: string]: ITag;
 }
 
-export const renderTags = (tags: ITagsCollection, onRemove?) => {
-  console.log(tags);
+export const renderTags = (tags: any, onRemove?) => {
+  // console.log('Rendered', tags);
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
-      {tags && Object.entries(tags).map((entry, index) => {
+      {/* {tags && Object.entries(tags).map((entry, index) => {
         return (
 
           <Tag key={entry[0]} onRemove={onRemove ? () => onRemove(index) : undefined}>
             {entry[1].name}
           </Tag>
         )
-      })}
+      })} */}
     </Box>
   );
 };

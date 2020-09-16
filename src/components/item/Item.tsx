@@ -27,8 +27,10 @@ const Item = ({ match, history }) => {
   useEffect(() => {
     if (id) {
       itemsDB.get(id).then(res => {
-        setDetails({ ...details, ...res });
+        setDetails({ ...res });
         setNum(res.quantity ? res.quantity : 0);
+
+        console.log(res);
       });
     }
   }, []);
@@ -48,6 +50,8 @@ const Item = ({ match, history }) => {
   }
 
   // const imageTags = [...details.name.split(' '), ...details.tags].join(',');
+  const imageTags = [...details.name.split(' ')].join(',');
+
   return (
     <OverlayLoaderContext.Consumer>
       {
@@ -56,7 +60,7 @@ const Item = ({ match, history }) => {
             <Swipeable onSwipedUp={onUpdateQty(1)} onSwipedDown={onUpdateQty(-1)} onSwipedRight={navToEdit}>
               <Stack fill={true} className="item-stack" id="item">
 
-                {/* {details.name && <SizedUnsplash keywords={imageTags} width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />} */}
+                {details.name && <SizedUnsplash keywords={imageTags} width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />}
 
                 <BlackOverlay fill={true}></BlackOverlay>
 
