@@ -48,7 +48,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "git push heroku master",
-    "start": "npm run build && ts-node-dev ./server/index.tsx"
+    "start": "npm rebuild node-sass && npm run start && ts-node-dev ./server/index.tsx"
   },
   "browserslist": {
     "production": [
