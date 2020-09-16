@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(express.static(path.join(__dirname, "..", "build")));
 
 app.listen(port, () => {
-  console.log("server started on port 3000");
+  console.log("server started on port 3000, hello");
 });
 
 app.get("/", (req, res) => {
