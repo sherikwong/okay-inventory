@@ -10,7 +10,7 @@ app.set('port', port);
 app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(express.static(path.join(__dirname, "..", "build")));
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log("server started on port 3000, hello");
 });
 
