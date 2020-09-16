@@ -1,19 +1,22 @@
-
 // @ts-ignore
 const express = require('express');
 const app = express(); // create express app
 const path = require("path");
 
+const port = process.env.PORT || 3000;
+app.set('port', port);
+
+app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, "..", "build")));
+
+app.listen(port, () => {
+  console.log("server started on port 3000, hello");
+});
+
 app.get("/", (req, res) => {
+  // res.send('Hello');
   res.sendFile(path.join(__dirname, "../", "build", "index.html"));
 });
 
-app.use(express.static("public"));
-app.use(express.static(path.join(__dirname, "..", "build")));
-
-// start express server on port 5000
-app.listen(process.env.PORT || 5000, () => {
-  console.log("server started on port 5000");
-});
 
 module.exports = {};
