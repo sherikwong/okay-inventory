@@ -8,8 +8,8 @@ import styled from 'styled-components';
 import { itemsDB } from '../../../database/items';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import TagsInput, { renderTags } from '../../reusable/Tags/Tags';
-import { IItem } from '../../../models/items';
 import { tagsDB, ITag } from '../../../database/tags';
+import { IItem } from '../../../models/items';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
@@ -59,18 +59,17 @@ const EditItem = ({ match, history }) => {
   useEffect(() => {
     if (id) {
       itemsDB.get(id).then(res => {
-        setDetails({ ...details, ...res });
+        setDetails({ ...res, tags: new Set(Object.keys(res.tags)) });
       });
     }
 
     tagsDB.getAll().then(res => {
       setTags(res as any);
-      console.log(res);
     });
   }, []);
 
   const updateDetail = (detailType: ItemDetails, val) => {
-    const updated: IItem = {
+    const updated = {
       ...details,
       [detailType]: val
     };
@@ -80,16 +79,21 @@ const EditItem = ({ match, history }) => {
 
 
   const onStep = (direction) => {
-    let promise = id
-      ? itemsDB.update(id, details as IItem)
-      : itemsDB.add(details as IItem);
+    console.log(details.tags);
+    // const tagsObjObj = [...details.tags].map((id: string) => ({ [id]: tags[id] })) as ITag[];
 
-    promise.then(res => {
-      setLoading(false);
-      direction && setStep(direction > 0 ? step + 1 : step - 1);
-    }).catch(error => {
-      setLoading(false);
-    });
+    // const alteredDetails = { ...details, tagsObjObj };
+
+    // let promise = id
+    //   ? itemsDB.update(id, alteredDetails)
+    //   : itemsDB.add(alteredDetails);
+
+    // promise.then(res => {
+    //   setLoading(false);
+    //   direction && setStep(direction > 0 ? step + 1 : step - 1);
+    // }).catch(error => {
+    //   setLoading(false);
+    // });
   };
 
   const onDictate = res => {
@@ -104,7 +108,7 @@ const EditItem = ({ match, history }) => {
     setDictating(!isDictating);
   }
 
-  const alterTags = (tag, direction)  => {
+  const alterTags = (tag, direction) => {
     const tags = new Set([...details.tags]);
 
     tags[direction > 0 ? 'add' : 'delete'](tag.value);

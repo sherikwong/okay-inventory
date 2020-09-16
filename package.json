@@ -21,6 +21,7 @@
     "grommet-icons": "^4.4.0",
     "heroku": "^7.42.13",
     "node-sass": "^4.14.1",
+    "npm-watch": "^0.7.0",
     "npx": "^10.2.2",
     "polished": "^3.6.6",
     "qrcode.react": "^1.0.0",
@@ -50,7 +51,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "git push heroku master",
-    "start": "ts-node-dev ./server/index.tsx"
+    "start": "ts-node-dev ./server/index.tsx",
+    "watch": "npm-watch"
   },
   "browserslist": {
     "production": [
@@ -63,5 +65,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "watch": {
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "tsx, scss"
+    }
   }
 }

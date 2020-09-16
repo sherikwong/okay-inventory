@@ -33,35 +33,36 @@ const App = () => {
   const [showModal, toggleModal] = useState(false);
 
   return (
-    <Grommet theme={theme}>
-      <ModalContext.Provider value={{ showModal, toggleModal }}>
+    <span>Hello</span>
+    // <Grommet theme={theme}>
+    //   <ModalContext.Provider value={{ showModal, toggleModal }}>
 
-        <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
-          <OverlayLoader show={loadOverlay}>
-            <Stack fill={true} className="overflow-container" id="initial-stack">
-              <Router history={history}>
+    //     <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
+    //       <OverlayLoader show={loadOverlay}>
+    //         <Stack fill={true} className="overflow-container" id="initial-stack">
+    //           <Router history={history}>
 
 
-                {/* <Route path="/" component={Tags} /> */}
+    //             {/* <Route path="/" component={Tags} /> */}
 
-                <Route path="/item/:id/edit" component={EditItem} />
-                <Route path="/item/:id" component={Item} />
-                <Route exact path="/items/new" component={EditItem} />
+    //             <Route path="/item/:id/edit" component={EditItem} />
+    //             <Route path="/item/:id" component={Item} />
+    //             <Route exact path="/items/new" component={EditItem} />
 
-                <Route exact path="/" component={List} />
+    //             <Route exact path="/" component={List} />
 
-              </Router>
-              {/* <Box align="end" justify="end">
-            <NavButtons />
-          </Box> */}
-            </Stack>
-          </OverlayLoader>
-        </OverlayLoaderContext.Provider>
+    //           </Router>
+    //           {/* <Box align="end" justify="end">
+    //         <NavButtons />
+    //       </Box> */}
+    //         </Stack>
+    //       </OverlayLoader>
+    //     </OverlayLoaderContext.Provider>
 
-        <Modal showModal={showModal} toggleModal={toggleModal} />
+    //     <Modal showModal={showModal} toggleModal={toggleModal} />
 
-      </ModalContext.Provider>
-    </Grommet>
+    //   </ModalContext.Provider>
+    // </Grommet>
   );
 };
 

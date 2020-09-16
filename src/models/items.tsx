@@ -4,6 +4,6 @@ export interface IItem extends IBaseModel {
   id?: string;
   name?: string;
   quantity?: number;
-  tags?: { [key: string]: ITag };
+  tags?: { [key: string]: ITag }[];
   date?: Date;
 }
