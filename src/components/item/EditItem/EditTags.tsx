@@ -6,31 +6,34 @@ import { TextInput, Box, Button, Keyboard } from 'grommet';
 import styled from 'styled-components';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import { Add } from 'grommet-icons'; import Tags from "../../reusable/Tags/Tags";
+import { itemsDB } from '../../../database/items';
+import { IItem } from '../../../models/items';
 
 const WhiteBgTextInput = styled(TextInput)`
 background-color: rgba(255, 255, 255, .5);
 `;
 
 const EditTags = props => {
-  const details = props.details;
+  const { match, incomingTags } = props;
+  const id = match.params.id;
+  const [tags, setTags] = useState(new Set(incomingTags as string[]));
   const [isDictating, setDictating] = useState(false);
   const [search, setSearch] = useState('');
-  const [tags, setTags] = useState(new Map([]));
+  const [allTags, setAllTags] = useState(new Map([]));
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     tagsDB.getAll().then(res => {
-      console.log(res);
       const newMap = new Map([]);
 
-      Object.entries(([id, details]) => {
+      Object.entries(res).forEach(([id, details]) => {
         newMap.set(id, details);
       });
 
-      setTags(newMap);
-      console.log(tags);
+      setAllTags(newMap);
     });
   }, []);
+
 
   const onType = ({ target: { value: searchValue } }) => {
     setSearch(searchValue);
@@ -40,7 +43,13 @@ const EditTags = props => {
     tagsDB.add({
       name: search
     }).then((newTag: ITag) => {
-      tags.set(newTag.id, newTag);
+      tags.add(newTag.id);
+      allTags.set(newTag.id, newTag);
+      itemsDB.update(id, {
+        id,
+        tags: [...tags] as string[]
+      })
+
     });
   }
 
@@ -52,7 +61,7 @@ const EditTags = props => {
       <Keyboard onEnter={onCustomTag}>
         <WhiteBgTextInput
           value={search}
-          suggestions={Object.entries(tags).map(([key, value]) => ({
+          suggestions={Object.entries(allTags).map(([key, value]) => ({
             label: value.name,
             value: key
           }))}

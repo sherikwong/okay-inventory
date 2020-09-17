@@ -45,7 +45,11 @@ export class BaseDB<T> implements IBaseDB<T> {
       });
   }
 
-  public update(id: string, data: T): Promise<any> {
+  public update(id: string, data: Partial<T>): Promise<any> {
+    this.get(id).then(base => {
+      console.log(base);
+    });
+
     return this._db.update({
       [id]: data
     });

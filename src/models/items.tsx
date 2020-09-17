@@ -3,6 +3,6 @@ import { ITag } from '../database/tags';
 export interface IItem extends IBaseModel {
   name?: string;
   quantity?: number;
-  tags?: { [key: string]: ITag }[];
+  tags?: string[];
   date?: Date;
 }
