@@ -1,6 +1,6 @@
 import { withRouter } from "react-router-dom";
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ITag, tagsDB } from "../../../database/tags";
 import { TextInput, Box, Button, Keyboard } from 'grommet';
 import styled from 'styled-components';
@@ -15,8 +15,22 @@ const EditTags = props => {
   const details = props.details;
   const [isDictating, setDictating] = useState(false);
   const [search, setSearch] = useState('');
-  const [tags, setTags] = useState(new Set([] as string[]));
+  const [tags, setTags] = useState(new Map([]));
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    tagsDB.getAll().then(res => {
+      console.log(res);
+      const newMap = new Map([]);
+
+      Object.entries(([id, details]) => {
+        newMap.set(id, details);
+      });
+
+      setTags(newMap);
+      console.log(tags);
+    });
+  }, []);
 
   const onType = ({ target: { value: searchValue } }) => {
     setSearch(searchValue);
@@ -26,9 +40,7 @@ const EditTags = props => {
     tagsDB.add({
       name: search
     }).then((newTag: ITag) => {
-      tags.add(newTag.id);
-
-
+      tags.set(newTag.id, newTag);
     });
   }
 

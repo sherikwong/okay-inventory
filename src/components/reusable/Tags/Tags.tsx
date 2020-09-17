@@ -4,8 +4,7 @@ import { Box, TextInput } from "grommet";
 
 import Tag from "./Tag";
 import { useEffect } from 'react';
-import { ITag } from '../../../database/tags';
-import { tagsDB } from "../../../database/tags 2";
+import { ITag, tagsDB } from '../../../database/tags';
 
 
 const Tags = props => {

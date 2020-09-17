@@ -8,7 +8,7 @@ import Name from './EditItem/Name';
 import { BlackOverlay, ContrastingButton, SizedUnsplash } from './Item.styles';
 import Item from './Item';
 import './index.scss'
-import EditTags from './EditItem/Tags';
+import EditTags from './EditItem/EditTags';
 
 
 const history = createBrowserHistory();
