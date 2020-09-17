@@ -11,9 +11,9 @@ import Modal from './components/modal/Modal';
 import { createBrowserHistory } from 'history';
 import List from './components/List';
 import EditItem from './components/Item/EditItem/EditItem';
-import Item from './components/Item/Item';
-// import Item from './components/Item/Item';
+// import Item from './components/Item';
 // import EditItem from './components/Item/EditItem/EditItem';
+import ItemRouter from './components/Item';
 
 const theme = {
   calendar: {
@@ -43,11 +43,11 @@ const App = () => {
 
                 {/* <Route path="/" component={Tags} /> */}
 
-                <Route path="/item/:id/edit" component={EditItem} />
-                <Route path="/item/:id" component={Item} />
-                <Route exact path="/items/new" component={EditItem} />
+                {/* <Route path="/item/:id/edit" component={EditItem} /> */}
+                <Route path="/item/:id" component={ItemRouter} />
+                {/* <Route exact path="/items/new" component={EditItem} /> */}
 
-                <Route exact path="/" component={List} />
+                {/* <Route exact path="/" component={List} /> */}
 
               </Router>
               {/* <Box align="end" justify="end">

@@ -11,6 +11,10 @@ import TagsInput, { renderTags } from '../../reusable/Tags/Tags';
 import { tagsDB, ITag } from '../../../database/tags';
 import { IItem } from '../../../models/items';
 import { ITagsCollection } from '../../reusable/Tags/Tags';
+import Name from './Name';
+import { createBrowserHistory } from 'history';
+
+import { Route, Router } from 'react-router-dom';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
@@ -42,8 +46,12 @@ enum ItemDetails {
 
 export const ServerStatusContext = createContext({});
 
+const history = createBrowserHistory();
+
+
 const EditItem = ({ match, history }) => {
-  const [id, setId] = useState(match && match.params && match.params.id ? match.params.id : '');
+  // const [id, setId] = useState(match && match.params && match.params.id ? match.params.id : '');
+  const [id, setId] = useState('-MGX455mxS2A8lopyc0q');
   const [step, setStep] = useState(0);
   const [tags, setTags] = useState([] as { [id: string]: ITag }[]);
   const [loading, setLoading] = useState(false);
@@ -161,43 +169,60 @@ const EditItem = ({ match, history }) => {
   const cb = id => tags[id as string];
   console.log('Edit items', [...details.tags].filter(cb).map(cb));
 
+  // return (
+  //   <Box direction="column" fill={true} id="edit-item">
+  //     <Box direction="row" justify="between" pad="medium">
+  //       {step > 0
+  //         ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
+  //         : <Button secondary icon={<Menu />} onClick={$event => history.push('/')} />
+  //       }
+  //       <Button secondary icon={<Close />} onClick={() => history.push(id ? `/item/${id}` : '/')} />
+  //     </Box>
+
+  //     <Box pad="large" fill={true} justify="between">
+  //       {/* {(step === 1 && details.tags) && renderTags(getMatchingTags())} */}
+
+
+  //       <Box fill={true} justify="center">
+  //         <Box pad={{ bottom: '25vh' }}>
+
+  //           <StepHeading>{stepsTemplates[step].name}</StepHeading>
+
+  //           <Box direction="row" align="center">
+  //             {stepsTemplates[step].template}
+
+  //             {step !== 2 && <Box pad={{ left: 'medium' }}>
+  //               <SpinnerButton onClick={() => onStep(1)} loading={loading} setLoading={setLoading} />
+  //             </Box>}
+  //           </Box>
+  //         </Box>
+  //       </Box>
+
+  //       <Box direction="row" justify="center" align="end">
+  //         <DictationButtonWrapper id="dictation-button" onDictate={onDictate} onClick={onDictationToggle} className={isDictating ? 'active' : ''}>
+  //           <Microphone />
+  //         </DictationButtonWrapper>
+  //       </Box>
+  //     </Box>
+  //   </Box>
+  // );
+
   return (
     <Box direction="column" fill={true} id="edit-item">
       <Box direction="row" justify="between" pad="medium">
-        {step > 0
-          ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} />
-          : <Button secondary icon={<Menu />} onClick={$event => history.push('/')} />
-        }
+        {/* //       {step > 0
+          ? <Button secondary icon={<Previous />} onClick={() => onStep(-1)} /> */}
+        <Button secondary icon={<Menu />} onClick={$event => history.push('/')} />
+        {/* } */}
         <Button secondary icon={<Close />} onClick={() => history.push(id ? `/item/${id}` : '/')} />
       </Box>
 
-      <Box pad="large" fill={true} justify="between">
-        {/* {(step === 1 && details.tags) && renderTags(getMatchingTags())} */}
+      <Router history={history}>
+        <Route component={Name} />
 
-
-        <Box fill={true} justify="center">
-          <Box pad={{ bottom: '25vh' }}>
-
-            <StepHeading>{stepsTemplates[step].name}</StepHeading>
-
-            <Box direction="row" align="center">
-              {stepsTemplates[step].template}
-
-              {step !== 2 && <Box pad={{ left: 'medium' }}>
-                <SpinnerButton onClick={() => onStep(1)} loading={loading} setLoading={setLoading} />
-              </Box>}
-            </Box>
-          </Box>
-        </Box>
-
-        <Box direction="row" justify="center" align="end">
-          <DictationButtonWrapper id="dictation-button" onDictate={onDictate} onClick={onDictationToggle} className={isDictating ? 'active' : ''}>
-            <Microphone />
-          </DictationButtonWrapper>
-        </Box>
-      </Box>
+      </Router>
     </Box>
-  );
+  )
 }
 
 export default withRouter(EditItem);
