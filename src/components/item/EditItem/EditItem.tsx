@@ -18,20 +18,7 @@ import { Route, Router } from 'react-router-dom';
 
 // const CalendarWithTopMargin = styled(Calendar)
 
-const DictationButtonWrapper = styled(DictateButton)`
-  background-color: transparent;
-  border-color: transparent;
-  margin: 10px;
-  svg, button {
-    transition: .2s;
-    height: 10vh;
-    width: 10vh;
-  }
 
-  &.active svg {
-    stroke: #00C781;
-  }
-`;
 
 const StepHeading = styled(Heading)`
   margin: 10px 0;
