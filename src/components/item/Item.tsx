@@ -5,7 +5,6 @@ import { Down, Up } from 'grommet-icons';
 import { QrCode } from 'qrcode.react';
 import { withRouter } from 'react-router-dom';
 import { Number } from './Item.styles';
-import { renderTags } from '../reusable/Tags/Tags';
 
 const Item = (props) => {
   const details = props.details;

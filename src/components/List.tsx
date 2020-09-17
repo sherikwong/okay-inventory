@@ -3,7 +3,6 @@ import { itemsDB } from '../database/items';
 import { IItem } from '../models/items';
 import { DataTable, Text, Box, Button } from 'grommet';
 import { useEffect } from 'react';
-import { renderTags } from './reusable/Tags/Tags';
 import { Add } from 'grommet-icons';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
@@ -37,7 +36,7 @@ const List = ({ history }) => {
       header: (
         <Text>Tags</Text>
       ),
-      render: entry => renderTags(entry.tags)
+      render: entry => undefined
     },
     {
       property: 'quantity',

@@ -2,6 +2,11 @@ import { Button } from 'grommet';
 import React, { useState, useEffect } from 'react';
 import Spinner from '../Spinner';
 import { Next } from 'grommet-icons';
+import styled from 'styled-components';
+
+const VerticallyAlignedButton = styled(Button)`
+display: flex;
+`;
 
 const SpinnerButton = ({ onClick, loading, setLoading, icon = Next }) => {
   const innerButton = (<>
@@ -15,7 +20,7 @@ const SpinnerButton = ({ onClick, loading, setLoading, icon = Next }) => {
   }
 
   return (
-    <Button secondary onClick={_onClick} children={innerButton} />
+    <VerticallyAlignedButton secondary onClick={_onClick} children={innerButton} />
   );
 };
 

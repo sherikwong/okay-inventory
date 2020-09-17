@@ -9,6 +9,7 @@ export interface IBaseDB<T> {
 export interface IBaseModel {
   dateCreated?: Date;
   dateModified?: Date;
+  id: string;
 }
 
 export class BaseDB<T> implements IBaseDB<T> {
@@ -25,20 +26,23 @@ export class BaseDB<T> implements IBaseDB<T> {
     }).then(res => this.items);
 
   }
-
+  g
   public get(id: string): Promise<any> {
     return db.ref().child(this.dbName + '/' + id).once('value')
       .then(snapshot => snapshot && snapshot.exists() ? snapshot.val() : undefined);
   }
 
-  public add(data: T): Promise<any> {
+  public add(data: Partial<T>): Promise<any> {
     const newEntry = this._db.push();
 
     // TODO: SK: Revisit bracket notation;
+    data['id'] = newEntry.key;
     data['dateCreated'] = new Date();
 
     return newEntry.set(data)
-      .then(() => newEntry.key);
+      .then(res => {
+        return data;
+      });
   }
 
   public update(id: string, data: T): Promise<any> {

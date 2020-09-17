@@ -8,7 +8,7 @@ import Name from './EditItem/Name';
 import { BlackOverlay, ContrastingButton, SizedUnsplash } from './Item.styles';
 import Item from './Item';
 import './index.scss'
-import Tags from './EditItem/Tags';
+import EditTags from './EditItem/Tags';
 
 
 const history = createBrowserHistory();
@@ -66,11 +66,11 @@ const ItemRouter = ({ match }) => {
 
 
 
-        <div className="item-router-wrapper">
+        <Box className="item-router-wrapper" pad="large">
           <Router history={history}>
 
-            <Route path={`/item/:id/tags`}>
-              <Tags details={details} />
+            <Route path={`/item/:id/edit/tags`}>
+              <EditTags details={details} />
             </Route>
 
 
@@ -81,7 +81,7 @@ const ItemRouter = ({ match }) => {
 
 
           </Router>
-        </div>
+        </Box>
 
 
 

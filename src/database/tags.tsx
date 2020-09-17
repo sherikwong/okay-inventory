@@ -1,9 +1,9 @@
-import { BaseDB, IBaseDB } from './base';
+import { BaseDB, IBaseDB, IBaseModel } from './base';
 export const TAGS = 'tags';
 
-export interface ITag {
+export interface ITag extends IBaseModel {
   name: string;
-  children: ITag[];
+  children?: ITag[];
 }
 interface ITagsDB extends IBaseDB<ITag> {
 
