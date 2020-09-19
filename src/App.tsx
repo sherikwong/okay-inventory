@@ -1,4 +1,4 @@
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Grommet, Stack } from 'grommet';
 import React, { useState } from 'react';
 import { Route, Router } from 'react-router-dom';

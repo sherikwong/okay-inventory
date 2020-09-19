@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from 'grommet';
 import React, { useState, useEffect } from 'react';
 import Spinner from '../Spinner';

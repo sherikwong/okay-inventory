@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { withRouter } from "react-router-dom";
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { ITag, tagsDB } from "../../../database/tags";
-import { TextInput, Box, Button, Keyboard } from 'grommet';
+import { TextInput, Box, Button, Keyboard, Stack } from 'grommet';
 import styled from 'styled-components';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import { Add } from 'grommet-icons'; import Tags from "../../reusable/Tags/Tags";
 import { itemsDB } from '../../../database/items';
 import { IItem } from '../../../models/items';
 
-interface Suggestion {
+export interface InputSuggestion {
   value: string;
   label: string;
 }
@@ -25,14 +27,14 @@ const EditTags = props => {
   const [isDictating, setDictating] = useState(false);
   const [search, setSearch] = useState('');
   const [allTags, setAllTags] = useState(new Map([]));
-  const [suggestions, setSuggestions] = useState([] as Suggestion[]);
+  const [suggestions, setSuggestions] = useState([] as InputSuggestion[]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     tagsDB.getAll().then(res => {
       // console.log(res);
       const newMap = new Map([]);
-      const newSuggestions: Suggestion[] = [];
+      const newSuggestions: InputSuggestion[] = [];
 
       Object.values(res).forEach(details => {
         newSuggestions.push({ label: details.name, value: details.id });
@@ -62,35 +64,48 @@ const EditTags = props => {
       console.log(tags, allTags);
 
     });
+  };
+
+  const onSelect = $event => {
+    const safeTags = [...tags];
+    safeTags.push($event.suggestion.value);
+    setTags(new Set(safeTags));
   }
 
+  useEffect(() => {
+    console.log(tags);
+  }, [tags]);
+
   return (
-    <Box direction="row">
-      <Tags tags={tags} />
+    <Stack fill={true}>
 
-      {/* <Box direction="row" fill="horizontal"> */}
-      <Keyboard onEnter={onCustomTag}>
+      <Box justify="start" fill={true}>
 
-        <WhiteBgTextInput
-          value={search}
-          suggestions={suggestions}
-          onSelect={$event => {
-            console.log($event.suggestion);
-            // alterTags($event.suggestion, 1
-          }}
-          onChange={onType}
-          icon={
-            <Box direction="row" align="center">
-              {search && <Button icon={<Add />} onClick={onCustomTag} />}
-              <SpinnerButton onClick={() => { }} loading={false} setLoading={setLoading} />
-            </Box>
-          }
-          reverse={true}
-        />
-      </Keyboard>
-      {/* </Box> */}
+        <Box direction="row">
+          <Tags tags={tags} />
+        </Box>
 
-    </Box>
+      </Box>
+
+      <Box justify="center" fill={true}>
+        <Keyboard onEnter={onCustomTag}>
+
+          <WhiteBgTextInput
+            value={search}
+            suggestions={suggestions}
+            onSelect={onSelect}
+            onChange={onType}
+            icon={
+              <Box direction="row" align="center">
+                {search && <Button icon={<Add />} onClick={onCustomTag} />}
+                <SpinnerButton onClick={() => { }} loading={false} setLoading={setLoading} />
+              </Box>
+            }
+            reverse={true}
+          />
+        </Keyboard>
+      </Box>
+    </Stack>
   );
 }
 

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Box, Stack } from 'grommet';
 import { Menu } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
