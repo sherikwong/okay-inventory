@@ -8,7 +8,7 @@ import { ITag, tagsDB } from '../../../database/tags';
 
 
 const Tags = props => {
-  console.log(props.tags);
+  // console.log(props.tags);
   // const [allTagsDetails, setAllTags] = useState([...props.tags] || [] as ITag[]);
 
   // useEffect(() => {

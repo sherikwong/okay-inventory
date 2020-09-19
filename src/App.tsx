@@ -47,7 +47,7 @@ const App = () => {
                 <Route path="/item/:id" component={ItemRouter} />
                 {/* <Route exact path="/items/new" component={EditItem} /> */}
 
-                {/* <Route exact path="/" component={List} /> */}
+                <Route exact path="/" component={List} />
 
               </Router>
               {/* <Box align="end" justify="end">

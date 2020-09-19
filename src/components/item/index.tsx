@@ -29,7 +29,7 @@ const ItemRouter = ({ match }) => {
       itemsDB.get(id).then(res => {
         setDetails(res);
         setQty(res.quantity ? res.quantity : 0);
-        console.log(res);
+        // console.log(res);
       });
     }
   }, []);
@@ -48,7 +48,7 @@ const ItemRouter = ({ match }) => {
   // }
 
   // // const imageTags = [...details.name.split(' '), ...details.tags].join(',');
-  const imageTags = [...details.name.split(' ')].join(',');
+  const imageTags = details.name ? [...details.name.split(' ')].join(',') : '';
 
   return (
     <Stack fill={true} className="item-stack" id="item">
