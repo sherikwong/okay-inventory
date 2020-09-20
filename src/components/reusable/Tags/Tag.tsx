@@ -21,7 +21,9 @@ const renderTag = (children, onRemove?) => (
   >
     <Text size="small" weight="bold"># {children}</Text>
     {onRemove && (
-      <Box background={{ color: "white", opacity: "strong" }} round="full">
+      <Box
+        onClick={onRemove}
+        background={{ color: "white", opacity: "strong" }} round="full">
         <FormClose color='brand' style={{ width: "12px", height: "12px" }} />
       </Box>
     )}

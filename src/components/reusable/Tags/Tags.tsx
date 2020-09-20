@@ -1,36 +1,44 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from "react";
-
-import { Box, TextInput } from "grommet";
-
-import Tag from "./Tag";
+import { Box } from "grommet";
+import React, { useEffect, useState } from "react";
 import { ITag, tagsDB } from '../../../database/tags';
-import { InputSuggestion } from "../../Item/EditItem/EditTags";
+import Tag from "./Tag";
+
+
 
 
 const Tags = props => {
   const [queriedTags, setQueriedTags] = useState([] as ITag[]);
 
-
   useEffect(() => {
-    props.tags.forEach(id => {
-      tagsDB.get(id).then(tag => {
-        setQueriedTags([...queriedTags, tag]);
-      });
+    // if (props.tags.size) {
+    //   props.tags.forEach(id => {
+    //     tagsDB.get(id).then(tag => {
+    //       setQueriedTags([...queriedTags, tag]);
+    //     });
+    //   });
+    // } else {
+    //   setQueriedTags([]);
+    // }
+    const tags = [...props.tags].map(id => {
+      const entry = props.allTags.get(id);
+      console.log(entry);
+      return entry;
     });
 
+    setQueriedTags(tags);
+    console.log(props.tags);
   }, [props.tags]);
 
-  useEffect(() => {
-    console.log(queriedTags);
-  }, [queriedTags])
 
 
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
       {queriedTags.map((tag: ITag) => {
         return (
-          <Tag key={tag.id} onRemove={() => undefined}>
+          <Tag key={tag.id} onRemove={() => {
+            props.onRemove(tag);
+          }}>
             {tag.name}
           </Tag>
         )
@@ -40,31 +48,3 @@ const Tags = props => {
 };
 
 export default Tags;
-
-// const TagsInput = ({ suggestions, value, onRemove, onSelect, }) => {
-//   const [values, setValues] = useState([...value]);
-//   const [search, setSearch] = useState('');
-
-//   useEffect(() => {
-//     setValues([...value]);
-
-
-//   }, [value, suggestions])
-//   return (
-
-//     <TextInput
-//       placeholder="Select tags"
-//       type="search"
-//       value={search}
-//       onChange={({ target: { value: searchValue } }) => setSearch(searchValue)}
-//       onSelect={({ suggestion }) => {
-//         setSearch('');
-//         onSelect(suggestion);
-//       }
-//       }
-//       suggestions={suggestions}
-//     />
-//   );
-// }
-
-// export default TagsInput;

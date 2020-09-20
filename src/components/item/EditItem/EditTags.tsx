@@ -20,6 +20,11 @@ const WhiteBgTextInput = styled(TextInput)`
 background-color: rgba(255, 255, 255, .5);
 `;
 
+const CenteredBox = styled(Box)`
+position: absolute;
+top: 50%;
+`
+
 const EditTags = props => {
   const { match, incomingTags } = props;
   const id = match.params.id;
@@ -31,20 +36,33 @@ const EditTags = props => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('Restarting');
     tagsDB.getAll().then(res => {
       // console.log(res);
       const newMap = new Map([]);
-      const newSuggestions: InputSuggestion[] = [];
 
       Object.values(res).forEach(details => {
-        newSuggestions.push({ label: details.name, value: details.id });
         newMap.set(details.id, details);
       });
-      setSuggestions(newSuggestions);
-      setAllTags(newMap)
+      setAllTags(newMap);
     });
   }, []);
 
+
+
+  const removeExistingTags = () => {
+    return [...allTags.values()].filter(tag => {
+      console.log(!tags.has((tag as ITag).id));
+      return !tags.has((tag as ITag).id);
+    }).map(tag => ({
+      label: (tag as ITag).name,
+      value: (tag as ITag).id
+    }));
+  }
+
+  useEffect(() => {
+    removeExistingTags()
+  }, [allTags]);
 
   const onType = ({ target: { value: searchValue } }) => {
     setSearch(searchValue);
@@ -61,38 +79,63 @@ const EditTags = props => {
         tags: [...tags] as string[]
       });
 
-      console.log(tags, allTags);
+      // console.log(tags, allTags);
 
     });
   };
 
   const onSelect = $event => {
+    const id = $event.suggestion.value;
+    console.log('Selecting', id);
+
     const safeTags = [...tags];
-    safeTags.push($event.suggestion.value);
+    safeTags.push(id);
     setTags(new Set(safeTags));
+
+    const alteredTags = new Map(allTags);
+    alteredTags.delete(id);
+
+
+    setSuggestions(generateSuggestions(alteredTags))
+
   }
 
+  const generateSuggestions = details => {
+    return Object.values(details.values).map(entry => ({
+      label: (entry as ITag).name,
+      value: (entry as ITag).id
+    }));
+  }
+
+  const onRemove = (tag: ITag) => {
+    const withRemoved = new Set(tags);
+    withRemoved.delete(tag.id);
+    setTags(withRemoved);
+
+    const alteredTags = new Map(allTags);
+    alteredTags.set(tag.id, tag);
+
+    setSuggestions(generateSuggestions(alteredTags))
+  }
+
+
   useEffect(() => {
-    console.log(tags);
+    // console.log(tags);
   }, [tags]);
 
   return (
-    <Stack fill={true}>
+    <Box justify="start" fill={true}>
 
-      <Box justify="start" fill={true}>
-
-        <Box direction="row">
-          <Tags tags={tags} />
-        </Box>
-
+      <Box direction="row">
+        <Tags tags={tags} allTags={allTags} onRemove={onRemove} />
       </Box>
 
-      <Box justify="center" fill={true}>
+      <CenteredBox fill="horizontal" pad="large">
         <Keyboard onEnter={onCustomTag}>
 
           <WhiteBgTextInput
             value={search}
-            suggestions={suggestions}
+            suggestions={removeExistingTags()}
             onSelect={onSelect}
             onChange={onType}
             icon={
@@ -104,8 +147,9 @@ const EditTags = props => {
             reverse={true}
           />
         </Keyboard>
-      </Box>
-    </Stack>
+      </CenteredBox>
+
+    </Box>
   );
 }
 
