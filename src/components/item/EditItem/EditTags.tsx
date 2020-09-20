@@ -26,7 +26,7 @@ top: 50%;
 `
 
 const EditTags = props => {
-  const { match, details } = props;
+  const { match, details, location: { state } } = props;
   const id = match.params.id;
   const [tags, setTags] = useState(new Set([] as string[]));
   const [isDictating, setDictating] = useState(false);
@@ -46,7 +46,7 @@ const EditTags = props => {
   }, []);
 
   useEffect(() => {
-    setTags(new Set(details.tags));
+    setTags(new Set(details ? details.tags : state.details.tags));
   }, [details]);
 
 
@@ -95,7 +95,7 @@ const EditTags = props => {
       tags: tags
     });
 
-    props.onUpdate();
+    // props.onUpdate();
   }
 
   const onRemove = (tag: ITag) => {
@@ -112,24 +112,24 @@ const EditTags = props => {
         <Tags tags={tags} allTags={allTags} onRemove={onRemove} />
       </Box>
 
-      <CenteredBox fill="horizontal" pad="large">
-        <Keyboard onEnter={onCustomTag}>
+      <Keyboard onEnter={onCustomTag}>
+        <CenteredBox fill="horizontal" pad="large">
 
-          <WhiteBgTextInput
-            value={search}
-            suggestions={removeExistingTags()}
-            onSelect={onSelect}
-            onChange={onType}
-            icon={
-              <Box direction="row" align="center">
-                {search && <Button icon={<Add />} onClick={onCustomTag} />}
-                <SpinnerButton onClick={() => { }} loading={false} setLoading={setLoading} />
-              </Box>
-            }
-            reverse={true}
-          />
-        </Keyboard>
-      </CenteredBox>
+          <Box direction="row">
+            <WhiteBgTextInput
+              value={search}
+              suggestions={removeExistingTags()}
+              onSelect={onSelect}
+              onChange={onType}
+            />
+
+            <Box direction="row" align="center" pad={{ left: 'large' }}>
+              {search && <Button icon={<Add />} onClick={onCustomTag} />}
+              <SpinnerButton onClick={() => { }} loading={false} setLoading={setLoading} />
+            </Box>
+          </Box>
+        </CenteredBox>
+      </Keyboard>
 
     </Box>
   );

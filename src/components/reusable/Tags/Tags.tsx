@@ -11,36 +11,29 @@ const Tags = ({ tags, allTags, onRemove }) => {
   const [queriedTags, setQueriedTags] = useState([] as ITag[]);
 
   useEffect(() => {
-    console.log(tags);
-    // if (tags.size) {
-    //   tags.forEach(id => {
-    //     tagsDB.get(id).then(tag => {
-    //       setQueriedTags([...queriedTags, tag]);
-    //     });
-    //   });
-    // } else {
-    //   setQueriedTags([]);
-    // }
+    console.log(tags, allTags);
     const retrievedTags = [...tags].map(id => {
       const entry = allTags.get(id);
       return entry;
     });
 
     setQueriedTags(retrievedTags);
-  }, [tags]);
+  }, [tags, allTags]);
 
-
+  useEffect(() => {
+    console.log(queriedTags);
+  }, [queriedTags])
 
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
-      {queriedTags.map((tag: ITag) => {
-        return (
+      {queriedTags && queriedTags.length && queriedTags.map((tag, i) => {
+        return tag ? (
           <Tag key={tag.id} onRemove={() => {
             onRemove(tag);
           }}>
             {tag.name}
-          </Tag>
-        )
+          </Tag>)
+          : <div key={i} />
       })}
     </Box>
   );

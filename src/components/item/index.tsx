@@ -13,7 +13,7 @@ import './index.scss'
 import EditTags from './EditItem/EditTags';
 
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 const ItemRouter = ({ match }) => {
   const id = match.params.id;

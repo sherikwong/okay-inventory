@@ -3,10 +3,12 @@ import { Box, TextInput } from 'grommet';
 import { WhiteBgTextInput } from './EditTags';
 import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import { itemsDB } from '../../../database/items';
+import { withRouter } from 'react-router-dom';
 
 const Name = props => {
   const { details, onUpdate, history } = props;
   const [name, setName] = useState('Name');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setName(details.name);
@@ -18,15 +20,15 @@ const Name = props => {
   }
 
   const onSubmit = () => {
-    console.log('Submit', name);
     itemsDB.update(details.id, {
       ...details,
       name
-    });
+    }).then(res => {
+      setLoading(false);
+    }).then(res => {
+      history.push(`/item/${details.id}/edit/tags`);
+    })
 
-    onUpdate();
-
-    history.push(`/item/${details.id}/edit/tags`);
   }
 
   return (
@@ -35,10 +37,10 @@ const Name = props => {
         value={name}
         onChange={onType} />
       <Box pad={{ left: 'medium' }}>
-        <SpinnerButton onClick={onSubmit} loading={false} setLoading={false} />
+        <SpinnerButton onClick={onSubmit} loading={loading} setLoading={setLoading} />
       </Box>
     </Box>
   )
 };
 
-export default Name;
+export default withRouter(Name);
