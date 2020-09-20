@@ -18,7 +18,8 @@ const SpinnerButton = ({ onClick, loading, setLoading, icon = Next }) => {
   }
 
   return (
-    <ContrastingButton secondary onClick={_onClick} children={innerButton} />
+    <></>
+    // <ContrastingButton secondary onClick={_onClick} children={innerButton} />
   );
 };
 
