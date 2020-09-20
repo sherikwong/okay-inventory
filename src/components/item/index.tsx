@@ -40,9 +40,9 @@ const ItemRouter = ({ match }) => {
     });
   }
 
-  useEffect(() => {
-    console.log(details);
-  }, [details]);
+  // useEffect(() => {
+  //   console.log(details);
+  // }, [details]);
   // const onUpdateQty = direction => () => {
   //   setNum(direction > 0 ? num + 1 : num > 0 ? num - 1 : num);
 

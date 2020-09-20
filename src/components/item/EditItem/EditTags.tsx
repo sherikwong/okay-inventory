@@ -26,16 +26,15 @@ top: 50%;
 `
 
 const EditTags = props => {
-  const { match, incomingTags } = props;
+  const { match, details } = props;
   const id = match.params.id;
-  const [tags, setTags] = useState(new Set(incomingTags as string[]));
+  const [tags, setTags] = useState(new Set([] as string[]));
   const [isDictating, setDictating] = useState(false);
   const [search, setSearch] = useState('');
   const [allTags, setAllTags] = useState(new Map([]));
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('Restarting', props.details);
     tagsDB.getAll().then(res => {
       const newMap = new Map([]);
 
@@ -45,6 +44,10 @@ const EditTags = props => {
       setAllTags(newMap);
     });
   }, []);
+
+  useEffect(() => {
+    setTags(new Set(details.tags));
+  }, [details]);
 
 
   const removeExistingTags = () => {

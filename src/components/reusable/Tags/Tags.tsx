@@ -7,12 +7,13 @@ import Tag from "./Tag";
 
 
 
-const Tags = props => {
+const Tags = ({ tags, allTags, onRemove }) => {
   const [queriedTags, setQueriedTags] = useState([] as ITag[]);
 
   useEffect(() => {
-    // if (props.tags.size) {
-    //   props.tags.forEach(id => {
+    console.log(tags);
+    // if (tags.size) {
+    //   tags.forEach(id => {
     //     tagsDB.get(id).then(tag => {
     //       setQueriedTags([...queriedTags, tag]);
     //     });
@@ -20,14 +21,13 @@ const Tags = props => {
     // } else {
     //   setQueriedTags([]);
     // }
-    const tags = [...props.tags].map(id => {
-      const entry = props.allTags.get(id);
-      // console.log(entry);
+    const retrievedTags = [...tags].map(id => {
+      const entry = allTags.get(id);
       return entry;
     });
 
-    setQueriedTags(tags);
-  }, [props.tags]);
+    setQueriedTags(retrievedTags);
+  }, [tags]);
 
 
 
@@ -36,7 +36,7 @@ const Tags = props => {
       {queriedTags.map((tag: ITag) => {
         return (
           <Tag key={tag.id} onRemove={() => {
-            props.onRemove(tag);
+            onRemove(tag);
           }}>
             {tag.name}
           </Tag>
