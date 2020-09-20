@@ -6,19 +6,33 @@ import { Down, Up } from 'grommet-icons';
 import { QrCode } from 'qrcode.react';
 import { withRouter } from 'react-router-dom';
 import { Number } from './Item.styles';
+import { itemsDB } from '../../database/items';
 
 const Item = (props) => {
-  const details = props.details;
+  const { details, onUpdate } = props;
+  const [quantity, setQty] = useState(0);
+
+  useEffect(() => {
+    setQty(details.quantity || 0)
+  }, [details]);
+
+  const alterQty = num => {
+    const updatedNum = quantity + num;
+    setQty(updatedNum);
+
+    itemsDB.update(details.id, {
+      ...details,
+      quantity: updatedNum
+    });
+  }
 
   return (
     <Box direction="column" fill={true} align="center">
 
-      <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => { }} />
-
-
+      <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => alterQty(1)} />
 
       <Box fill={true} align="center">
-        <Number> {details.quantity}</Number>
+        <Number> {quantity}</Number>
 
         <Header className="header-wrapper">
           {(details && details.name) ? details.name.toUpperCase() : ''}
@@ -27,7 +41,7 @@ const Item = (props) => {
 
       </Box>
 
-      <HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => { }} />
+      <HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => alterQty(-1)} />
 
     </Box>
   );

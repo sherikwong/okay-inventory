@@ -82,6 +82,10 @@ const ItemRouter = ({ match }) => {
               <EditTags details={details} onUpdate={get} />
             </Route>
 
+            {/* <Route path={`/item/:id/edit/name`}>
+              <Name details={details} onUpdate={get} />
+            </Route> */}
+
 
             <Route path={`/item/:id`} exact>
               <Item details={details} />
