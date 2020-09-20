@@ -7,6 +7,7 @@ import { QrCode } from 'qrcode.react';
 import { withRouter } from 'react-router-dom';
 import { Number } from './Item.styles';
 import { itemsDB } from '../../database/items';
+import Tags from '../reusable/Tags/Tags';
 
 const Item = (props) => {
   const { details, onUpdate } = props;
@@ -27,11 +28,11 @@ const Item = (props) => {
   }
 
   return (
-    <Box direction="column" fill={true} align="center">
+    <Box direction="column" fill={true} align="center" justify="between">
 
       <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => alterQty(1)} />
 
-      <Box fill={true} align="center">
+      <Box align="center">
         <Number> {quantity}</Number>
 
         <Header className="header-wrapper">
@@ -39,6 +40,7 @@ const Item = (props) => {
         </Header>
         {details.date && details.date.toLocaleDateString && details.date.toLocaleDateString("en-US")}
 
+        <Tags tags={details.tags} />
       </Box>
 
       <HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => alterQty(-1)} />

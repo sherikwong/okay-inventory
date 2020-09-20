@@ -11,6 +11,7 @@ import { BlackOverlay, ContrastingButton, SizedUnsplash } from './Item.styles';
 import Item from './Item';
 import './index.scss'
 import EditTags from './EditItem/EditTags';
+import EditDate from './EditItem/Date';
 
 
 export const history = createBrowserHistory();
@@ -44,12 +45,14 @@ const ItemRouter = ({ match }) => {
     history.push(`/item/${id}/edit/name`);
   }
 
+  const keywords = details && details.name.split(' ').join(',') + ',food';
+  console.log(keywords);
 
   return (
     <Stack fill={true} className="item-stack" id="item">
 
       <SizedUnsplash
-        keywords={details && details.name.split(' ').join(',')}
+        keywords={keywords}
         width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />
 
       <BlackOverlay fill={true}></BlackOverlay>
@@ -68,6 +71,10 @@ const ItemRouter = ({ match }) => {
 
             <Route path={`/item/:id/edit/tags`}>
               <EditTags details={details} onUpdate={get} />
+            </Route>
+
+            <Route path={`/item/:id/edit/date`}>
+              <EditDate details={details} onUpdate={get} />
             </Route>
 
             <Route path={`/item/:id/edit/name`}>

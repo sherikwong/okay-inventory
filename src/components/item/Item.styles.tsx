@@ -10,6 +10,7 @@ export const Number = styled.span`
   line-height: 200px;
   color: white;
   filter: drop-shadow(.05em .05em black);
+  text-align: center;
 `;
 export const Header = styled.span`
   mix-blend-mode: difference;
@@ -19,6 +20,7 @@ export const Header = styled.span`
   line-height: 70px;
   color: white;
   filter: drop-shadow(.05em .05em black);
+  text-align: center;
 `;
 
 export const ContrastingButton = styled(Button)`

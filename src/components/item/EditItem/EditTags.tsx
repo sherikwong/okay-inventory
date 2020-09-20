@@ -10,6 +10,7 @@ import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import { Add } from 'grommet-icons'; import Tags from "../../reusable/Tags/Tags";
 import { itemsDB } from '../../../database/items';
 import { IItem } from '../../../models/items';
+import { getAllTags } from '../../reusable/Tags/Tags';
 
 export interface InputSuggestion {
   value: string;
@@ -26,7 +27,7 @@ top: 50%;
 `
 
 const EditTags = props => {
-  const { match, details, location: { state } } = props;
+  const { match, details, location: { state }, history } = props;
   const id = match.params.id;
   const [tags, setTags] = useState(new Set([] as string[]));
   const [isDictating, setDictating] = useState(false);
@@ -34,16 +35,7 @@ const EditTags = props => {
   const [allTags, setAllTags] = useState(new Map([]));
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    tagsDB.getAll().then(res => {
-      const newMap = new Map([]);
-
-      Object.values(res).forEach(details => {
-        newMap.set(details.id, details);
-      });
-      setAllTags(newMap);
-    });
-  }, []);
+  getAllTags(setAllTags);
 
   useEffect(() => {
     setTags(new Set(details ? details.tags : state.details.tags));
@@ -105,11 +97,15 @@ const EditTags = props => {
     updateDBTags([...withRemoved]);
   }
 
+  const navToDate = () => {
+    history.push(`/item/${details.id}/edit/date`);
+  }
+
   return (
     <Box justify="start" fill={true}>
 
       <Box direction="row">
-        <Tags tags={tags} allTags={allTags} onRemove={onRemove} />
+        <Tags tags={tags} onRemove={onRemove} />
       </Box>
 
       <Keyboard onEnter={onCustomTag}>
@@ -125,7 +121,7 @@ const EditTags = props => {
 
             <Box direction="row" align="center" pad={{ left: 'large' }}>
               {search && <Button icon={<Add />} onClick={onCustomTag} />}
-              <SpinnerButton onClick={() => { }} loading={false} setLoading={setLoading} />
+              <SpinnerButton onClick={navToDate} loading={loading} setLoading={setLoading} />
             </Box>
           </Box>
         </CenteredBox>

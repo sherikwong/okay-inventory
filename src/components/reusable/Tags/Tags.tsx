@@ -4,20 +4,31 @@ import React, { useEffect, useState } from "react";
 import { ITag, tagsDB } from '../../../database/tags';
 import Tag from "./Tag";
 
+export const getAllTags = setAllTags => () => {
+  tagsDB.getAll().then(res => {
+    const newMap = new Map([]);
 
+    Object.values(res).forEach(details => {
+      newMap.set(details.id, details);
+    });
+    setAllTags(newMap);
+  });
+}
 
-
-const Tags = ({ tags, allTags, onRemove }) => {
+const Tags = props => {
+  const { tags, onRemove } = props;
   const [queriedTags, setQueriedTags] = useState([] as ITag[]);
+  const [allTags, setAllTags] = useState(new Map([]));
+
+  useEffect(getAllTags(setAllTags), [tags]);
 
   useEffect(() => {
-    console.log(tags, allTags);
     const retrievedTags = [...tags].map(id => {
-      const entry = allTags.get(id);
+      const entry = (allTags).get(id);
       return entry;
     });
 
-    setQueriedTags(retrievedTags);
+    setQueriedTags(retrievedTags as any);
   }, [tags, allTags]);
 
   useEffect(() => {

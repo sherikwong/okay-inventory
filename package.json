@@ -27,6 +27,7 @@
     "qrcode.react": "^1.0.0",
     "react": "^16.13.1",
     "react-calendar": "^3.1.0",
+    "react-calendar-icon": "^0.9.4",
     "react-day-picker": "^7.4.8",
     "react-dictate-button": "^1.2.2",
     "react-dom": "^16.13.1",
