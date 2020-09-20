@@ -2,6 +2,13 @@ import styled from 'styled-components';
 import { Button, Box } from 'grommet';
 import Unsplash from 'react-unsplash-wrapper';
 
+export const ContrastingText = styled.span`
+mix-blend-mode: difference;
+font-weight: 700;
+color: white;
+font-size: 30px;
+`;
+
 export const Number = styled.span`
   mix-blend-mode: difference;
   font-weight: 700;
@@ -9,7 +16,7 @@ export const Number = styled.span`
   font-size: 200px;
   line-height: 200px;
   color: white;
-  filter: drop-shadow(.05em .05em black);
+  // filter: drop-shadow(.05em .05em black);
   text-align: center;
 `;
 export const Header = styled.span`
@@ -19,7 +26,7 @@ export const Header = styled.span`
   font-size: 70px;
   line-height: 70px;
   color: white;
-  filter: drop-shadow(.05em .05em black);
+  // filter: drop-shadow(.05em .05em black);
   text-align: center;
 `;
 

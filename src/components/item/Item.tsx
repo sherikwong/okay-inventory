@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { HugeArrowButtons, Header, QrCodeWrapper, DummyQRCode } from './Item.styles';
+import { HugeArrowButtons, Header, QrCodeWrapper, DummyQRCode, ContrastingText } from './Item.styles';
 import { Box } from 'grommet';
 import { Down, Up } from 'grommet-icons';
 import { QrCode } from 'qrcode.react';
@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { Number } from './Item.styles';
 import { itemsDB } from '../../database/items';
 import Tags from '../reusable/Tags/Tags';
+
 
 const Item = (props) => {
   const { details, onUpdate } = props;
@@ -38,7 +39,11 @@ const Item = (props) => {
         <Header className="header-wrapper">
           {(details && details.name) ? details.name.toUpperCase() : ''}
         </Header>
-        {details.date && details.date.toLocaleDateString && details.date.toLocaleDateString("en-US")}
+
+
+        <ContrastingText> {details.date && new Date(details.date).toLocaleDateString("en-US")}
+        </ContrastingText>
+        {/* <CalendarIcon date={details.date} /> */}
 
         <Tags tags={details.tags} />
       </Box>
