@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Box, Stack } from 'grommet';
-import { Menu } from 'grommet-icons';
+import { Menu, Edit } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import React, { useEffect, useState } from 'react';
 import { Route, Router, withRouter } from 'react-router-dom';
@@ -40,21 +40,9 @@ const ItemRouter = ({ match }) => {
     });
   }
 
-  // useEffect(() => {
-  //   console.log(details);
-  // }, [details]);
-  // const onUpdateQty = direction => () => {
-  //   setNum(direction > 0 ? num + 1 : num > 0 ? num - 1 : num);
-
-  //   itemsDB.update(id, {
-  //     ...details as IItem,
-  //     quantity: num
-  //   })
-  // }
-
-  // const navToEdit = () => {
-  //   history.push(`/item/${id}/edit`);
-  // }
+  const navToEdit = () => {
+    history.push(`/item/${id}/edit/name`);
+  }
 
 
   return (
@@ -70,7 +58,7 @@ const ItemRouter = ({ match }) => {
 
         <Box direction="row" justify="between" pad="medium" fill="horizontal">
           <ContrastingButton secondary icon={<Menu />} onClick={() => history.push('/')} />
-          {/* <ContrastingButton secondary icon={<Edit />} onClick={navToEdit} /> */}
+          <ContrastingButton secondary icon={<Edit />} onClick={navToEdit} />
         </Box>
 
 
@@ -82,9 +70,9 @@ const ItemRouter = ({ match }) => {
               <EditTags details={details} onUpdate={get} />
             </Route>
 
-            {/* <Route path={`/item/:id/edit/name`}>
+            <Route path={`/item/:id/edit/name`}>
               <Name details={details} onUpdate={get} />
-            </Route> */}
+            </Route>
 
 
             <Route path={`/item/:id`} exact>

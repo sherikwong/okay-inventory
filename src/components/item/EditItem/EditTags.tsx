@@ -16,7 +16,7 @@ export interface InputSuggestion {
   label: string;
 }
 
-const WhiteBgTextInput = styled(TextInput)`
+export const WhiteBgTextInput = styled(TextInput)`
 background-color: rgba(255, 255, 255, .5);
 `;
 
