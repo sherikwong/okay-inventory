@@ -13,7 +13,7 @@ import List from './components/List';
 
 // import Item from './components/Item';
 // import EditItem from './components/Item/EditItem/EditItem';
-import ItemRouter from './components/Item';
+import ItemRouter from './components/Item/index';
 
 const theme = {
   calendar: {
