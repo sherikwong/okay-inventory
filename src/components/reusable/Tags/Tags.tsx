@@ -22,12 +22,11 @@ const Tags = props => {
     // }
     const tags = [...props.tags].map(id => {
       const entry = props.allTags.get(id);
-      console.log(entry);
+      // console.log(entry);
       return entry;
     });
 
     setQueriedTags(tags);
-    console.log(props.tags);
   }, [props.tags]);
 
 

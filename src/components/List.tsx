@@ -64,7 +64,7 @@ const List = ({ history }) => {
 
 
   const onClickRow = ({ datum }) => {
-    console.log(datum, history);
+    // console.log(datum, history);
     history.push(`/item/${datum.id}`);
   };
 

@@ -32,13 +32,11 @@ const EditTags = props => {
   const [isDictating, setDictating] = useState(false);
   const [search, setSearch] = useState('');
   const [allTags, setAllTags] = useState(new Map([]));
-  const [suggestions, setSuggestions] = useState([] as InputSuggestion[]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('Restarting');
+    console.log('Restarting', props.details);
     tagsDB.getAll().then(res => {
-      // console.log(res);
       const newMap = new Map([]);
 
       Object.values(res).forEach(details => {
@@ -49,10 +47,9 @@ const EditTags = props => {
   }, []);
 
 
-
   const removeExistingTags = () => {
     return [...allTags.values()].filter(tag => {
-      console.log(!tags.has((tag as ITag).id));
+      // console.log(!tags.has((tag as ITag).id));
       return !tags.has((tag as ITag).id);
     }).map(tag => ({
       label: (tag as ITag).name,
@@ -79,7 +76,6 @@ const EditTags = props => {
         tags: [...tags] as string[]
       });
 
-      // console.log(tags, allTags);
 
     });
   };
@@ -92,36 +88,19 @@ const EditTags = props => {
     safeTags.push(id);
     setTags(new Set(safeTags));
 
-    const alteredTags = new Map(allTags);
-    alteredTags.delete(id);
+    itemsDB.update(id, {
+      ...props.details,
+      tags: safeTags
+    });
 
-
-    setSuggestions(generateSuggestions(alteredTags))
-
-  }
-
-  const generateSuggestions = details => {
-    return Object.values(details.values).map(entry => ({
-      label: (entry as ITag).name,
-      value: (entry as ITag).id
-    }));
+    props.onUpdate();
   }
 
   const onRemove = (tag: ITag) => {
     const withRemoved = new Set(tags);
     withRemoved.delete(tag.id);
     setTags(withRemoved);
-
-    const alteredTags = new Map(allTags);
-    alteredTags.set(tag.id, tag);
-
-    setSuggestions(generateSuggestions(alteredTags))
   }
-
-
-  useEffect(() => {
-    // console.log(tags);
-  }, [tags]);
 
   return (
     <Box justify="start" fill={true}>

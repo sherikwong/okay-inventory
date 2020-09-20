@@ -20,14 +20,6 @@ class ItemsDB extends BaseDB<IItem> implements IItemsDB {
         return data;
       });
   }
-
-  public update(id: string, data: Partial<IItem>): Promise<any> {
-    // data.tags = data.tags ? [...data.tags].filter(el => el) : undefined;
-
-    return this._db.update({
-      [id]: data
-    });
-  }
 }
 
 export const itemsDB = new ItemsDB();

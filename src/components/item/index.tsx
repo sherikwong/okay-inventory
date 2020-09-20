@@ -28,14 +28,16 @@ const ItemRouter = ({ match }) => {
 
   useEffect(() => {
     if (id) {
-      itemsDB.get(id).then(res => {
-        setDetails(res);
-        setQty(res.quantity ? res.quantity : 0);
-        // console.log(res);
-      });
+      get();
     }
   }, []);
 
+  const get = () => {
+    itemsDB.get(id).then(res => {
+      setDetails(res);
+      setQty(res.quantity ? res.quantity : 0);
+    });
+  }
   // const onUpdateQty = direction => () => {
   //   setNum(direction > 0 ? num + 1 : num > 0 ? num - 1 : num);
 
@@ -72,7 +74,7 @@ const ItemRouter = ({ match }) => {
           <Router history={history}>
 
             <Route path={`/item/:id/edit/tags`}>
-              <EditTags details={details} />
+              <EditTags details={details} onUpdate={get} />
             </Route>
 
 
