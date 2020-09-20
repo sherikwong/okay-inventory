@@ -35,7 +35,6 @@ const EditTags = props => {
   const [allTags, setAllTags] = useState(new Map([]));
   const [loading, setLoading] = useState(false);
 
-
   useEffect(getAllTags(setAllTags), []);
 
   useEffect(() => {
