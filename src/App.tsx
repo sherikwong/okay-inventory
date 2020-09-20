@@ -10,10 +10,10 @@ import Modal from './components/modal/Modal';
 // import List from './components/List/List';
 import { createBrowserHistory } from 'history';
 import List from './components/List';
+// import ItemRouter from './components/Item/ItemRouter';
 
 // import Item from './components/Item';
 // import EditItem from './components/Item/EditItem/EditItem';
-import ItemRouter from './components/Item/ItemRouter';
 
 const theme = {
   calendar: {
@@ -44,7 +44,7 @@ const App = () => {
                 {/* <Route path="/" component={Tags} /> */}
 
                 {/* <Route path="/item/:id/edit" component={EditItem} /> */}
-                <Route path="/item/:id" component={ItemRouter} />
+                {/* <Route path="/item/:id" component={ItemRouter} /> */}
                 {/* <Route exact path="/items/new" component={EditItem} /> */}
 
                 <Route exact path="/" component={List} />
