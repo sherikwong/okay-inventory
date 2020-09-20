@@ -46,7 +46,7 @@ const ItemRouter = ({ match }) => {
   }
 
   const keywords = details && details.name.split(' ').join(',') + ',food';
-  console.log(keywords);
+  // console.log(keywords);
 
   return (
     <Stack fill={true} className="item-stack" id="item">

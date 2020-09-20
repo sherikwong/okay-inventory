@@ -35,14 +35,15 @@ const EditTags = props => {
   const [allTags, setAllTags] = useState(new Map([]));
   const [loading, setLoading] = useState(false);
 
-  getAllTags(setAllTags);
+
+  useEffect(getAllTags(setAllTags), []);
 
   useEffect(() => {
     setTags(new Set(details ? details.tags : state.details.tags));
   }, [details]);
 
-
   const removeExistingTags = () => {
+    console.log(allTags);
     return [...allTags.values()].filter(tag => {
       return !tags.has((tag as ITag).id);
     }).map(tag => ({
@@ -72,7 +73,7 @@ const EditTags = props => {
 
   const onSelect = $event => {
     const id = $event.suggestion.value;
-    console.log('Selecting', id);
+    // console.log('Selecting', id);
 
     const safeTags = [...tags];
     safeTags.push(id);

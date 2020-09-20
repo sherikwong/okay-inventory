@@ -23,16 +23,20 @@ const Tags = props => {
   useEffect(getAllTags(setAllTags), [tags]);
 
   useEffect(() => {
+    // console.log(allTags);
+  }, [allTags]);
+
+  useEffect(() => {
     const retrievedTags = [...tags].map(id => {
       const entry = (allTags).get(id);
       return entry;
     });
 
     setQueriedTags(retrievedTags as any);
-  }, [tags, allTags]);
+  }, [tags]);
 
   useEffect(() => {
-    console.log(queriedTags);
+    // console.log(queriedTags);
   }, [queriedTags])
 
   return (
