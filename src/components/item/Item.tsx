@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { Number } from './Item.styles';
 import { itemsDB } from '../../database/items';
 import Tags from '../reusable/Tags/Tags';
+import { Swipeable } from 'react-swipeable';
 
 
 const Item = (props) => {
@@ -29,28 +30,30 @@ const Item = (props) => {
   }
 
   return (
-    <Box direction="column" fill={true} align="center" justify="between">
+    <Swipeable onSwipedDown={() => alterQty(-1)} onSwipedUp={() => alterQty(1)}>
+      <Box direction="column" fill={true} align="center" justify="between">
 
-      <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => alterQty(1)} />
+        <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => alterQty(1)} />
 
-      <Box align="center">
-        <Number> {quantity}</Number>
+        <Box align="center">
+          <Number> {quantity}</Number>
 
-        <Header className="header-wrapper">
-          {(details && details.name) ? details.name.toUpperCase() : ''}
-        </Header>
+          <Header className="header-wrapper">
+            {(details && details.name) ? details.name.toUpperCase() : ''}
+          </Header>
 
 
-        <ContrastingText> {details.date && new Date(details.date).toLocaleDateString("en-US")}
-        </ContrastingText>
-        {/* <CalendarIcon date={details.date} /> */}
+          <ContrastingText> {details.date && new Date(details.date).toLocaleDateString("en-US")}
+          </ContrastingText>
+          {/* <CalendarIcon date={details.date} /> */}
 
-        <Tags tags={details.tags} />
+          <Tags tags={details.tags} />
+        </Box>
+
+        <HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => alterQty(-1)} />
+
       </Box>
-
-      <HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => alterQty(-1)} />
-
-    </Box>
+    </Swipeable>
   );
 }
 
