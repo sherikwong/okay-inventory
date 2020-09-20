@@ -49,17 +49,12 @@ const EditTags = props => {
 
   const removeExistingTags = () => {
     return [...allTags.values()].filter(tag => {
-      // console.log(!tags.has((tag as ITag).id));
       return !tags.has((tag as ITag).id);
     }).map(tag => ({
       label: (tag as ITag).name,
       value: (tag as ITag).id
     }));
   }
-
-  useEffect(() => {
-    removeExistingTags()
-  }, [allTags]);
 
   const onType = ({ target: { value: searchValue } }) => {
     setSearch(searchValue);
@@ -88,9 +83,13 @@ const EditTags = props => {
     safeTags.push(id);
     setTags(new Set(safeTags));
 
+    updateDBTags(safeTags);
+  }
+
+  const updateDBTags = tags => {
     itemsDB.update(id, {
       ...props.details,
-      tags: safeTags
+      tags: tags
     });
 
     props.onUpdate();
@@ -100,6 +99,7 @@ const EditTags = props => {
     const withRemoved = new Set(tags);
     withRemoved.delete(tag.id);
     setTags(withRemoved);
+    updateDBTags([...withRemoved]);
   }
 
   return (

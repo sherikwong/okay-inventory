@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { db } from '.';
 import { BaseDB, IBaseDB } from './base';
 import { IItem } from '../models/items';
@@ -12,14 +15,6 @@ class ItemsDB extends BaseDB<IItem> implements IItemsDB {
     super(ITEMS);
   }
 
-  public get(id: string): Promise<any> {
-    return db.ref().child(this.dbName + '/' + id).once('value')
-      .then(snapshot => {
-        const data = snapshot && snapshot.exists() ? snapshot.val() : undefined;
-
-        return data;
-      });
-  }
 }
 
 export const itemsDB = new ItemsDB();

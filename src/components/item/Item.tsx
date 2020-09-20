@@ -15,6 +15,8 @@ const Item = (props) => {
 
       <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => { }} />
 
+
+
       <Box fill={true} align="center">
         <Number> {details.quantity}</Number>
 
@@ -32,3 +34,6 @@ const Item = (props) => {
 }
 
 export default withRouter(Item);
+{/* <QrCodeWrapper>
+                        <QrCode bgColor="transparent" value={id} size={50} />
+                      </QrCodeWrapper> */}
