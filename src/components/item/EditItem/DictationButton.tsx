@@ -20,6 +20,7 @@ const DictationButtonWrapper = styled(DictateButton)`
 
 const DictationButton = ({ }) => {
   const [isDictating, setDictating] = useState(false);
+
   const onDictate = res => {
     setDictating(false);
 
