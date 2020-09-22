@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { itemsDB } from '../database/items';
-import { IItem } from '../models/items';
+import { itemsDB } from '../../database/items';
+import { IItem } from '../../models/items';
 import { DataTable, Text, Box, Button } from 'grommet';
 import { useEffect } from 'react';
 import { Add } from 'grommet-icons';
