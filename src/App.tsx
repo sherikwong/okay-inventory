@@ -10,7 +10,7 @@ import Modal from './components/modal/Modal';
 // import List from './components/List/List';
 import { createBrowserHistory } from 'history';
 import List from './components/List';
-import ItemRouter from './components/Item/ItemRouter';
+import ItemRouter from './components/Item/Router';
 // import ItemRouter from './components/Item/ItemRouter';
 
 // import Item from './components/Item';
