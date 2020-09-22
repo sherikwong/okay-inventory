@@ -11,6 +11,7 @@ import { createBrowserHistory } from 'history';
 import ListTagsFilter from './Filters/tags';
 import ListNameFilter from './Filters/name';
 import { intersection } from 'lodash';
+import Tags from '../reusable/Tags/Tags';
 
 export const listHistory = createBrowserHistory();
 
@@ -41,7 +42,8 @@ const List = ({ history }) => {
     },
     {
       property: 'tags',
-      header: 'Tags'
+      header: 'Tags',
+      // render: datum => <Tags tags={datum || []} />
     },
     {
       property: 'quantity',
@@ -81,12 +83,16 @@ const List = ({ history }) => {
   } as ListFilters | undefined);
 
   const onFilter = (newFilter: ListFilters) => {
+    setHasHadInitialFilter(true);
+
     if (!newFilter.name && !newFilter.tags) {
       setFilter(undefined);
     } else {
       setFilter({ ...filter ? filter : [], ...newFilter } as ListFilters | undefined);
     }
   }
+
+  const [hasHadInitialFilter, setHasHadInitialFilter] = useState(false);
 
   const [filteredData, setFilteredData] = useState([] as IItem[]);
 
@@ -95,24 +101,22 @@ const List = ({ history }) => {
   }, [filter, items]);
 
   const updateFilteredData = () => {
+    const filterCb = (item: IItem) => {
+      if (item && filter) {
+        const hasMatchingName = item.name && filter.name && item.name.toLowerCase().includes(filter.name.toLowerCase()) || false;
+        const hasMatchingTags = !!intersection(item.tags, filter.tags ? [...filter.tags] : []).length
+
+        return hasMatchingName || hasMatchingTags;
+      }
+      return true;
+    }
 
     const data = Object.values(items)
-      .filter((item: IItem) => {
-        if (item && filter) {
-          const hasMatchingName = item.name && filter.name && item.name.includes(filter.name) || false;
-          const hasMatchingTags = !!intersection(item.tags, [...filter.tags]).length
-
-          return hasMatchingName || hasMatchingTags;
-        }
-        return true;
-      })
+      .filter(hasHadInitialFilter ? filterCb : () => true)
       .map((item, i) => ({ ...item }));
 
     setFilteredData(data);
   };
-
-  useEffect(() => {
-  }, [filteredData, items])
 
   return (
     <Router history={listHistory}>
