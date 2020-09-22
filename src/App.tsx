@@ -10,11 +10,11 @@ import Modal from './components/modal/Modal';
 // import List from './components/List/List';
 import { createBrowserHistory } from 'history';
 import List from './components/List';
-import ItemRouter from './components/Item/Router';
-// import ItemRouter from './components/Item/ItemRouter';
+import ItemRouter from './components/item/Router';
+// import ItemRouter from './components/item/ItemRouter';
 
 // import Item from './components/Item';
-// import EditItem from './components/Item/EditItem/EditItem';
+// import EditItem from './components/item/EditItem/EditItem';
 
 const theme = {
   calendar: {

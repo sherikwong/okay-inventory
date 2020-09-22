@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Spinner from '../Spinner';
 import { Next } from 'grommet-icons';
 import styled from 'styled-components';
-// import { ContrastingButton } from '../../Item/Item.styles';
+// import { ContrastingButton } from '../../item/Item.styles';
 
 const SpinnerButton = ({ onClick, loading, setLoading, icon = Next }) => {
   const innerButton = (<>
