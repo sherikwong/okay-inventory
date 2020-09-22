@@ -21,7 +21,7 @@ export const WhiteBgTextInput = styled(TextInput)`
 background-color: rgba(255, 255, 255, .5);
 `;
 
-const CenteredBox = styled(Box)`
+export const CenteredBox = styled(Box)`
 position: absolute;
 top: 50%;
 `
