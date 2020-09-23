@@ -23,13 +23,25 @@ const FilledSwipable = styled(Swipeable)`
 
 const List = ({ history }) => {
   const [items, setItems] = useState([] as IItem[]);
-  const [isAscendingSort, setAsscendingSort] = useState(false);
 
-  const toggleSort = () => setAsscendingSort(!isAscendingSort);
+  const [isAscQty, setAscQty] = useState(false);
+  const toggleSortQty = () => setAscQty(!isAscQty);
+
+  const [isAscDate, setAscDate] = useState(false);
+  const toggleSortDate = () => setAscQty(!isAscQty);
 
   // useEffect(() => {
   let columns = [
-    // columns = [
+    {
+      property: 'date',
+      header: (
+        <Box direction="row" align="center">
+          <span>Date</span>
+          <Button icon={isAscDate ? <Up /> : <Down />} onClick={toggleSortDate} />
+        </Box>
+      ),
+      render: datum => datum.date ? (<span>{new Date(datum.date).toLocaleDateString("en-US")}</span>) : <></>
+    },
     {
       property: 'id',
       primary: true,
@@ -45,40 +57,32 @@ const List = ({ history }) => {
       header: 'Tags',
       render: datum => <Tags tags={datum.tags} />
     },
+
     {
       property: 'quantity',
       header: (
         <Box direction="row" align="center">
           <span>Qty</span>
-          <Button icon={isAscendingSort ? <Up /> : <Down />} onClick={toggleSort} />
+          <Button icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} />
         </Box>
-      )
+      ),
     }
   ];
-  // }, [items])
-
 
   useEffect(() => {
     itemsDB.getAll()
       .then(items => {
         if (items) {
           setItems(items);
-
-          // updateFilteredData();
         }
       }).catch(error => console.error(error));
-
-
-
   }, [])
 
   const createNew = () => {
     history.push('/items/new')
   }
 
-
   const onClickRow = ({ datum }) => {
-    // console.log(datum, history);
     history.push(`/item/${datum.id}`);
   };
 
@@ -117,8 +121,11 @@ const List = ({ history }) => {
       return true;
     }
 
-    const sort = (a: IItem, b: IItem) => {
-      return isAscendingSort ? a.quantity - b.quantity : b.quantity - a.quantity;
+    const sortQty = (a: IItem, b: IItem) => {
+      return isAscQty ? a.quantity - b.quantity : b.quantity - a.quantity;
+    };
+    const sortDate = (a: IItem, b: IItem) => {
+      return isAscDate ? +a.date - +b.date : +b.date - +a.date;
     };
 
     const data = Object.values(items)
@@ -129,14 +136,15 @@ const List = ({ history }) => {
         }
         return item;
       })
-      .sort(sort);
+      .sort(sortQty)
+      .sort(sortDate);
 
     setFilteredData(data);
   };
 
   useEffect(() => {
     updateFilteredData();
-  }, [isAscendingSort]);
+  }, [isAscQty]);
 
   return (
     <Router history={listHistory}>
