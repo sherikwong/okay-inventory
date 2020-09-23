@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Box, TextInput } from 'grommet';
-import { WhiteBgTextInput } from './EditTags';
-import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
-import { itemsDB } from '../../../database/items';
+import { Box } from 'grommet';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { itemsDB } from '../../../database/items';
+import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
+import { WhiteBgTextInput } from './EditTags';
 
 const Name = props => {
   const { details, onUpdate, history } = props;

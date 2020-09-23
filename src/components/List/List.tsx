@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { itemsDB } from '../../database/items';
-import { IItem } from '../../models/items';
-import { DataTable, Text, Box, Button } from 'grommet';
-import { useEffect } from 'react';
-import { Add } from 'grommet-icons';
-import { withRouter, BrowserRouter, Router, Route } from 'react-router-dom';
+import { Box, Button, DataTable } from 'grommet';
+import { Add, Up, Down } from 'grommet-icons';
+import { createBrowserHistory } from 'history';
+import { intersection } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { Router, withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import styled from 'styled-components';
-import { createBrowserHistory } from 'history';
-import ListTagsFilter from './Filters/tags';
-import ListNameFilter from './Filters/name';
-import { intersection } from 'lodash';
+import { itemsDB } from '../../database/items';
+import { IItem } from '../../models/items';
 import Tags from '../reusable/Tags/Tags';
+import ListNameFilter from './Filters/name';
+import ListTagsFilter from './Filters/tags';
 
 export const listHistory = createBrowserHistory();
 
@@ -24,8 +23,9 @@ const FilledSwipable = styled(Swipeable)`
 
 const List = ({ history }) => {
   const [items, setItems] = useState([] as IItem[]);
+  const [isAscendingSort, setAsscendingSort] = useState(false);
 
-  // let columns;
+  const toggleSort = () => setAsscendingSort(!isAscendingSort);
 
   // useEffect(() => {
   let columns = [
@@ -47,7 +47,12 @@ const List = ({ history }) => {
     },
     {
       property: 'quantity',
-      header: '#'
+      header: (
+        <Box direction="row" align="center">
+          <span>Qty</span>
+          <Button icon={isAscendingSort ? <Up /> : <Down />} onClick={toggleSort} />
+        </Box>
+      )
     }
   ];
   // }, [items])

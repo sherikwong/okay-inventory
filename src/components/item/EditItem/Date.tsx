@@ -1,12 +1,10 @@
-import React from 'react';
+import { Box } from 'grommet';
+import React, { useEffect, useState } from 'react';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-import { Box } from 'grommet';
-import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 import { itemsDB } from '../../../database/items';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 export const WhiteBgBox = styled(Box)`
 background-color: rgba(255, 255, 255, .5);
