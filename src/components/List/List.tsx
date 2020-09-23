@@ -43,7 +43,7 @@ const List = ({ history }) => {
     {
       property: 'tags',
       header: 'Tags',
-      // render: datum => <Tags tags={datum || []} />
+      render: datum => <Tags tags={datum.tags} />
     },
     {
       property: 'quantity',

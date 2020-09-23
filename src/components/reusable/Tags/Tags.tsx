@@ -23,27 +23,28 @@ const Tags = props => {
   useEffect(getAllTags(setAllTags), [tags]);
 
   useEffect(() => {
+    let tempTags = [];
+    if (tags) {
+      const retrievedTags: any = [...tags].map(id => {
+        const entry = (allTags).get(id);
+        return entry;
+      }).filter(tag => tag);
+
+      if (retrievedTags.length) {
+        tempTags = retrievedTags;
+      }
+    }
+    setQueriedTags(tempTags);
   }, [allTags]);
-
-  useEffect(() => {
-    const retrievedTags = [...tags].map(id => {
-      const entry = (allTags).get(id);
-      return entry;
-    });
-
-    setQueriedTags(retrievedTags as any);
-  }, [tags]);
 
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
-      {queriedTags && queriedTags.length && queriedTags.map((tag, i) => {
+      {queriedTags && queriedTags.map((tag, i) => {
 
-        return tag ? (
-          <Tag key={tag.id} onRemove={onRemove ? () =>
-            onRemove(tag) : undefined}>
-            {tag.name}
-          </Tag>)
-          : <div key={i} />
+        return <Tag key={tag.id} onRemove={onRemove ? () =>
+          onRemove(tag) : undefined}>
+          {tag.name}
+        </Tag>
       })}
     </Box>
   );
