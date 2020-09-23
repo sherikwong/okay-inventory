@@ -88,6 +88,7 @@ const List = ({ history }) => {
   } as ListFilters | undefined);
 
   const onFilter = (newFilter: ListFilters) => {
+    console.log(newFilter);
     setHasHadInitialFilter(true);
 
     if (!newFilter.name && !newFilter.tags) {
@@ -109,7 +110,7 @@ const List = ({ history }) => {
     const filterCb = (item: IItem) => {
       if (item && filter) {
         const hasMatchingName = item.name && filter.name && item.name.toLowerCase().includes(filter.name.toLowerCase()) || false;
-        const hasMatchingTags = !!intersection(item.tags, filter.tags ? [...filter.tags] : []).length
+        const hasMatchingTags = filter.tags.size ? !!intersection(item.tags, filter.tags ? [...filter.tags] : []).length : true;
 
         return hasMatchingName || hasMatchingTags;
       }

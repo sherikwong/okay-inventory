@@ -6,7 +6,7 @@ import { CenteredBox, WhiteBgTextInput } from '../../item/EditItem/EditTags';
 import Tags, { getAllTags } from '../../reusable/Tags/Tags';
 
 const ListTagsFilter = props => {
-  // const { match, details, location: { state }, history } = props;
+  const { onFilter } = props;
   const [tags, setTags] = useState(new Set([] as string[]));
   // const [isDictating, setDictating] = useState(false);
   const [search, setSearch] = useState('');
@@ -34,20 +34,20 @@ const ListTagsFilter = props => {
 
   const onSelect = $event => {
     const id = $event.suggestion.value;
-    // console.log('Selecting', id);
 
-    const safeTags = [...tags];
-    safeTags.push(id);
-    setTags(new Set(safeTags));
+    const safeTags = new Set(tags);
+    safeTags.add(id);
+    console.log('Selecting', safeTags);
+    setTags(safeTags);
+    onFilter({ tags: safeTags });
 
-    // updateDBTags(safeTags);
   }
 
   const onRemove = (tag: ITag) => {
     const withRemoved = new Set(tags);
     withRemoved.delete(tag.id);
     setTags(withRemoved);
-    // updateDBTags([...withRemoved]);
+    onFilter({ tags: withRemoved });
   }
 
   return (
