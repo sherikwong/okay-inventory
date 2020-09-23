@@ -13,10 +13,7 @@ import './index.scss'
 import EditTags from './EditItem/EditTags';
 import EditDate from './EditItem/Date';
 
-
-export const history = createBrowserHistory();
-
-const ItemRouter = ({ match }) => {
+const ItemRouter = ({ match, history }) => {
   const id = match.params.id;
   const [qty, setQty] = useState(0);
 
@@ -60,35 +57,29 @@ const ItemRouter = ({ match }) => {
       <Box align="center" fill={true} justify="between">
 
         <Box direction="row" justify="between" pad="medium" fill="horizontal">
-          <ContrastingButton secondary icon={<Menu />} onClick={() => history.push('/')} />
+          <ContrastingButton secondary icon={<Menu />} onClick={() => history.push('/list')} />
           <ContrastingButton secondary icon={<Edit />} onClick={navToEdit} />
         </Box>
 
-
-
         <Box className="item-router-wrapper" pad="large">
-          <Router history={history}>
 
-            <Route path={`/item/:id/edit/tags`}>
-              <EditTags details={details} onUpdate={get} />
-            </Route>
+          <Route path={`/item/:id/edit/tags`}>
+            <EditTags details={details} onUpdate={get} />
+          </Route>
 
-            <Route path={`/item/:id/edit/date`}>
-              <EditDate details={details} onUpdate={get} />
-            </Route>
+          <Route path={`/item/:id/edit/date`}>
+            <EditDate details={details} onUpdate={get} />
+          </Route>
 
-            <Route path={`/item/:id/edit/name`}>
-              <Name details={details} onUpdate={get} />
-            </Route>
-
-
-            <Route path={`/item/:id`} exact>
-              <Item details={details} />
-            </Route>
+          <Route path={`/item/:id/edit/name`}>
+            <Name details={details} onUpdate={get} />
+          </Route>
 
 
+          <Route path={`/item/:id`} exact>
+            <Item details={details} />
+          </Route>
 
-          </Router>
         </Box>
 
 
