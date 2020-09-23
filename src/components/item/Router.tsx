@@ -75,7 +75,6 @@ const ItemRouter = ({ match, history }) => {
             <Name details={details} onUpdate={get} />
           </Route>
 
-
           <Route path={`/item/:id`} exact>
             <Item details={details} />
           </Route>

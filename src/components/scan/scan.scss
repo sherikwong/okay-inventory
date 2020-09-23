@@ -1,0 +1,13 @@
+.container {
+  height: 100%;
+
+  &>section {
+    height: 100%;
+    padding-top: 0 !important;
+
+    &>div {
+      border: none !important;
+      box-shadow: none;
+    }
+  }
+}

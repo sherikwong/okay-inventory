@@ -25,6 +25,7 @@
     "npx": "^10.2.2",
     "polished": "^3.6.6",
     "qrcode.react": "^1.0.0",
+    "query-string": "^6.13.2",
     "react": "^16.13.1",
     "react-calendar": "^3.1.0",
     "react-calendar-icon": "^0.9.4",

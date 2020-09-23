@@ -11,6 +11,7 @@ import Modal from './components/modal/Modal';
 import { createBrowserHistory } from 'history';
 import List from './components/List/List';
 import ItemRouter from './components/item/Router';
+import Scan from './components/scan/scan';
 // import ItemRouter from './components/item/ItemRouter';
 
 // import Item from './components/Item';
@@ -49,7 +50,7 @@ const App = () => {
                 {/* <Route exact path="/items/new" component={EditItem} /> */}
 
                 <Route exact path="/list" component={List} />
-                <Route exact path="/" component={List} />
+                <Route exact path="/" component={Scan} />
 
               </Router>
               {/* <Box align="end" justify="end">

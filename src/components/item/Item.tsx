@@ -9,15 +9,12 @@ import { Number } from './Item.styles';
 import { itemsDB } from '../../database/items';
 import Tags from '../reusable/Tags/Tags';
 import { Swipeable } from 'react-swipeable';
-
+import queryString from 'query-string';
 
 const Item = (props) => {
-  const { details, onUpdate } = props;
+  const { details, onUpdate, match, location } = props;;
   const [quantity, setQty] = useState(0);
-
-  useEffect(() => {
-    setQty(details.quantity || 0)
-  }, [details]);
+  const [showModal, setModal] = useState(false);
 
   const alterQty = num => {
     const updatedNum = quantity + num;
@@ -29,20 +26,35 @@ const Item = (props) => {
     });
   }
 
-  return (
-    <Swipeable onSwipedDown={() => alterQty(-1)} onSwipedUp={() => alterQty(1)}>
-      <Box direction="column" fill={true} align="center" justify="between">
+  useEffect(() => {
+    const queryDirection = queryString.parse(location.search);
+    
+    if (queryDirection) {
+      setModal(true);  
+  alterQty(quantity + (+queryDirection));
+    } 
+  }, []);
 
-        <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => alterQty(1)} />
+  useEffect(() => {
+setQty(details.quantity || 0);
+  }, [details]);
 
-        <Box align="center">
-          <Number> {quantity}</Number>
+ 
+  
+  return (<>
+    <Swipeable onSwipedDown={() => alterQty(-1)} onSwipedUp={() => alterQty(1)}
+  ox direction="column" fill={true} align="center" justify="between">
 
-          <Header className="header-wrapper">
+  owButtons secondary size="large" icon={<Up />} onClick={() => alterQty(1)} />
+
+    ox align="center">
+    <Number> {quantity}</Number>
+
+    <Header className="header-wrapper">
             {(details && details.name) ? details.name.toUpperCase() : ''}
-          </Header>
+          < /Header>
 
-
+ 
           <ContrastingText> {details.date && new Date(details.date).toLocaleDateString("en-US")}
           </ContrastingText>
           {/* <CalendarIcon date={details.date} /> */}
@@ -50,14 +62,19 @@ const Item = (props) => {
           <Tags tags={details.tags} />
         </Box>
 
-        <HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => alterQty(-1)} />
+<HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => alterQty(-1)} />
+  
+    </Box>
 
-      </Box>
-    </Swipeable>
+Swipeable>
+     
+  showModal ? (<Layer>
+
+    </Layer>)
+      </>
   );
 }
 
 export default withRouter(Item);
-{/* <QrCodeWrapper>
-                        <QrCode bgColor="transparent" value={id} size={50} />
-                      </QrCodeWrapper> */}
+
+
