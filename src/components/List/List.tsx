@@ -116,12 +116,26 @@ const List = ({ history }) => {
       return true;
     }
 
+    const sort = (a: IItem, b: IItem) => {
+      return isAscendingSort ? a.quantity - b.quantity : b.quantity - a.quantity;
+    };
+
     const data = Object.values(items)
       .filter(hasHadInitialFilter ? filterCb : () => true)
-      .map((item, i) => ({ ...item }));
+      .map(item => {
+        if (!(item.quantity >= 0)) {
+          item.quantity = 0;
+        }
+        return item;
+      })
+      .sort(sort);
 
     setFilteredData(data);
   };
+
+  useEffect(() => {
+    updateFilteredData();
+  }, [isAscendingSort]);
 
   return (
     <Router history={listHistory}>
