@@ -1,18 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Box } from 'grommet';
+import { Down, Up } from 'grommet-icons';
+import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { HugeArrowButtons, Header, QrCodeWrapper, DummyQRCode, ContrastingText } from './Item.styles';
-import { Box, Layer } from 'grommet';
-import { Down, Up, LinkUp } from 'grommet-icons';
-import { QrCode } from 'qrcode.react';
 import { withRouter } from 'react-router-dom';
-import { Number } from './Item.styles';
+import { Swipeable } from 'react-swipeable';
 import { itemsDB } from '../../database/items';
 import Tags from '../reusable/Tags/Tags';
-import { Swipeable } from 'react-swipeable';
-import queryString from 'query-string';
-import BlackOverlay from '../reusable/BlackOverlay';
-import styled from 'styled-components';
 import './Item.scss';
+import { ContrastingText, Header, HugeArrowButtons, Number } from './Item.styles';
 import BouncingArrowOverlay from './Overlay/Overlay';
 
 
@@ -22,11 +18,13 @@ const Item = (props) => {
   const [queryDirection, setQueryDirection] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const alterQty = num => {
+  const alterQty = (num, quan = quantity) => {
     setLoading(true);
 
-    const updatedNum = quantity + num;
+    const updatedNum = quan + num;
+    console.log('Updated', quan, num, updatedNum);
     setQty(updatedNum);
+
 
     itemsDB.update(details.id, {
       ...details,
@@ -36,19 +34,24 @@ const Item = (props) => {
     });
   }
 
+
   useEffect(() => {
+    console.log('Details', details.quantity);
+    setQty(details.quantity || 0);
+
     const queryObj = queryString.parse(location.search);
 
     if (queryObj && queryObj.qty) {
       setQueryDirection(+queryObj.qty);
-
-      alterQty(quantity + (+queryObj.qty));
     }
-  }, []);
+  }, [details]);
 
   useEffect(() => {
-    setQty(details.quantity || 0);
-  }, [details]);
+    console.log('Both change', queryDirection, details.quantity);
+    if (details.id) {
+      alterQty(queryDirection, details.quantity);
+    }
+  }, [queryDirection && details])
 
 
 
@@ -77,11 +80,10 @@ const Item = (props) => {
 
       </Box>
 
-      {/* {showModal &&  */}
 
-      {queryDirection && isLoading && <BouncingArrowOverlay direction={queryDirection} />}
+      {/* {queryDirection && <BouncingArrowOverlay direction={queryDirection} />} */}
 
-      {/* } */}
+
     </Swipeable>
   );
 }

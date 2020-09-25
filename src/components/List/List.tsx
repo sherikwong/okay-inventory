@@ -140,6 +140,8 @@ const List = ({ history }) => {
       .sort(sortQty)
       .sort(sortDate);
 
+
+    console.log(data);
     setFilteredData(data);
   };
 
