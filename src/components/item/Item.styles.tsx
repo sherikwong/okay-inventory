@@ -76,6 +76,3 @@ export const SizedUnsplash = styled(Unsplash)`
   }
 `;
 
-export const BlackOverlay = styled(Box)`
-background-color: rgba(0, 0, 0, .5)
-`

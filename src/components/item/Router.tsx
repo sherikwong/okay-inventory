@@ -7,11 +7,12 @@ import React, { useEffect, useState } from 'react';
 import { Route, Router, withRouter } from 'react-router-dom';
 import { itemsDB } from '../../database/items';
 import Name from './EditItem/Name';
-import { BlackOverlay, ContrastingButton, SizedUnsplash } from './Item.styles';
+import { ContrastingButton, SizedUnsplash } from './Item.styles';
 import Item from './Item';
 import './index.scss'
 import EditTags from './EditItem/EditTags';
 import EditDate from './EditItem/Date';
+import BlackOverlay from '../reusable/BlackOverlay';
 
 const ItemRouter = ({ match, history }) => {
   const id = match.params.id;
@@ -52,7 +53,7 @@ const ItemRouter = ({ match, history }) => {
         keywords={keywords}
         width={window.screen.width} height={window.screen.height} style={{ backgroundPosition: 'center center' }} />
 
-      <BlackOverlay fill={true}></BlackOverlay>
+      <BlackOverlay></BlackOverlay>
 
       <Box align="center" fill={true} justify="between">
 

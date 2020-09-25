@@ -28,7 +28,7 @@ const List = ({ history }) => {
   const toggleSortQty = () => setAscQty(!isAscQty);
 
   const [isAscDate, setAscDate] = useState(false);
-  const toggleSortDate = () => setAscQty(!isAscQty);
+  const toggleSortDate = () => setAscDate(!isAscDate);
 
   // useEffect(() => {
   let columns = [
@@ -49,13 +49,14 @@ const List = ({ history }) => {
       header: <></>,
     },
     {
-      property: 'name',
-      header: 'Name'
-    },
-    {
       property: 'tags',
-      header: 'Tags',
-      render: datum => <Tags tags={datum.tags} />
+      // header: 'Tags',
+      render: datum => (
+        <Box>
+          <span>{datum.name}</span>
+          <Tags tags={datum.tags} />
+        </Box>
+      )
     },
 
     {
@@ -134,7 +135,7 @@ const List = ({ history }) => {
         if (!(item.quantity >= 0)) {
           item.quantity = 0;
         }
-        return item;
+        return { ...item, date: new Date(item.date) };
       })
       .sort(sortQty)
       .sort(sortDate);
@@ -144,7 +145,7 @@ const List = ({ history }) => {
 
   useEffect(() => {
     updateFilteredData();
-  }, [isAscQty]);
+  }, [isAscQty, isAscDate]);
 
   return (
     <Router history={listHistory}>
