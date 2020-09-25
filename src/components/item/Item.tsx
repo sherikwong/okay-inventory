@@ -42,6 +42,7 @@ const Item = (props) => {
     const queryObj = queryString.parse(location.search);
 
     if (queryObj && queryObj.qty) {
+      setLoading(true)
       setQueryDirection(+queryObj.qty);
     }
   }, [details]);
@@ -81,7 +82,7 @@ const Item = (props) => {
       </Box>
 
 
-      {/* {queryDirection && <BouncingArrowOverlay direction={queryDirection} />} */}
+      {queryDirection && isLoading && <BouncingArrowOverlay direction={queryDirection} />}
 
 
     </Swipeable>
