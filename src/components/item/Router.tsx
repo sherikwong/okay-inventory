@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Box, Stack } from 'grommet';
-import { Menu, Edit } from 'grommet-icons';
-import { createBrowserHistory } from 'history';
+import { Edit, Menu } from 'grommet-icons';
 import React, { useEffect, useState } from 'react';
-import { Route, Router, withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { itemsDB } from '../../database/items';
-import Name from './EditItem/Name';
-import { ContrastingButton, SizedUnsplash } from './Item.styles';
-import Item from './Item';
-import './index.scss'
-import EditTags from './EditItem/EditTags';
-import EditDate from './EditItem/Date';
 import BlackOverlay from '../reusable/BlackOverlay';
+import EditDate from './EditItem/Date';
+import EditTags from './EditItem/EditTags';
+import Name from './EditItem/Name';
+import './index.scss';
+import Item from './Item';
+import { ContrastingButton, SizedUnsplash } from './Item.styles';
 
 const ItemRouter = ({ match, history }) => {
   const id = match.params.id;
@@ -25,19 +24,7 @@ const ItemRouter = ({ match, history }) => {
   });
 
 
-  useEffect(() => {
-    if (id) {
-      get();
-    }
-  }, []);
 
-  const get = () => {
-    itemsDB.get(id).then(res => {
-      setDetails({ ...details, ...res });
-
-      setQty(res && res.quantity ? res.quantity : 0);
-    });
-  }
 
   const navToEdit = () => {
     history.push(`/item/${id}/edit/name`);
@@ -45,6 +32,17 @@ const ItemRouter = ({ match, history }) => {
 
   const keywords = details && details.name.split(' ').join(',') + ',food';
   // console.log(keywords);
+
+
+  useEffect(() => {
+    if (id) {
+      itemsDB.get(id).then(res => {
+        setDetails({ ...details, ...res });
+
+        setQty(res && res.quantity ? res.quantity : 0);
+      });
+    }
+  }, [id, details]);
 
   return (
     <Stack fill={true} className="item-stack" id="item">
@@ -65,15 +63,15 @@ const ItemRouter = ({ match, history }) => {
         <Box className="item-router-wrapper" pad="large">
 
           <Route path={`/item/:id/edit/tags`}>
-            <EditTags details={details} onUpdate={get} />
+            <EditTags details={details} />
           </Route>
 
           <Route path={`/item/:id/edit/date`}>
-            <EditDate details={details} onUpdate={get} />
+            <EditDate details={details} />
           </Route>
 
           <Route path={`/item/:id/edit/name`}>
-            <Name details={details} onUpdate={get} />
+            <Name details={details} />
           </Route>
 
           <Route path={`/item/:id`} exact>

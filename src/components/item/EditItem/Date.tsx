@@ -29,7 +29,7 @@ const EditDate = props => {
 
   return (
     <WhiteBgBox>
-      <DayPicker selectedDays={[details.date]} onDayClick={onChange} />
+      <DayPicker selectedDays={[date]} onDayClick={onChange} />
     </WhiteBgBox>
   );
 

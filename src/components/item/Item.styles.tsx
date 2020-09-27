@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { Button, Box } from 'grommet';
+import { Button } from 'grommet';
 import Unsplash from 'react-unsplash-wrapper';
+import styled from 'styled-components';
 
 export const ContrastingText = styled.span`
 mix-blend-mode: difference;

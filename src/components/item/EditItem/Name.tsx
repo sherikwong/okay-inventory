@@ -6,7 +6,7 @@ import SpinnerButton from '../../reusable/SpinnerButton/SpinnerButton';
 import { WhiteBgTextInput } from './EditTags';
 
 const Name = props => {
-  const { details, onUpdate, history } = props;
+  const { details, history } = props;
   const [name, setName] = useState('Name');
   const [loading, setLoading] = useState(false);
 

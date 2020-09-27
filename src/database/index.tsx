@@ -1,4 +1,5 @@
-import { database, initializeApp, analytics } from 'firebase';
+// import { analytics, database, initializeApp } from 'firebase';
+import { initializeApp, database } from 'firebase';
 
 var firebaseConfig = {
   apiKey: "AIzaSyDj00a0U6ld-u8Pne_BsT9qJfAUb3IW3Y4",
@@ -12,7 +13,7 @@ var firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-analytics();
+// // analytics();
 
 export const db = database();
 

@@ -1,11 +1,8 @@
 import React from 'react';
-import { QrCodeWrapper } from '../item/Item.styles';
-import { QrCode } from 'qrcode.react';
-import { Box } from 'grommet';
 import QrReader from 'react-qr-reader';
 import { withRouter } from 'react-router-dom';
-import './scan.scss';
 import { itemsDB } from '../../database/items';
+import './scan.scss';
 
 const Scan = props => {
   const { history } = props;

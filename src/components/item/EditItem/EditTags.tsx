@@ -39,7 +39,7 @@ const EditTags = props => {
 
   useEffect(() => {
     setTags(new Set(details ? details.tags : state.details.tags));
-  }, [details]);
+  }, [details, state]);
 
   const removeExistingTags = () => {
     console.log(allTags);

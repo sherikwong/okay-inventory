@@ -35,7 +35,7 @@ const Tags = props => {
       }
     }
     setQueriedTags(tempTags);
-  }, [allTags]);
+  }, [allTags, tags]);
 
   return (
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>

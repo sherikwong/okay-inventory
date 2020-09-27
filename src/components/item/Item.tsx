@@ -2,7 +2,7 @@
 import { Box } from 'grommet';
 import { Down, Up } from 'grommet-icons';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import { itemsDB } from '../../database/items';
@@ -18,7 +18,7 @@ const Item = (props) => {
   const [queryDirection, setQueryDirection] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const alterQty = (num, quan = quantity) => {
+  const alterQty = useCallback((num, quan = quantity) => {
     setLoading(true);
 
     const updatedNum = quan + num;
@@ -32,7 +32,7 @@ const Item = (props) => {
     }).then(() => {
       setLoading(false);
     });
-  }
+  }, [details, quantity])
 
 
   useEffect(() => {
@@ -45,16 +45,14 @@ const Item = (props) => {
       setLoading(true)
       setQueryDirection(+queryObj.qty);
     }
-  }, [details]);
+  }, [details, location]);
 
   useEffect(() => {
     console.log('Both change', queryDirection, details.quantity);
     if (details.id) {
       alterQty(queryDirection, details.quantity);
     }
-  }, [queryDirection && details])
-
-
+  }, [queryDirection, details, alterQty])
 
   return (
     <Swipeable onSwipedDown={() => alterQty(-1)} onSwipedUp={() => alterQty(1)}>

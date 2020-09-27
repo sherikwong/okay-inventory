@@ -23,52 +23,13 @@ const FilledSwipable = styled(Swipeable)`
 
 const List = ({ history }) => {
   const [items, setItems] = useState([] as IItem[]);
-
   const [isAscQty, setAscQty] = useState(false);
-  const toggleSortQty = () => setAscQty(!isAscQty);
-
   const [isAscDate, setAscDate] = useState(false);
+  const [hasHadInitialFilter, setHasHadInitialFilter] = useState(false);
+  const [filteredData, setFilteredData] = useState([] as IItem[]);
+
+  const toggleSortQty = () => setAscQty(!isAscQty);
   const toggleSortDate = () => setAscDate(!isAscDate);
-
-  // useEffect(() => {
-  let columns = [
-    {
-      property: 'date',
-      header: (
-        <Box direction="row" align="center">
-          <span>Date</span>
-          <Button icon={isAscDate ? <Up /> : <Down />} onClick={toggleSortDate} />
-        </Box>
-      ),
-      render: datum => datum.date ? (<span>{new Date(datum.date).toLocaleDateString("en-US")}</span>) : <></>
-    },
-    {
-      property: 'id',
-      primary: true,
-      render: datum => <></>,
-      header: <></>,
-    },
-    {
-      property: 'tags',
-      // header: 'Tags',
-      render: datum => (
-        <Box>
-          <span>{datum.name}</span>
-          <Tags tags={datum.tags} />
-        </Box>
-      )
-    },
-
-    {
-      property: 'quantity',
-      header: (
-        <Box direction="row" align="center">
-          <span>Qty</span>
-          <Button icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} />
-        </Box>
-      ),
-    }
-  ];
 
   useEffect(() => {
     itemsDB.getAll()
@@ -88,13 +49,11 @@ const List = ({ history }) => {
   };
 
   const [filter, setFilter] = useState({
-    name: '',
-    tags: new Set([])
   } as ListFilters | undefined);
 
   const onFilter = (newFilter: ListFilters) => {
-    console.log(newFilter);
     setHasHadInitialFilter(true);
+    console.log('Filtering', newFilter);
 
     if (!newFilter.name && !newFilter.tags) {
       setFilter(undefined);
@@ -103,21 +62,14 @@ const List = ({ history }) => {
     }
   }
 
-  const [hasHadInitialFilter, setHasHadInitialFilter] = useState(false);
-
-  const [filteredData, setFilteredData] = useState([] as IItem[]);
 
   useEffect(() => {
-    updateFilteredData();
-  }, [filter, items]);
-
-  const updateFilteredData = () => {
     const filterCb = (item: IItem) => {
-      if (item && filter) {
-        const hasMatchingName = item.name && filter.name && item.name.toLowerCase().includes(filter.name.toLowerCase()) || false;
-        const hasMatchingTags = filter.tags.size ? !!intersection(item.tags, filter.tags ? [...filter.tags] : []).length : true;
+      if (!!item && !!filter) {
+        const hasMatchingName = (item.name && filter.name) ? item.name.toLowerCase().includes(filter.name.toLowerCase()) : false;
+        const hasMatchingTags = (filter.tags && filter.tags.size) ? !!intersection(item.tags, filter.tags ? [...filter.tags] : []).length : true;
 
-        return hasMatchingName || hasMatchingTags;
+        return hasMatchingName && hasMatchingTags;
       }
       return true;
     }
@@ -140,14 +92,52 @@ const List = ({ history }) => {
       .sort(sortQty)
       .sort(sortDate);
 
-
-    console.log(data);
     setFilteredData(data);
-  };
+  }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter]);
 
-  useEffect(() => {
-    updateFilteredData();
-  }, [isAscQty, isAscDate]);
+  let columns = [
+    {
+      property: 'date',
+      header: (
+        <Box direction="row" align="center">
+          <span>Date</span>
+          <Button icon={isAscDate ? <Up /> : <Down />} onClick={toggleSortDate} />
+        </Box>
+      ),
+      render: datum => datum.date ? (<span>{new Date(datum.date).toLocaleDateString("en-US")}</span>) : <></>
+    },
+    {
+      property: 'id',
+      primary: true,
+      render: datum => <></>,
+      header: <></>,
+    },
+    {
+      property: 'name',
+      header: (
+        <ListNameFilter onFilter={onFilter} />
+      )
+    },
+    {
+      property: 'tags',
+      header: (
+        <ListTagsFilter onFilter={onFilter} />
+      ),
+      render: datum => (
+        <Tags tags={datum.tags} />
+      )
+    },
+
+    {
+      property: 'quantity',
+      header: (
+        <Box direction="row" align="center">
+          <span>Qty</span>
+          <Button icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} />
+        </Box>
+      ),
+    }
+  ];
 
   return (
     <Router history={listHistory}>
@@ -156,11 +146,6 @@ const List = ({ history }) => {
       {/* <Route path="/list/filter/tags">
 
 {/* </Route> */}
-
-
-      <ListNameFilter onFilter={onFilter} />
-      <ListTagsFilter onFilter={onFilter} />
-
       {/* <Route exact path="/list"> */}
       <Box justify="between" direction="column" align="center" fill={true} id="list">
         <FilledSwipable onSwipedDown={createNew} >

@@ -35,11 +35,7 @@ const App = () => {
 
   return (
     <Grommet theme={theme}>
-      <ModalContext.Provider value={{ showModal, toggleModal }}>
 
-        <OverlayLoaderContext.Provider value={{ loadOverlay, setLoadOverlay }}>
-          <OverlayLoader show={loadOverlay}>
-            <Stack fill={true} className="overflow-container" id="initial-stack">
               <Router history={history}>
 
 
@@ -53,16 +49,9 @@ const App = () => {
                 <Route exact path="/" component={Scan} />
 
               </Router>
-              {/* <Box align="end" justify="end">
-            <NavButtons />
-          </Box> */}
-            </Stack>
-          </OverlayLoader>
-        </OverlayLoaderContext.Provider>
 
-        <Modal showModal={showModal} toggleModal={toggleModal} />
 
-      </ModalContext.Provider>
+
     </Grommet>
   );
 };
