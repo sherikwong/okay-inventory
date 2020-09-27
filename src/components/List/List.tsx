@@ -2,7 +2,7 @@ import { Box, Button, DataTable } from 'grommet';
 import { Add, Up, Down } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Router, withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import styled from 'styled-components';
@@ -11,6 +11,8 @@ import { IItem } from '../../models/items';
 import Tags from '../reusable/Tags/Tags';
 import ListNameFilter from './Filters/name';
 import ListTagsFilter from './Filters/tags';
+import { NavContext } from '../navigation/navigation';
+import { INavButton } from '../../App';
 
 export const listHistory = createBrowserHistory();
 
@@ -139,32 +141,43 @@ const List = ({ history }) => {
     }
   ];
 
+  const addNewItem = () => {
+
+  };
+
+  const _buttons = {
+    bottom: [{
+      icon: Add,
+      click: useCallback(addNewItem, [])
+    }] as INavButton[]
+  };
+
   return (
-    <Router history={listHistory}>
+    <NavContext.Consumer>
+      {({ setButtons, buttons }) => {
 
+        setButtons(_buttons);
 
-      {/* <Route path="/list/filter/tags">
+        return (
 
-{/* </Route> */}
-      {/* <Route exact path="/list"> */}
-      <Box justify="between" direction="column" align="center" fill={true} id="list">
-        <FilledSwipable onSwipedDown={createNew} >
-          <DataTable columns={columns} data={filteredData}
-            onClickRow={onClickRow}
-            primaryKey="id" />
+          <Router history={listHistory}>
+            <Box justify="between" direction="column" align="center" fill={true} id="list">
+              <FilledSwipable onSwipedDown={createNew} >
+                <DataTable columns={columns} data={filteredData}
+                  onClickRow={onClickRow}
+                  primaryKey="id" />
 
-          <Box direction="row" justify="center" pad="medium">
-            <Button primary icon={<Add />} onClick={createNew} />
-          </Box>
-        </FilledSwipable>
-      </Box>
-      {/* </Route> */}
-    </Router>
+                <Box direction="row" justify="center" pad="medium">
+                  <Button primary icon={<Add />} onClick={createNew} />
+                </Box>
+              </FilledSwipable>
+            </Box>
+            {/* </Route> */}
+          </Router>
+        )
+      }}
 
-
-
-
-
+    </NavContext.Consumer>
   );
 };
 

@@ -1,17 +1,33 @@
-import React, { createContext } from "react";
+import React, { createContext, createFactory } from "react";
 import styled from 'styled-components';
-import { routes, IRoute } from '../../App';
+import { INavButton, IRoute } from '../../App';
 
-export const NavContext = createContext({} as IRoute);
+export interface INavButtons {
+  top?: INavButton[];
+  bottom?: INavButton[];
+}
+
+export interface INavContext {
+  setButtons: any;
+  buttons: INavButtons;
+}
+
+export const NavContext = createContext({} as INavContext);
 
 const Container = styled.div`
   display: flex;
   justify-content: between;
 `
 
-const Navigation = props => {
+const Navigation = ({ direction }) => {
   return (
-    <Container id="navigation-container" />
+    <NavContext.Consumer>
+      {({ setButtons, buttons }) => (
+        <Container className="navigation-container">
+          {buttons && buttons[direction] && buttons[direction].map(button => createFactory(button.icon))}
+        </Container>
+
+      )}</NavContext.Consumer>
   );
 };
 

@@ -17,8 +17,8 @@ const Scan = props => {
   }
 
 
-  return (
-    <QrReader style={{ height: '100%' }} className="container" onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
+  return (<></>
+    // <QrReader style={{ height: '100%' }} className="container" onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
 
 
   );

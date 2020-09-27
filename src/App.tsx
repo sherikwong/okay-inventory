@@ -3,12 +3,12 @@ import { Grommet } from 'grommet';
 // import List from './components/List/List';
 import { createBrowserHistory } from 'history';
 import React, { useState, createFactory, ComponentClass } from 'react';
-import { Route, Router } from 'react-router-dom';
+import { Route, Router, withRouter } from 'react-router-dom';
 import './App.scss';
 import ItemRouter from './components/item/Router';
 import List from './components/List/List';
 import Scan from './components/scan/scan';
-import Navigation, { NavContext } from './components/navigation/navigation';
+import Navigation, { NavContext, INavContext } from './components/navigation/navigation';
 
 const theme = {
   calendar: {
@@ -55,26 +55,26 @@ export const routes: { [key: string]: IRoute } = {
 const history = createBrowserHistory();
 
 const App = () => {
-
   const [loadOverlay, setLoadOverlay] = useState(false);
   const [showModal, toggleModal] = useState(false);
+  const [buttons, setButtons] = useState(routes['/'].buttons);
 
   return (
     <Grommet theme={theme}>
-      <NavContext.Provider value={routes['/']}>
-        <Navigation />
+      <NavContext.Provider value={{ buttons, setButtons: newBtns => () => setButtons(newBtns) }}>
+
+        <Navigation direction="top" />
+
         <Router history={history}>
 
           {Object.entries(routes).map(([path, info]) => (
             <Route path={path} key={path} component={createFactory(info.component)} />
           ))}
 
-
-
         </Router>
 
+        <Navigation direction="bottom" />
 
-        <Navigation />
       </NavContext.Provider>
 
     </Grommet>
