@@ -1,21 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Grommet, Stack } from 'grommet';
-import React, { useState } from 'react';
-import { Route, Router } from 'react-router-dom';
-import './App.scss';
-import OverlayLoader from './components/reusable/OverlayLoader/OverlayLoader';
-import OverlayLoaderContext from './contexts/main-loader';
-import ModalContext from './components/modal/ModalContext';
-import Modal from './components/modal/Modal';
+import { Grommet } from 'grommet';
 // import List from './components/List/List';
 import { createBrowserHistory } from 'history';
-import List from './components/List/List';
+import React, { useState, createFactory, ComponentClass } from 'react';
+import { Route, Router } from 'react-router-dom';
+import './App.scss';
 import ItemRouter from './components/item/Router';
+import List from './components/List/List';
 import Scan from './components/scan/scan';
-// import ItemRouter from './components/item/ItemRouter';
-
-// import Item from './components/Item';
-// import EditItem from './components/item/EditItem/EditItem';
+import Navigation, { NavContext } from './components/navigation/navigation';
 
 const theme = {
   calendar: {
@@ -25,6 +18,39 @@ const theme = {
   }
 };
 
+export interface INavButton {
+  icon: any;
+  click: () => {};
+}
+export interface IRoute {
+  component: ComponentClass;
+  buttons: { [key: string]: INavButton[] };
+}
+
+export const routes: { [key: string]: IRoute } = {
+  '/item/:id': {
+    component: ItemRouter,
+    buttons: {
+      top: [],
+      bottom: []
+    }
+  },
+  '/list': {
+    component: List,
+    buttons: {
+      top: [],
+      bottom: []
+    }
+  },
+  '/': {
+    component: Scan,
+    buttons: {
+      top: [],
+      bottom: []
+    },
+
+  },
+}
 
 const history = createBrowserHistory();
 
@@ -35,22 +61,21 @@ const App = () => {
 
   return (
     <Grommet theme={theme}>
+      <NavContext.Provider value={routes['/']}>
+        <Navigation />
+        <Router history={history}>
 
-              <Router history={history}>
-
-
-                {/* <Route path="/" component={Tags} /> */}
-
-                {/* <Route path="/item/:id/edit" component={EditItem} /> */}
-                <Route path="/item/:id" component={ItemRouter} />
-                {/* <Route exact path="/items/new" component={EditItem} /> */}
-
-                <Route exact path="/list" component={List} />
-                <Route exact path="/" component={Scan} />
-
-              </Router>
+          {Object.entries(routes).map(([path, info]) => (
+            <Route path={path} key={path} component={createFactory(info.component)} />
+          ))}
 
 
+
+        </Router>
+
+
+        <Navigation />
+      </NavContext.Provider>
 
     </Grommet>
   );
