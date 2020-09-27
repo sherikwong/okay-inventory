@@ -22,12 +22,19 @@ const Container = styled.div`
 const Navigation = ({ direction }) => {
   return (
     <NavContext.Consumer>
-      {({ setButtons, buttons }) => (
-        <Container className="navigation-container">
-          {buttons && buttons[direction] && buttons[direction].map(button => createFactory(button.icon))}
-        </Container>
+      {({ setButtons, buttons }) => {
+        console.log(buttons);
 
-      )}</NavContext.Consumer>
+        return (
+          <Container className="navigation-container">
+            {buttons && buttons[direction] && buttons[direction].map(button => createFactory(button.icon))}
+          </Container>
+
+        );
+      }
+      }
+
+    </NavContext.Consumer>
   );
 };
 

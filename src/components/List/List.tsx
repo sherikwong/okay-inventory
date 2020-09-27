@@ -145,12 +145,17 @@ const List = ({ history }) => {
 
   };
 
-  const _buttons = {
-    bottom: [{
-      icon: Add,
-      click: useCallback(addNewItem, [])
-    }] as INavButton[]
-  };
+  const [_buttons, _setButtons] = useState({});
+
+  useEffect(() => {
+    _setButtons({
+      bottom: [{
+        icon: Add,
+        click: addNewItem,
+      }] as INavButton[]
+    });
+  }, []);
+
 
   return (
     <NavContext.Consumer>
