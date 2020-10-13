@@ -2,7 +2,7 @@
 import { Grommet } from 'grommet';
 import { createBrowserHistory } from 'history';
 import React, { ComponentClass, createFactory, useState, useEffect } from 'react';
-import { Route, Router } from 'react-router-dom';
+import { Route, Router, withRouter } from 'react-router-dom';
 import { FirebaseAuthProvider } from 'use-firebase-auth';
 import './App.scss';
 import Authentication, { IS_AUTHENTICATED } from './components/authentication/authentication';
@@ -79,4 +79,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withRouter(App);
