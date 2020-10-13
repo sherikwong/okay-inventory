@@ -53,7 +53,7 @@ const ItemRouter = ({ match, history }) => {
       <Box align="center" fill={true} justify="between">
 
         <Box direction="row" justify="between" pad="medium" fill="horizontal">
-          <ContrastingButton secondary icon={<Menu />} onClick={() => history.push('/list')} />
+          <ContrastingButton secondary icon={<Menu />} onClick={() => history.push('/')} />
           <ContrastingButton secondary icon={<Edit />} onClick={navToEdit} />
         </Box>
 

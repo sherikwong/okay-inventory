@@ -20,7 +20,7 @@ const theme = {
     medium: {
       daySize: 'calc(100vw/8)'
     }
-  }
+  },
 };
 
 export interface INavButton {
@@ -65,7 +65,7 @@ const App = () => {
   const hasAuthenticatedCookie = cookies.get(IS_AUTHENTICATED);
 
   return (
-      <Grommet theme={theme}>
+      <Grommet theme={theme} themeMode="dark">
         <Router history={history}>
           {
             hasAuthenticatedCookie || isAuthenticated

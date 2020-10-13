@@ -18,7 +18,7 @@ const Item = (props) => {
   const [queryDirection, setQueryDirection] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const alterQty = useCallback((num, quan = quantity) => {
+  const alterQty = (num, quan = quantity) => {
     setLoading(true);
 
     const updatedNum = quan + num;
@@ -32,20 +32,19 @@ const Item = (props) => {
     }).then(() => {
       setLoading(false);
     });
-  }, [details])
+  };
 
 
-  // useEffect(() => {
-  //   console.log('Details', details.quantity);
-  //   setQty(details.quantity || 0);
+  useEffect(() => {
+    setQty(details.quantity || 0);
 
-  //   const queryObj = queryString.parse(location.search);
+    // const queryObj = queryString.parse(location.search);
 
-  //   if (queryObj && queryObj.qty) {
-  //     setLoading(true)
-  //     setQueryDirection(+queryObj.qty);
-  //   }
-  // }, []);
+    // if (queryObj && queryObj.qty) {
+    //   setLoading(true)
+    //   setQueryDirection(+queryObj.qty);
+    // }
+  }, [details]);
 
   // useEffect(() => {
   //   console.log('Both change', queryDirection, details.quantity);
