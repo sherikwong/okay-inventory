@@ -68,7 +68,7 @@ const App = () => {
       <Grommet theme={theme}>
         <Router history={history}>
           {
-            isAuthenticated
+            hasAuthenticatedCookie || isAuthenticated
               ? (Object.entries(routes).map(([path, info]) => (
                 <Route path={path} key={path} component={createFactory(info.component as any)} exact />
               )))
