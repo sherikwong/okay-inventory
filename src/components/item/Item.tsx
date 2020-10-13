@@ -32,27 +32,27 @@ const Item = (props) => {
     }).then(() => {
       setLoading(false);
     });
-  }, [details, quantity])
+  }, [details])
 
 
-  useEffect(() => {
-    console.log('Details', details.quantity);
-    setQty(details.quantity || 0);
+  // useEffect(() => {
+  //   console.log('Details', details.quantity);
+  //   setQty(details.quantity || 0);
 
-    const queryObj = queryString.parse(location.search);
+  //   const queryObj = queryString.parse(location.search);
 
-    if (queryObj && queryObj.qty) {
-      setLoading(true)
-      setQueryDirection(+queryObj.qty);
-    }
-  }, [details, location]);
+  //   if (queryObj && queryObj.qty) {
+  //     setLoading(true)
+  //     setQueryDirection(+queryObj.qty);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    console.log('Both change', queryDirection, details.quantity);
-    if (details.id) {
-      alterQty(queryDirection, details.quantity);
-    }
-  }, [queryDirection, details, alterQty])
+  // useEffect(() => {
+  //   console.log('Both change', queryDirection, details.quantity);
+  //   if (details.id) {
+  //     alterQty(queryDirection, details.quantity);
+  //   }
+  // }, [queryDirection, details, alterQty])
 
   return (
     <Swipeable onSwipedDown={() => alterQty(-1)} onSwipedUp={() => alterQty(1)}>

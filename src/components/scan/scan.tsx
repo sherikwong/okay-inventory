@@ -6,6 +6,7 @@ import './scan.scss';
 
 const Scan = props => {
   const { history } = props;
+
   const onScan = (qrTranslation: string | null) => {
     if (qrTranslation) {
       itemsDB.get(qrTranslation).then(item => {
@@ -17,10 +18,8 @@ const Scan = props => {
   }
 
 
-  return (<></>
-    // <QrReader style={{ height: '100%' }} className="container" onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
-
-
+  return (
+    <QrReader style={{ height: '100%' }} className="container" onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
   );
 }
 

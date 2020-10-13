@@ -23,9 +23,6 @@ const ItemRouter = ({ match, history }) => {
     tags: [],
   });
 
-
-
-
   const navToEdit = () => {
     history.push(`/item/${id}/edit/name`);
   }

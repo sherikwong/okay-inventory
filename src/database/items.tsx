@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { db } from '.';
-import { BaseDB, IBaseDB } from './base';
 import { IItem } from '../models/items';
+import { BaseDB, IBaseDB } from './base';
 
 export interface IItemsDB extends IBaseDB<IItem> {
 

@@ -13,7 +13,6 @@ var firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-// // analytics();
 
 export const db = database();
 

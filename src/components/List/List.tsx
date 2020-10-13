@@ -1,5 +1,5 @@
 import { Box, Button, DataTable } from 'grommet';
-import { Add, Up, Down } from 'grommet-icons';
+import { Add, Up, Down, Menu, Camera } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
 import React, { useEffect, useState, useCallback } from 'react';
@@ -145,44 +145,41 @@ const List = ({ history }) => {
 
   };
 
-  const [_buttons, _setButtons] = useState({});
+  // const [_buttons, _setButtons] = useState({});
 
-  useEffect(() => {
-    _setButtons({
-      bottom: [{
-        icon: Add,
-        click: addNewItem,
-      }] as INavButton[]
-    });
-  }, []);
+  // useEffect(() => {
+  //   _setButtons({
+  //     bottom: [{
+  //       icon: Add,
+  //       click: addNewItem,
+  //     }] as INavButton[]
+  //   });
+  // }, []);
 
+
+  const goToCamera = () => {
+    history.push('/');
+  }
 
   return (
-    <NavContext.Consumer>
-      {({ setButtons, buttons }) => {
+    <Box fill={true}>
+      <Button icon={<Camera />} onClick={goToCamera}/>
 
-        setButtons(_buttons);
 
-        return (
+      <Router history={listHistory}>
+        <Box justify="between" direction="column" align="center" fill={true} id="list">
+          <FilledSwipable onSwipedDown={createNew} >
+            <DataTable columns={columns} data={filteredData}
+              onClickRow={onClickRow}
+              primaryKey="id" />
 
-          <Router history={listHistory}>
-            <Box justify="between" direction="column" align="center" fill={true} id="list">
-              <FilledSwipable onSwipedDown={createNew} >
-                <DataTable columns={columns} data={filteredData}
-                  onClickRow={onClickRow}
-                  primaryKey="id" />
-
-                <Box direction="row" justify="center" pad="medium">
-                  <Button primary icon={<Add />} onClick={createNew} />
-                </Box>
-              </FilledSwipable>
+            <Box direction="row" justify="center" pad="medium">
+              <Button primary icon={<Add />} onClick={createNew} />
             </Box>
-            {/* </Route> */}
-          </Router>
-        )
-      }}
-
-    </NavContext.Consumer>
+          </FilledSwipable>
+        </Box>
+      </Router>
+    </Box>
   );
 };
 

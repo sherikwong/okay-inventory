@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Grommet } from 'grommet';
-// import List from './components/List/List';
 import { createBrowserHistory } from 'history';
-import React, { useState, createFactory, ComponentClass, useMemo } from 'react';
-import { Route, Router, withRouter } from 'react-router-dom';
+import React, { ComponentClass, createFactory, useState, useEffect } from 'react';
+import { Route, Router } from 'react-router-dom';
+import { FirebaseAuthProvider } from 'use-firebase-auth';
 import './App.scss';
-import ItemRouter from './components/item/Router';
+import Authentication, { IS_AUTHENTICATED } from './components/authentication/authentication';
+import { db } from './database';
+// import { List } from '../node_modules/grommet-icons/icons';
 import List from './components/List/List';
-import Scan from './components/scan/scan';
-import Navigation, { NavContext, INavContext } from './components/navigation/navigation';
-import { useCallback } from 'react';
+import { Menu } from 'grommet-icons';
+import ItemRouter from './components/item/Router';
+import { cookies } from './index';
+
 
 const theme = {
   calendar: {
@@ -21,14 +24,14 @@ const theme = {
 
 export interface INavButton {
   icon: any;
-  click: () => {};
+  click?: () => {};
 }
 export interface IRoute {
   component: ComponentClass;
-  buttons: { [key: string]: INavButton[] };
+  buttons?: { [key: string]: INavButton[] };
 }
 
-export const routes: { [key: string]: IRoute } = {
+export const routes = {
   '/item/:id': {
     component: ItemRouter,
     buttons: {
@@ -44,47 +47,45 @@ export const routes: { [key: string]: IRoute } = {
     }
   },
   '/': {
-    component: Scan,
+    component: List,
     buttons: {
-      top: [],
+      top: [{
+        icon: Menu
+      }],
       bottom: []
     },
-
-  },
-}
+  }
+};
 
 const history = createBrowserHistory();
 
 const App = () => {
-  const [buttons, _setButtons] = useState(routes['/'].buttons);
-  const [updateButtons, setUpdateButtons] = useState();
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const hasAuthenticatedCookie = cookies.get(IS_AUTHENTICATED);
 
-  const setButtons = newBtns => {
-    console.log('Outside', newBtns);
-    _setButtons(newBtns);
-
-  };
-
-  return useMemo(() => (
-    <Grommet theme={theme}>
-      <NavContext.Provider value={{ buttons, setButtons: setUpdateButtons }}>
+  return (
+    <FirebaseAuthProvider firebase={db.app as any}>
+      <Grommet theme={theme}>
+        {/* <NavContext.Provider value={{ buttons, setButtons: setUpdateButtons }}> */}
 
         {/* <Navigation direction="top" /> */}
 
         <Router history={history}>
-
-          {Object.entries(routes).map(([path, info]) => (
-            <Route path={path} key={path} component={createFactory(info.component)} />
-          ))}
-
+          {
+            hasAuthenticatedCookie || isAuthenticated
+              ? (Object.entries(routes).map(([path, info]) => (
+                <Route path={path} key={path} component={createFactory(info.component as any)} exact/>
+              )))
+              : (<Authentication setAuthenticated={setAuthenticated} />)
+          }
         </Router>
 
         {/* <Navigation direction="bottom" /> */}
 
-      </NavContext.Provider>
+        {/* </NavContext.Provider> */}
 
-    </Grommet>),
-    [buttons]
+      </Grommet>
+    </FirebaseAuthProvider>
   );
 };
 
