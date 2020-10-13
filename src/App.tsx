@@ -12,6 +12,7 @@ import List from './components/List/List';
 import { Menu } from 'grommet-icons';
 import ItemRouter from './components/item/Router';
 import { cookies } from './index';
+import Scan from './components/scan/scan';
 
 
 const theme = {
@@ -47,7 +48,7 @@ export const routes = {
     }
   },
   '/': {
-    component: List,
+    component: Scan,
     buttons: {
       top: [{
         icon: Menu
@@ -64,28 +65,17 @@ const App = () => {
   const hasAuthenticatedCookie = cookies.get(IS_AUTHENTICATED);
 
   return (
-    <FirebaseAuthProvider firebase={db.app as any}>
       <Grommet theme={theme}>
-        {/* <NavContext.Provider value={{ buttons, setButtons: setUpdateButtons }}> */}
-
-        {/* <Navigation direction="top" /> */}
-
         <Router history={history}>
           {
-            hasAuthenticatedCookie || isAuthenticated
+            isAuthenticated
               ? (Object.entries(routes).map(([path, info]) => (
-                <Route path={path} key={path} component={createFactory(info.component as any)} exact/>
+                <Route path={path} key={path} component={createFactory(info.component as any)} exact />
               )))
               : (<Authentication setAuthenticated={setAuthenticated} />)
           }
         </Router>
-
-        {/* <Navigation direction="bottom" /> */}
-
-        {/* </NavContext.Provider> */}
-
       </Grommet>
-    </FirebaseAuthProvider>
   );
 };
 

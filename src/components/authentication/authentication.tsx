@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { usersDB } from '../../database/users';
 import { cookies } from '../../index';
 import { CookieOptions } from '../../../node_modules/@types/express-serve-static-core';
+import Logo from '../reusable/logo/logo';
 
 
 export const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
@@ -17,7 +18,7 @@ const Authentication = (props) => {
           props.setAuthenticated(true);
 
           const expires = new Date();
-          expires.setTime( expires.getTime() + 10 * 86400000 );
+          expires.setTime(expires.getTime() + 10 * 86400000);
 
           cookies.set(
             IS_AUTHENTICATED,
@@ -33,7 +34,9 @@ const Authentication = (props) => {
   }
 
   return (
-    <Box fill={true} align="center" justify="center">
+    <Box fill={true} align="center" justify="center" id="authentication">
+
+      <Logo animated={true}/>
 
       <GoogleLogin
         clientId="486767954182-ts607v7hkaftr7harabtqtvkmcc005g0.apps.googleusercontent.com"
