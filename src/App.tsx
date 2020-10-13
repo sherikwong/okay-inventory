@@ -48,7 +48,7 @@ export const routes = {
     }
   },
   '/': {
-    component: Scan,
+    component: List,
     buttons: {
       top: [{
         icon: Menu
