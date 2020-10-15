@@ -13,7 +13,8 @@ import BouncingArrowOverlay from './Overlay/Overlay';
 
 
 const Item = (props) => {
-  const { match, location } = props;;
+  const { match, location } = props;
+  const queryObj = queryString.parse(location.search);
 
   const { details, setDetails } = useItem(match.params.id);
   const [hasInitialized, setInitialized] = useState(false);
@@ -34,8 +35,6 @@ const Item = (props) => {
 
   useEffect(() => {
     if (!hasInitialized && details.name) {
-      const queryObj = queryString.parse(location.search);
-
       if (queryObj && queryObj.qty) {
         setInitialized(true);
         alterQty(+queryObj.qty);
@@ -67,7 +66,7 @@ const Item = (props) => {
 
       </Box>
 
-      <BouncingArrowOverlay direction="down" className="animate__animated animate__fadeOut animate__slower" />
+      {queryObj && queryObj.qty && <BouncingArrowOverlay direction="down" className="animate__animated animate__fadeOut animate__slower" />}
 
     </Swipeable>
   ) : (<></>);
