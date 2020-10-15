@@ -20,8 +20,9 @@ const Item = (props) => {
   const [hasInitialized, setInitialized] = useState(false);
 
   const alterQty = (num, quan = details.quantity) => {
+    const sanitizedQuantity = isNaN(+quan) ? 0 : +quan;
 
-    const updatedNum = quan + num;
+    const updatedNum = sanitizedQuantity + +num;
 
     const updatedDetails = {
       ...details,
