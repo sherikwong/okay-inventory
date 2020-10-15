@@ -40,22 +40,22 @@ export const routes = {
       bottom: []
     }
   },
-  '/': {
+  '/list': {
     component: List,
     buttons: {
       top: [],
       bottom: []
     }
   },
-  // '/': {
-  //   component: Scan,
-  //   buttons: {
-  //     top: [{
-  //       icon: Menu
-  //     }],
-  //     bottom: []
-  //   },
-  // }
+  '/': {
+    component: Scan,
+    buttons: {
+      top: [{
+        icon: Menu
+      }],
+      bottom: []
+    },
+  }
 };
 
 const history = createBrowserHistory();
@@ -79,4 +79,4 @@ const App = () => {
   );
 };
 
-export default withRouter(App);
+export default App;

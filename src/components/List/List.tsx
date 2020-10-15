@@ -1,8 +1,8 @@
 import { Box, Button, DataTable } from 'grommet';
-import { Add, Up, Down, Menu, Camera } from 'grommet-icons';
+import { Add, Camera, Down, Up } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Router, withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import styled from 'styled-components';
@@ -11,8 +11,6 @@ import { IItem } from '../../models/items';
 import Tags from '../reusable/Tags/Tags';
 import ListNameFilter from './Filters/name';
 import ListTagsFilter from './Filters/tags';
-import { NavContext } from '../navigation/navigation';
-import { INavButton } from '../../App';
 
 export const listHistory = createBrowserHistory();
 
