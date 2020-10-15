@@ -27,7 +27,7 @@ const ItemRouter = ({ match, history }) => {
   let keywords = '';
 
   if (details && details.name) {
-    keywords = details.name.split(' ').join(',') + ',food';
+    keywords = details.name.split(' ').join(',');
   }
 
   return (

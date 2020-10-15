@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Grommet } from 'grommet';
+import { Grommet, Box } from 'grommet';
 import { createBrowserHistory } from 'history';
 import React, { ComponentClass, createFactory, useState, useEffect } from 'react';
 import { Route, Router, withRouter } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { Menu } from 'grommet-icons';
 import ItemRouter from './components/item/Router';
 import { cookies } from './index';
 import Scan from './components/scan/scan';
+import Logo from './components/reusable/logo/logo';
 
 
 const theme = {
@@ -63,19 +64,30 @@ const history = createBrowserHistory();
 const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const hasAuthenticatedCookie = cookies.get(IS_AUTHENTICATED);
+  const [logoHasPlayed, setLogoHasPlayed] = useState(false);
+
+  setTimeout(() => {
+    setLogoHasPlayed(true);
+  }, 3000)
 
   return (
-      <Grommet theme={theme} themeMode="dark">
-        <Router history={history}>
-          {
-            hasAuthenticatedCookie || isAuthenticated
-              ? (Object.entries(routes).map(([path, info]) => (
-                <Route path={path} key={path} component={createFactory(info.component as any)} exact />
-              )))
-              : (<Authentication setAuthenticated={setAuthenticated} />)
-          }
-        </Router>
-      </Grommet>
+    <Grommet theme={theme} themeMode="dark">
+      {
+        !logoHasPlayed
+          ? (
+            <Box fill={true} alignContent="center" justify="center">
+              <Logo animated={true} width="100%"/>
+            </Box>
+          ) : <Router history={history}>
+            {
+              hasAuthenticatedCookie || isAuthenticated
+                ? (Object.entries(routes).map(([path, info]) => (
+                  <Route path={path} key={path} component={createFactory(info.component as any)} exact />
+                )))
+                : (<Authentication setAuthenticated={setAuthenticated} />)
+            }
+          </Router>}
+    </Grommet>
   );
 };
 

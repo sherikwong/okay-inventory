@@ -6,15 +6,13 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { itemsDB } from '../../database/items';
 import './scan.scss';
+import { ContrastingButton } from '../item/Item.styles';
+import Logo from '../reusable/logo/logo';
 
-const MenuButton = styled(Button)`
+const MenuButton = styled(ContrastingButton)`
 position: absolute;
 top: 0;
 left: 0;
-z-index: 1000;
- svg {
-   stroke: white;
- }
 `;
 
 const Error = styled.div`
@@ -68,7 +66,7 @@ const Scan = props => {
   return (
     <>
       <QrReader style={{ height: '100%' }} className="container" onScan={onScan} onError={() => undefined} onImageLoad={() => undefined} onLoad={() => undefined} />
-      <MenuButton icon={<Menu />} onClick={goToMenu} />
+      <MenuButton pad="medium" icon={<Menu />} onClick={goToMenu} />
 
       <Error className={errorTransitionClass}>
         <Box pad="medium">

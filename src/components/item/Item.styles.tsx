@@ -37,6 +37,7 @@ svg {
   stroke: white;
   mix-blend-mode: difference;
 }
+z-index: 1000;
 `;
 
 export const HugeArrowButtons = styled(Button)`
