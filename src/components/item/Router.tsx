@@ -12,34 +12,23 @@ import Name from './EditItem/Name';
 import './index.scss';
 import Item from './Item';
 import { ContrastingButton, SizedUnsplash } from './Item.styles';
+import useItem from '../../hooks/useItem';
+
 
 const ItemRouter = ({ match, history }) => {
   const id = match.params.id;
-  const [qty, setQty] = useState(0);
 
-  const [details, setDetails] = useState({
-    name: '',
-    date: new Date(),
-    tags: [],
-  });
+  const { details } = useItem(id);
 
   const navToEdit = () => {
     history.push(`/item/${id}/edit/name`);
   }
 
-  const keywords = details && details.name.split(' ').join(',') + ',food';
-  // console.log(keywords);
+  let keywords = '';
 
-
-  useEffect(() => {
-    if (id) {
-      itemsDB.get(id).then(res => {
-        setDetails({ ...details, ...res });
-
-        setQty(res && res.quantity ? res.quantity : 0);
-      });
-    }
-  }, [id, details]);
+  if (details && details.name) {
+    keywords = details.name.split(' ').join(',') + ',food';
+  }
 
   return (
     <Stack fill={true} className="item-stack" id="item">

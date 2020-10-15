@@ -10,57 +10,45 @@ import Tags from '../reusable/Tags/Tags';
 import './Item.scss';
 import { ContrastingText, Header, HugeArrowButtons, Number } from './Item.styles';
 import BouncingArrowOverlay from './Overlay/Overlay';
+import useItem from '../../hooks/useItem';
+import { IItem } from '../../models/items';
 
 
 const Item = (props) => {
-  const { details, onUpdate, match, location } = props;;
-  const [quantity, setQty] = useState(0);
-  const [queryDirection, setQueryDirection] = useState(0);
-  const [isLoading, setLoading] = useState(false);
+  const { match, location } = props;;
 
-  const alterQty = (num, quan = quantity) => {
-    setLoading(true);
+  const { details, setDetails } = useItem(match.params.id);
+
+  const alterQty = (num, quan = details.quantity) => {
 
     const updatedNum = quan + num;
-    console.log('Updated', quan, num, updatedNum);
-    setQty(updatedNum);
 
-
-    itemsDB.update(details.id, {
+    const updatedDetails = {
       ...details,
       quantity: updatedNum
-    }).then(() => {
-      setLoading(false);
-    });
+    };
+
+    setDetails(updatedDetails);
+
+    itemsDB.update(details.id, updatedDetails);
   };
 
 
   useEffect(() => {
-    setQty(details.quantity || 0);
+    const queryObj = queryString.parse(location.search);
 
-    // const queryObj = queryString.parse(location.search);
-
-    // if (queryObj && queryObj.qty) {
-    //   setLoading(true)
-    //   setQueryDirection(+queryObj.qty);
-    // }
-  }, [details]);
-
-  // useEffect(() => {
-  //   console.log('Both change', queryDirection, details.quantity);
-  //   if (details.id) {
-  //     alterQty(queryDirection, details.quantity);
-  //   }
-  // }, [queryDirection, details, alterQty])
+    if (queryObj && queryObj.qty) {
+      alterQty(+queryObj.qty);
+    }
+  }, []);
 
   return (
     <Swipeable onSwipedDown={() => alterQty(-1)} onSwipedUp={() => alterQty(1)}>
-      <Box direction="column" fill={true} align="center" justify="between">
 
-        <HugeArrowButtons secondary size="large" icon={<Up />} onClick={() => alterQty(1)} />
+      <Box direction="column" fill={true} align="center" justify="center">
 
         <Box align="center">
-          <Number> {quantity}</Number>
+          <Number> {details.quantity}</Number>
 
           <Header className="header-wrapper">
             {(details && details.name) ? details.name.toUpperCase() : ''}
@@ -74,13 +62,10 @@ const Item = (props) => {
           <Tags tags={details.tags} />
         </Box>
 
-        <HugeArrowButtons secondary size="large" icon={<Down />} onClick={() => alterQty(-1)} />
 
       </Box>
 
-
-      {queryDirection && isLoading && <BouncingArrowOverlay direction={queryDirection} />}
-
+      {/* {queryDirection && isLoading && <BouncingArrowOverlay direction={queryDirection} />} */}
 
     </Swipeable>
   );
