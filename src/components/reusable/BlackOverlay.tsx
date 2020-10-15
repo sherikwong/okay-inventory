@@ -12,15 +12,13 @@ display: flex;
 align-items: center;
 justify-content: center;
 color: white;
-
 `
 
 const BlackOverlay = props => {
-  return (<>
-    <Box id="overlay" fill={true} style={{ backgroundColor: `rgba(0, 0, 0, ${props.percent ? props.percent : '50%'})` }}>
+  return (
+    <Box {...props} id="overlay" fill={true} style={{ backgroundColor: `rgba(0, 0, 0, ${props.percent ? props.percent : '50%'})` }}>
       {props.children}
     </Box>
-  </>
   );
 }
 
