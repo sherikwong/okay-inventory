@@ -41,8 +41,10 @@ const Scan = props => {
     setError(false);
 
     if (qr) {
-      console.log(qr);
-      const withoutHost = qr.replace(`${window.location.href}`, '');
+      const domains = [window.location.href, 'https://sherikwong.com/', 'https://okay-inventory.herokuapp.com/'];
+      let currentDomain = domains.find(domain => qr.includes(domain));
+
+      const withoutHost = qr.replace(`${currentDomain}`, '');
       const id = withoutHost.replace('item/', '');
 
       itemsDB.get(id).then(item => {

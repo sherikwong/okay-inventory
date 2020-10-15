@@ -19,6 +19,7 @@ const FilledSwipable = styled(Swipeable)`
   flex-direction: column;
   justify-content: space-between;
   display: flex;
+  width: 100%;
 `;
 
 const List = ({ history }) => {
@@ -95,6 +96,9 @@ const List = ({ history }) => {
     setFilteredData(data);
   }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter]);
 
+
+  const dateOpts = { month: 'short', day: 'numeric' };
+
   let columns = [
     {
       property: 'date',
@@ -104,7 +108,7 @@ const List = ({ history }) => {
           <Button icon={isAscDate ? <Up /> : <Down />} onClick={toggleSortDate} />
         </Box>
       ),
-      render: datum => datum.date ? (<span>{new Date(datum.date).toLocaleDateString("en-US")}</span>) : <></>
+      render: datum => datum.date ? (<span>{new Date(datum.date).toLocaleDateString("en-US", dateOpts)}</span>) : <></>
     },
     {
       property: 'id',
@@ -161,15 +165,18 @@ const List = ({ history }) => {
 
   return (
     <Box fill={true}>
-      <Button icon={<Camera />} onClick={goToCamera}/>
+      <Button icon={<Camera />} onClick={goToCamera} />
 
 
       <Router history={listHistory}>
         <Box justify="between" direction="column" align="center" fill={true} id="list">
-          <FilledSwipable onSwipedDown={createNew} >
-            <DataTable columns={columns} data={filteredData}
+          <FilledSwipable onSwipedDown={createNew}>
+            <DataTable columns={columns}
+            data={filteredData}
               onClickRow={onClickRow}
-              primaryKey="id" />
+              primaryKey="id"
+              pad="xxsmall"
+              />
 
             <Box direction="row" justify="center" pad="medium">
               <Button primary icon={<Add />} onClick={createNew} />
