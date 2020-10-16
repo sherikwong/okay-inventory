@@ -17,7 +17,6 @@ const QuantityCell = ({ datum, updateDatum, toggleEditMode }) => {
 
     const updatedNum = sanitizedQuantity + +num;
 
-    console.log(datum);
     updateDatum({
       ...datum,
       quantity: updatedNum

@@ -14,6 +14,8 @@ import ListTagsFilter from './Filters/tags';
 import { DEFAULT_MAX_VERSION } from 'tls';
 import QuantityCell from './Cell/Quantity';
 import useItems from '../../hooks/useItems';
+import NameCell from './Cell/Name';
+import './List.scss';
 
 export const listHistory = createBrowserHistory();
 
@@ -123,13 +125,32 @@ const List = ({ history }) => {
     }
   }
 
-  const updateDatum = newItem => {
+  const updateDatum = (newItem: IEditableItem, triggerUpdate = true) => {
     const sanitizedItem: IEditableItem = { ...newItem };
     delete sanitizedItem.isNewItem;
+
     itemsDB.update(newItem.id, sanitizedItem);
 
-    updateTriggerReload(triggerReload + 1);
+    if (triggerUpdate) {
+      updateTriggerReload(triggerReload + 1);
+    }
   }
+
+
+  const addNewItem = () => {
+    const newItem = {
+      date: new Date(),
+    };
+
+    itemsDB.add(newItem).then(item => {
+      setNewItem({
+        ...newItem,
+        ...item,
+        id: item.id,
+        isNewItem: true
+      });
+    });
+  };
 
   let columns = [
     {
@@ -153,9 +174,7 @@ const List = ({ history }) => {
       header: (
         <ListNameFilter onFilter={onFilter} />
       ),
-      render: datum => {
-        return datum.isNewItem ? templates.new.name : datum.name;
-      }
+      render: datum => <NameCell datum={datum} updateDatum={updateDatum}/>
     },
     {
       property: 'tags',
@@ -180,13 +199,6 @@ const List = ({ history }) => {
   ];
 
 
-  const addNewItem = () => {
-    setNewItem({
-      isNewItem: true,
-      name: 'New Item',
-      date: new Date()
-    } as IEditableItem);
-  };
 
   useEffect(() => {
     setDataIncludingNew([newItem, ...filteredData]);
@@ -208,6 +220,7 @@ const List = ({ history }) => {
           <DataTable columns={columns}
             data={dataIncludingNew}
             onClickRow={navigateToItem}
+            // onSelect={onRowSelect}
             primaryKey="id"
             pad="xxsmall"
           />

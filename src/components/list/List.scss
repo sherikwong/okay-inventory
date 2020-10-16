@@ -1,13 +1,4 @@
-.items {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr);
-  // grid-column-gap: 20px;
-  grid-template-rows: repeat(auto-fill, minmax((100vw / 2), 1fr));
-  height: auto !important;
-}
 
-.item {
-  h1 {
-    margin: 0;
-  }
+input {
+  padding: 0 !important;
 }
