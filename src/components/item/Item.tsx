@@ -10,11 +10,18 @@ import Tags from '../reusable/Tags/Tags';
 import './Item.scss';
 import { ContrastingText, Header, Number } from './Item.styles';
 import BouncingArrowOverlay from './Overlay/Overlay';
+import { useDoubleClick } from '@zattoo/use-double-click';
+
+enum EditableField {
+  NAME,
+  NONE
+}
 
 
 const Item = (props) => {
   const { match, location } = props;
   const queryObj = queryString.parse(location.search);
+  const [isEditing, setEditing] = useState(EditableField.NONE);
 
   const { details, setDetails } = useItem(match.params.id);
   const [hasInitialized, setInitialized] = useState(false);
@@ -44,6 +51,17 @@ const Item = (props) => {
     }
   }, [details, hasInitialized]);
 
+  const toggleName = useDoubleClick(() => {
+    setEditing(EditableField.NAME);
+  });
+
+  const toggleEditOff = useDoubleClick(() => {
+    setEditing(EditableField.NONE);
+
+
+  });
+
+
   return details.name ? (
     <Swipeable onSwipedDown={() => alterQty(-1)} onSwipedUp={() => alterQty(1)}>
 
@@ -52,12 +70,18 @@ const Item = (props) => {
         <Box align="center">
           <Number> {details.quantity}</Number>
 
-          <Header className="header-wrapper">
-            {(details && details.name) ? details.name.toUpperCase() : ''}
+          <Header className="header-wrapper" onClick={toggleName}>
+            {
+              isEditing === EditableField.NAME
+                ?
+                <input value={details.name} placeholder="Name" />
+                : (details && details.name) ? details.name.toUpperCase() : ''
+            }
           </Header>
 
 
-          <ContrastingText> {details.date && new Date(details.date).toLocaleDateString("en-US")}
+          <ContrastingText>
+            {details.date && new Date(details.date).toLocaleDateString("en-US")}
           </ContrastingText>
           {/* <CalendarIcon date={details.date} /> */}
 

@@ -1,4 +1,4 @@
-import { Box, Button, DataTable } from 'grommet';
+import { Box, Button, DataTable, TextInput } from 'grommet';
 import { Add, Camera, Down, Up } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
@@ -14,13 +14,22 @@ import ListTagsFilter from './Filters/tags';
 
 export const listHistory = createBrowserHistory();
 
+const ListContainer = styled(Box)`
+  height: 100vh;
+`;
+
 const FilledSwipable = styled(Swipeable)`
   flex: 1 2 auto;
   flex-direction: column;
   justify-content: space-between;
   display: flex;
+  overflow: auto;
   width: 100%;
 `;
+
+interface IEditableItem extends IItem {
+  isNewItem?: boolean;
+}
 
 const List = ({ history }) => {
   const [items, setItems] = useState([] as IItem[]);
@@ -28,6 +37,8 @@ const List = ({ history }) => {
   const [isAscDate, setAscDate] = useState(false);
   const [hasHadInitialFilter, setHasHadInitialFilter] = useState(false);
   const [filteredData, setFilteredData] = useState([] as IItem[]);
+  const [newItem, setNewItem] = useState({} as IEditableItem);
+  const [dataIncludingNew, setDataIncludingNew] = useState(filteredData);
 
   const toggleSortQty = () => setAscQty(!isAscQty);
   const toggleSortDate = () => setAscDate(!isAscDate);
@@ -41,12 +52,11 @@ const List = ({ history }) => {
       }).catch(error => console.error(error));
   }, [])
 
-  const createNew = () => {
-    history.push('/items/new')
-  }
 
-  const onClickRow = ({ datum }) => {
-    history.push(`/item/${datum.id}`);
+  const onClickRow = ({ datum }: { datum: IEditableItem }) => {
+    if (!datum.isNewItem) {
+      history.push(`/item/${datum.id}`);
+    }
   };
 
   const [filter, setFilter] = useState({
@@ -54,7 +64,6 @@ const List = ({ history }) => {
 
   const onFilter = (newFilter: ListFilters) => {
     setHasHadInitialFilter(true);
-    console.log('Filtering', newFilter);
 
     if (!newFilter.name && !newFilter.tags) {
       setFilter(undefined);
@@ -63,6 +72,12 @@ const List = ({ history }) => {
     }
   }
 
+  const onAddNewTag = ({ tags }: ListFilters) => {
+    setNewItem({
+      ...newItem,
+      tags: [...tags]
+    } as IEditableItem);
+  };
 
   useEffect(() => {
     const filterCb = (item: IItem) => {
@@ -99,6 +114,17 @@ const List = ({ history }) => {
 
   const dateOpts = { month: 'short', day: 'numeric' };
 
+  const templates = {
+    new: {
+      name: <TextInput placeholder="Name" />,
+      tags: <ListTagsFilter onFilter={onAddNewTag} />
+    },
+    old: {
+      tags: datum => <Tags tags={datum.tags} />
+    }
+  }
+
+
   let columns = [
     {
       property: 'date',
@@ -113,14 +139,17 @@ const List = ({ history }) => {
     {
       property: 'id',
       primary: true,
-      render: datum => <></>,
+      render: datum => (<></>),
       header: <></>,
     },
     {
       property: 'name',
       header: (
         <ListNameFilter onFilter={onFilter} />
-      )
+      ),
+      render: datum => {
+        return datum.isNewItem ? templates.new.name : datum.name;
+      }
     },
     {
       property: 'tags',
@@ -128,7 +157,7 @@ const List = ({ history }) => {
         <ListTagsFilter onFilter={onFilter} />
       ),
       render: datum => (
-        <Tags tags={datum.tags} />
+        datum.isNewItem ? templates.new.tags : templates.old.tags(datum)
       )
     },
 
@@ -143,48 +172,46 @@ const List = ({ history }) => {
     }
   ];
 
-  const addNewItem = () => {
 
+  const addNewItem = () => {
+    setNewItem({
+      isNewItem: true,
+      name: 'New Item',
+      date: new Date()
+    } as IEditableItem);
   };
 
-  // const [_buttons, _setButtons] = useState({});
-
-  // useEffect(() => {
-  //   _setButtons({
-  //     bottom: [{
-  //       icon: Add,
-  //       click: addNewItem,
-  //     }] as INavButton[]
-  //   });
-  // }, []);
-
+  useEffect(() => {
+    setDataIncludingNew([newItem, ...filteredData]);
+  }, [filteredData, newItem]);
 
   const goToCamera = () => {
     history.push('/');
   }
 
   return (
-    <Box fill={true}>
-      <Button icon={<Camera />} onClick={goToCamera} />
+    <ListContainer fill={true}>
+      <Box direction="row" margin="medium">
+        <Button icon={<Camera />} onClick={goToCamera} />
+      </Box>
 
 
       <Router history={listHistory}>
-        <Box justify="between" direction="column" align="center" fill={true} id="list">
-          <FilledSwipable onSwipedDown={createNew}>
-            <DataTable columns={columns}
-            data={filteredData}
-              onClickRow={onClickRow}
-              primaryKey="id"
-              pad="xxsmall"
-              />
+        <FilledSwipable >
+          <DataTable columns={columns}
+            data={dataIncludingNew}
+            onClickRow={onClickRow}
+            primaryKey="id"
+            pad="xxsmall"
+          />
+        </FilledSwipable>
 
-            <Box direction="row" justify="center" pad="medium">
-              <Button primary icon={<Add />} onClick={createNew} />
-            </Box>
-          </FilledSwipable>
+        <Box direction="row" justify="center" margin="medium">
+          <Button icon={<Add />} onClick={addNewItem} />
         </Box>
       </Router>
-    </Box>
+
+    </ListContainer>
   );
 };
 
