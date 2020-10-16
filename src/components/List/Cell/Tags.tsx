@@ -1,13 +1,13 @@
 import React from 'react';
-import ListTagsFilter from '../Filters/tags';
 import Tags from '../../reusable/Tags/Tags';
+import ListTagsFilter from '../Filters/tags';
 
 const TagsCell = ({ datum, updateDatum, toggleEditMode }) => {
-  const addTag = tags => {
+  const addTag = ({tags}) => {
     updateDatum({
       ...datum,
       tags: [...tags]
-    })
+    }, false);
   }
   return datum.isNewItem ? (
     <ListTagsFilter onFilter={addTag} />

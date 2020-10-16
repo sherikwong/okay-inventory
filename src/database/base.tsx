@@ -52,5 +52,7 @@ export class BaseDB<T> implements IBaseDB<T> {
       });
   }
 
-
+  public delete(id: string): Promise<any> {
+    return db.ref().child(this.dbName + '/' + id).remove();
+  }
 }

@@ -1,5 +1,5 @@
 import { Box, Button, DataTable, TextInput } from 'grommet';
-import { Add, Camera, Down, Up } from 'grommet-icons';
+import { Add, Camera, Down, Up, Refresh } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -17,6 +17,7 @@ import useItems from '../../hooks/useItems';
 import NameCell from './Cell/Name';
 import './List.scss';
 import TagsCell from './Cell/Tags';
+import ActionsCell from './Cell/actions';
 
 export const listHistory = createBrowserHistory();
 
@@ -52,7 +53,7 @@ const List = ({ history }) => {
 
 
 
-  const items = useItems({dependencies: triggerReload});
+  const items = useItems({ dependencies: triggerReload });
 
 
   const navigateToItem = ({ datum }: { datum: IEditableItem }) => {
@@ -73,13 +74,6 @@ const List = ({ history }) => {
       setFilter({ ...filter ? filter : [], ...newFilter } as ListFilters | undefined);
     }
   }
-
-  const onAddNewTag = ({ tags }: ListFilters) => {
-    setNewItem({
-      ...newItem,
-      tags: [...tags]
-    } as IEditableItem);
-  };
 
   useEffect(() => {
     const filterCb = (item: IItem) => {
@@ -166,7 +160,7 @@ const List = ({ history }) => {
       header: (
         <ListNameFilter onFilter={onFilter} />
       ),
-      render: datum => <NameCell datum={datum} updateDatum={updateDatum}/>
+      render: datum => <NameCell datum={datum} updateDatum={updateDatum} />
     },
     {
       property: 'tags',
@@ -185,9 +179,15 @@ const List = ({ history }) => {
         </Box>
       ),
       render: datum => <QuantityCell datum={datum} updateDatum={updateDatum} toggleEditMode={toggleEditMode} />
-    }
-  ];
+    }, {
+      property: 'actions',
+      header: <></>,
+      render: datum => <ActionsCell datum={datum}  refresh={refresh}/>
+    }];
 
+  const refresh = () => {
+    updateTriggerReload(triggerReload + 1);
+  }
 
 
   useEffect(() => {
@@ -200,8 +200,9 @@ const List = ({ history }) => {
 
   return (
     <ListContainer fill={true}>
-      <Box direction="row" margin="medium">
+      <Box direction="row" margin="medium" justify="between">
         <Button icon={<Camera />} onClick={goToCamera} />
+        <Button icon={<Refresh />} onClick={refresh} />
       </Box>
 
 
