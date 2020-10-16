@@ -11,6 +11,9 @@ import { IItem } from '../../models/items';
 import Tags from '../reusable/Tags/Tags';
 import ListNameFilter from './Filters/name';
 import ListTagsFilter from './Filters/tags';
+import { DEFAULT_MAX_VERSION } from 'tls';
+import QuantityCell from './Cell/Quantity';
+import useItems from '../../hooks/useItems';
 
 export const listHistory = createBrowserHistory();
 
@@ -32,30 +35,26 @@ interface IEditableItem extends IItem {
 }
 
 const List = ({ history }) => {
-  const [items, setItems] = useState([] as IItem[]);
   const [isAscQty, setAscQty] = useState(false);
   const [isAscDate, setAscDate] = useState(false);
   const [hasHadInitialFilter, setHasHadInitialFilter] = useState(false);
   const [filteredData, setFilteredData] = useState([] as IItem[]);
   const [newItem, setNewItem] = useState({} as IEditableItem);
   const [dataIncludingNew, setDataIncludingNew] = useState(filteredData);
+  const [isEditMode, toggleEditMode] = useState(false);
+  const [triggerReload, updateTriggerReload] = useState(0);
 
   const toggleSortQty = () => setAscQty(!isAscQty);
   const toggleSortDate = () => setAscDate(!isAscDate);
 
-  useEffect(() => {
-    itemsDB.getAll()
-      .then(items => {
-        if (items) {
-          setItems(items);
-        }
-      }).catch(error => console.error(error));
-  }, [])
 
 
-  const onClickRow = ({ datum }: { datum: IEditableItem }) => {
-    if (!datum.isNewItem) {
-      history.push(`/item/${datum.id}`);
+  const items = useItems({dependencies: triggerReload});
+
+
+  const navigateToItem = ({ datum }: { datum: IEditableItem }) => {
+    if (!datum.isNewItem && !isEditMode) {
+      // history.push(`/item/${datum.id}`);
     }
   };
 
@@ -109,7 +108,7 @@ const List = ({ history }) => {
       .sort(sortDate);
 
     setFilteredData(data);
-  }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter]);
+  }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter, newItem]);
 
 
   const dateOpts = { month: 'short', day: 'numeric' };
@@ -117,13 +116,20 @@ const List = ({ history }) => {
   const templates = {
     new: {
       name: <TextInput placeholder="Name" />,
-      tags: <ListTagsFilter onFilter={onAddNewTag} />
+      tags: <ListTagsFilter onFilter={onAddNewTag} />,
     },
     old: {
-      tags: datum => <Tags tags={datum.tags} />
+      tags: datum => <Tags tags={datum.tags} />,
     }
   }
 
+  const updateDatum = newItem => {
+    const sanitizedItem: IEditableItem = { ...newItem };
+    delete sanitizedItem.isNewItem;
+    itemsDB.update(newItem.id, sanitizedItem);
+
+    updateTriggerReload(triggerReload + 1);
+  }
 
   let columns = [
     {
@@ -169,6 +175,7 @@ const List = ({ history }) => {
           <Button icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} />
         </Box>
       ),
+      render: datum => <QuantityCell datum={datum} updateDatum={updateDatum} toggleEditMode={toggleEditMode} />
     }
   ];
 
@@ -200,7 +207,7 @@ const List = ({ history }) => {
         <FilledSwipable >
           <DataTable columns={columns}
             data={dataIncludingNew}
-            onClickRow={onClickRow}
+            onClickRow={navigateToItem}
             primaryKey="id"
             pad="xxsmall"
           />
