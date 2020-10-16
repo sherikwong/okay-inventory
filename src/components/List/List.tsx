@@ -16,6 +16,7 @@ import QuantityCell from './Cell/Quantity';
 import useItems from '../../hooks/useItems';
 import NameCell from './Cell/Name';
 import './List.scss';
+import TagsCell from './Cell/Tags';
 
 export const listHistory = createBrowserHistory();
 
@@ -115,15 +116,6 @@ const List = ({ history }) => {
 
   const dateOpts = { month: 'short', day: 'numeric' };
 
-  const templates = {
-    new: {
-      name: <TextInput placeholder="Name" />,
-      tags: <ListTagsFilter onFilter={onAddNewTag} />,
-    },
-    old: {
-      tags: datum => <Tags tags={datum.tags} />,
-    }
-  }
 
   const updateDatum = (newItem: IEditableItem, triggerUpdate = true) => {
     const sanitizedItem: IEditableItem = { ...newItem };
@@ -181,9 +173,7 @@ const List = ({ history }) => {
       header: (
         <ListTagsFilter onFilter={onFilter} />
       ),
-      render: datum => (
-        datum.isNewItem ? templates.new.tags : templates.old.tags(datum)
-      )
+      render: datum => <TagsCell datum={datum} updateDatum={updateDatum} toggleEditMode={toggleEditMode} />
     },
 
     {
