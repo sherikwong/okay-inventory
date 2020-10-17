@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { itemsDB } from '../../database/items';
 import useItems from '../../hooks/useItems';
 import { IItem } from '../../models/items';
-import ActionsCell from './Cell/actions';
+import ActionsCell from './Cell/Actions';
 import NameCell from './Cell/Name';
 import QuantityCell from './Cell/Quantity';
 import TagsCell from './Cell/Tags';
@@ -171,7 +171,7 @@ const List = ({ history }) => {
           <Button icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} />
         </Box>
       ),
-      render: datum => <QuantityCell datum={datum} updateDatum={updateDatum} toggleEditMode={toggleEditMode} />
+      render: datum => <QuantityCell datum={datum} updateDatum={updateDatum} toggleEditMode={toggleEditMode} selectedID={selectedID}/>
     }, {
       property: 'actions',
       header: <></>,
