@@ -7,15 +7,22 @@ interface ISmallButton {
   isSelected: boolean;
 }
 
-export const SmallButton = styled(Button) <ISmallButton>`
-transform: scale(0.7);
-${({ isSelected }) => `opacity: ${isSelected ? 1 : 0}`}
+export const SmallButton = styled(Button)`
+transform: scale(0.6);
 `;
+
+
+const GreenButton = styled(Button)<ISmallButton>`
+${({ isSelected }) => `opacity: ${isSelected ? 1 : 0}`};
+svg {
+  stroke: green;
+}
+`
 
 const SelectedCell = ({ datum, selectedIDs }) => {
   return (
     <Box>
-      <SmallButton icon={<Checkmark />} isSelected={selectedIDs.has(datum.id)} />
+      <GreenButton icon={<Checkmark />} isSelected={selectedIDs.has(datum.id)} />
     </Box>
   )
 }

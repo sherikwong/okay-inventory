@@ -19,6 +19,7 @@ import './List.scss';
 import SelectedCell from './Cell/Selected';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import DateCell from './Cell/Date';
+import { SmallButton } from './Cell/Selected';
 
 export const listHistory = createBrowserHistory();
 
@@ -133,17 +134,17 @@ const List = ({ history }) => {
     {
       property: 'selected',
       header: (<></>),
-      render: datum => <SelectedCell datum={datum} selectedIDs={selectedIDs}  />
+      render: datum => <SelectedCell datum={datum} selectedIDs={selectedIDs} />
     },
     {
       property: 'date',
       header: (
         <Box direction="row" align="center">
           <span>Date</span>
-          <Button icon={isAscDate ? <Up /> : <Down />} onClick={toggleSortDate} />
+          <SmallButton icon={isAscDate ? <Up /> : <Down />} onClick={toggleSortDate} isSelected={true} />
         </Box>
       ),
-      render: datum => <DateCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum}/>
+      render: datum => <DateCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum} />
     },
     {
       property: 'id',
@@ -171,7 +172,7 @@ const List = ({ history }) => {
       header: (
         <Box direction="row" align="center">
           <span>Qty</span>
-          <Button icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} />
+          <SmallButton icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} isSelected={true}/>
         </Box>
       ),
       render: datum => <QuantityCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum} selectedID={selectedIDs} />
@@ -249,48 +250,48 @@ const List = ({ history }) => {
           const _selectedIDs = new Set(selectedIDs);
           _selectedIDs.delete(id);
           setSelectedIDs(_selectedIDs);
+          triggerReload(reload + 1);
         });
-      });
-      triggerReload(reload + 1);
-}
+    });
+  }
 
-return (
-  <Keyboard >
-    <ListContainer fill={true}>
-      <Box direction="row" margin="medium" justify="between">
-        <Button icon={<Camera />} onClick={goToCamera} />
-        <Button icon={<Refresh />} onClick={refresh} />
-      </Box>
-
-
-      <Router history={listHistory}>
-        <FilledSwipable >
-          <DataTable columns={columns}
-            rowProps={rowStyles}
-            data={dataIncludingNew}
-            onClickRow={onItemSelect}
-            primaryKey="id"
-            pad="xxsmall"
-          />
-        </FilledSwipable>
-
-        <Box direction="row" justify="center" margin="medium">
-          <Button icon={<Add />} onClick={addNewItem} />
-
-          {selectedIDs.size > 0 &&
-            (
-              <CopyToClipboard text={linksToCopy}>
-                <Button icon={<Copy />} />
-              </CopyToClipboard>
-            )}
-
-          <Button icon={<Trash />} onClick={deleteItems}/>
+  return (
+    <Keyboard >
+      <ListContainer fill={true}>
+        <Box direction="row" margin="medium" justify="between">
+          <Button icon={<Camera />} onClick={goToCamera} />
+          <Button icon={<Refresh />} onClick={refresh} />
         </Box>
-      </Router>
 
-    </ListContainer>
-  </Keyboard>
-);
+
+        <Router history={listHistory}>
+          <FilledSwipable >
+            <DataTable columns={columns}
+              rowProps={rowStyles}
+              data={dataIncludingNew}
+              onClickRow={onItemSelect}
+              primaryKey="id"
+              pad="xxsmall"
+            />
+          </FilledSwipable>
+
+          <Box direction="row" justify="center" margin="medium">
+            <Button icon={<Add />} onClick={addNewItem} />
+
+            {selectedIDs.size > 0 &&
+              (
+                <CopyToClipboard text={linksToCopy}>
+                  <Button icon={<Copy />} />
+                </CopyToClipboard>
+              )}
+
+            <Button icon={<Trash />} onClick={deleteItems} />
+          </Box>
+        </Router>
+
+      </ListContainer>
+    </Keyboard>
+  );
 };
 
 export default withRouter(List);

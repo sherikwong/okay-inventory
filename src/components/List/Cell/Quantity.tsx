@@ -24,7 +24,7 @@ const QuantityCell = props => {
 
   return <Box direction="row" align="center">
     <span>{datum.quantity || 0}</span>
-    {selectedID.has(datum.id) && <Box>
+    {(selectedID.has(datum.id) || datum.isNewItem) && <Box>
       <DirectionArrows icon={<Up />} onClick={alterQty(1)} />
       <DirectionArrows icon={<Down />} onClick={alterQty(-1)} />
     </Box>}
