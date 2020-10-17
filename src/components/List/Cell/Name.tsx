@@ -1,10 +1,10 @@
 import { TextInput } from 'grommet';
 import React from 'react';
 
+const NameCell = props => {
+  const { datum, updateDatum } = props;
 
-
-const NameCell = ({ datum, updateDatum }) => {
-  const updateName = ({target}) => {
+  const updateName = ({ target }) => {
     updateDatum({
       ...datum,
       name: target.value
@@ -12,7 +12,7 @@ const NameCell = ({ datum, updateDatum }) => {
   };
 
   return datum.isNewItem ? (
-    <TextInput placeholder="Name" onChange={updateName}/>
-  ) : <span>{datum.name || 'N/A'}</span>;
+    <TextInput placeholder="Name" onChange={updateName} />
+  ) : <span>{datum.name || 'N/A'}</span>
 }
 export default NameCell;

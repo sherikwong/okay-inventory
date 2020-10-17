@@ -1,5 +1,5 @@
-import { Box, Button, DataTable } from 'grommet';
-import { Add, Camera, Down, Refresh, Up } from 'grommet-icons';
+import { Box, Button, DataTable, Keyboard } from 'grommet';
+import { Add, Camera, Down, Refresh, Up, Copy } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -9,13 +9,15 @@ import styled from 'styled-components';
 import { itemsDB } from '../../database/items';
 import useItems from '../../hooks/useItems';
 import { IItem } from '../../models/items';
-import ActionsCell from './Cell/Actions';
+import ActionsCell from './Cell/actions';
 import NameCell from './Cell/Name';
 import QuantityCell from './Cell/Quantity';
 import TagsCell from './Cell/Tags';
 import ListNameFilter from './Filters/name';
 import ListTagsFilter from './Filters/tags';
 import './List.scss';
+import SelectedCell from './Cell/Selected';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 export const listHistory = createBrowserHistory();
 
@@ -34,6 +36,7 @@ const FilledSwipable = styled(Swipeable)`
 
 interface IEditableItem extends IItem {
   isNewItem?: boolean;
+  index?: number;
 }
 
 const List = ({ history }) => {
@@ -43,17 +46,12 @@ const List = ({ history }) => {
   const [filteredData, setFilteredData] = useState([] as IItem[]);
   const [newItem, setNewItem] = useState({} as IEditableItem);
   const [dataIncludingNew, setDataIncludingNew] = useState(filteredData);
-  const [isEditMode, toggleEditMode] = useState(false);
   const [reload, triggerReload] = useState(0);
 
   const toggleSortQty = () => setAscQty(!isAscQty);
   const toggleSortDate = () => setAscDate(!isAscDate);
 
-
-
   const items = useItems({ dependencies: reload });
-
-
 
   const [filter, setFilter] = useState({
   } as ListFilters | undefined);
@@ -88,11 +86,11 @@ const List = ({ history }) => {
 
     const data = Object.values(items)
       .filter(hasHadInitialFilter ? filterCb : () => true)
-      .map(item => {
+      .map((item, index) => {
         if (!(item.quantity >= 0)) {
           item.quantity = 0;
         }
-        return { ...item, date: new Date(item.date) };
+        return { ...item, date: new Date(item.date), index };
       })
       .sort(sortQty)
       .sort(sortDate);
@@ -107,6 +105,7 @@ const List = ({ history }) => {
   const updateDatum = (newItem: IEditableItem, triggerUpdate = true) => {
     const sanitizedItem: IEditableItem = { ...newItem };
     delete sanitizedItem.isNewItem;
+    delete sanitizedItem.index;
 
     itemsDB.update(newItem.id, sanitizedItem);
 
@@ -129,9 +128,16 @@ const List = ({ history }) => {
         isNewItem: true
       });
     });
+
+    console.log(newItem);
   };
 
   let columns = [
+    {
+      property: 'selected',
+      header: (<></>),
+      render: datum => <SelectedCell datum={datum} selectedIDs={selectedIDs} />
+    },
     {
       property: 'date',
       header: (
@@ -153,14 +159,14 @@ const List = ({ history }) => {
       header: (
         <ListNameFilter onFilter={onFilter} />
       ),
-      render: datum => <NameCell datum={datum} updateDatum={updateDatum} />
+      render: datum => <NameCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum} />
     },
     {
       property: 'tags',
       header: (
         <ListTagsFilter onFilter={onFilter} />
       ),
-      render: datum => <TagsCell datum={datum} updateDatum={updateDatum} toggleEditMode={toggleEditMode} />
+      render: datum => <TagsCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum} />
     },
 
     {
@@ -171,11 +177,11 @@ const List = ({ history }) => {
           <Button icon={isAscQty ? <Up /> : <Down />} onClick={toggleSortQty} />
         </Box>
       ),
-      render: datum => <QuantityCell datum={datum} updateDatum={updateDatum} toggleEditMode={toggleEditMode} selectedID={selectedID}/>
+      render: datum => <QuantityCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum} selectedID={selectedIDs} />
     }, {
       property: 'actions',
       header: <></>,
-      render: datum => <ActionsCell datum={datum}  history={history} refresh={refresh} onSave={onSaveNew} selectedID={selectedID} setSelectedID={setSelectedID}/>
+      render: datum => <ActionsCell datum={datum} selectedIDs={selectedIDs} history={history} refresh={refresh} onSave={onSaveNew} selectedID={selectedIDs} setSelectedID={setSelectedIDs} />
     }];
 
   const refresh = () => {
@@ -185,13 +191,21 @@ const List = ({ history }) => {
   const onSaveNew = () => {
     setNewItem({} as IEditableItem);
     refresh();
-    setSelectedID('');
+    setSelectedIDs(new Set([]));
   }
 
-  const [selectedID, setSelectedID] = useState('');
+  const [selectedIDs, setSelectedIDs] = useState(new Set([] as string[]));
 
-  const onItemSelect = ({datum}) => {
-    setSelectedID(datum.id);
+  const onItemSelect = ({ datum }: { datum: IEditableItem }) => {
+    const _selectedIDs = new Set(selectedIDs);
+
+    if (selectedIDs.has(datum.id)) {
+      _selectedIDs.delete(datum.id);
+    } else {
+      _selectedIDs.add(datum.id);
+    }
+
+    setSelectedIDs(_selectedIDs);
   }
 
   useEffect(() => {
@@ -202,30 +216,66 @@ const List = ({ history }) => {
     history.push('/');
   }
 
+  const [highlightIndex, setHighlightIndex] = useState(0);
+
+  const selectedStyle = {
+    background: 'rgba(255, 255, 255, .1)'
+  };
+
+  const [rowStyles, setRowStyles] = useState({});
+  const [linksToCopy, setLinksToCopy] = useState('');
+
+  const generateLinks = () => {
+    const prefix = 'http://sherikwong.com/item/';
+    return [...selectedIDs].map(id => prefix + id).join('\n\n');
+  }
+
+  useEffect(() => {
+    const stylesAppliedToSelected = [...selectedIDs].reduce((obj, id) => {
+      return {
+        ...obj,
+        [id]: selectedStyle
+      };
+    }, {});
+    setRowStyles(stylesAppliedToSelected);
+
+    setLinksToCopy(generateLinks());
+
+  }, [selectedIDs]);
+
   return (
-    <ListContainer fill={true}>
-      <Box direction="row" margin="medium" justify="between">
-        <Button icon={<Camera />} onClick={goToCamera} />
-        <Button icon={<Refresh />} onClick={refresh} />
-      </Box>
-
-
-      <Router history={listHistory}>
-        <FilledSwipable >
-          <DataTable columns={columns}
-            data={dataIncludingNew}
-            onClickRow={onItemSelect}
-            primaryKey="id"
-            pad="xxsmall"
-          />
-        </FilledSwipable>
-
-        <Box direction="row" justify="center" margin="medium">
-          <Button icon={<Add />} onClick={addNewItem} />
+    <Keyboard >
+      <ListContainer fill={true}>
+        <Box direction="row" margin="medium" justify="between">
+          <Button icon={<Camera />} onClick={goToCamera} />
+          <Button icon={<Refresh />} onClick={refresh} />
         </Box>
-      </Router>
 
-    </ListContainer>
+
+        <Router history={listHistory}>
+          <FilledSwipable >
+            <DataTable columns={columns}
+              rowProps={rowStyles}
+              data={dataIncludingNew}
+              onClickRow={onItemSelect}
+              primaryKey="id"
+              pad="xxsmall"
+            />
+          </FilledSwipable>
+
+          <Box direction="row" justify="center" margin="medium">
+            <Button icon={<Add />} onClick={addNewItem} />
+            {selectedIDs.size > 0 &&
+              (
+                <CopyToClipboard text={linksToCopy}>
+                  <Button icon={<Copy />} />
+                </CopyToClipboard>
+              )}
+          </Box>
+        </Router>
+
+      </ListContainer>
+    </Keyboard>
   );
 };
 

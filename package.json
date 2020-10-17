@@ -31,6 +31,7 @@
     "react-calendar": "^3.1.0",
     "react-calendar-icon": "^0.9.4",
     "react-cookie": "^4.0.3",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-day-picker": "^7.4.8",
     "react-dictate-button": "^1.2.2",
     "react-dom": "^16.13.1",

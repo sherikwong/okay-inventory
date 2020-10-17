@@ -2,8 +2,9 @@ import React from 'react';
 import Tags from '../../reusable/Tags/Tags';
 import ListTagsFilter from '../Filters/tags';
 
-const TagsCell = ({ datum, updateDatum, toggleEditMode }) => {
-  const addTag = ({tags}) => {
+const TagsCell = props => {
+  const { datum, updateDatum } = props;
+  const addTag = ({ tags }) => {
     updateDatum({
       ...datum,
       tags: [...tags]
@@ -11,7 +12,8 @@ const TagsCell = ({ datum, updateDatum, toggleEditMode }) => {
   }
   return datum.isNewItem ? (
     <ListTagsFilter onFilter={addTag} />
-  ) : <Tags tags={datum.tags} />;
+  ) : <Tags tags={datum.tags} />
+
 }
 
 export default TagsCell;
