@@ -1,5 +1,5 @@
 import { Box, Button, DataTable, Keyboard } from 'grommet';
-import { Add, Camera, Down, Refresh, Up, Copy } from 'grommet-icons';
+import { Add, Camera, Down, Refresh, Up, Copy, Trash } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ import ListNameFilter from './Filters/name';
 import ListTagsFilter from './Filters/tags';
 import './List.scss';
 import SelectedCell from './Cell/Selected';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export const listHistory = createBrowserHistory();
 
@@ -243,40 +243,54 @@ const List = ({ history }) => {
 
   }, [selectedIDs]);
 
-  return (
-    <Keyboard >
-      <ListContainer fill={true}>
-        <Box direction="row" margin="medium" justify="between">
-          <Button icon={<Camera />} onClick={goToCamera} />
-          <Button icon={<Refresh />} onClick={refresh} />
+  const deleteItems = () => {
+    selectedIDs.forEach(id => {
+      itemsDB.delete(id)
+        .then(res => {
+          const _selectedIDs = new Set(selectedIDs);
+          _selectedIDs.delete(id);
+          setSelectedIDs(_selectedIDs);
+        });
+  })
+}
+
+return (
+  <Keyboard >
+    <ListContainer fill={true}>
+      <Box direction="row" margin="medium" justify="between">
+        <Button icon={<Camera />} onClick={goToCamera} />
+        <Button icon={<Refresh />} onClick={refresh} />
+      </Box>
+
+
+      <Router history={listHistory}>
+        <FilledSwipable >
+          <DataTable columns={columns}
+            rowProps={rowStyles}
+            data={dataIncludingNew}
+            onClickRow={onItemSelect}
+            primaryKey="id"
+            pad="xxsmall"
+          />
+        </FilledSwipable>
+
+        <Box direction="row" justify="center" margin="medium">
+          <Button icon={<Add />} onClick={addNewItem} />
+
+          {selectedIDs.size > 0 &&
+            (
+              <CopyToClipboard text={linksToCopy}>
+                <Button icon={<Copy />} />
+              </CopyToClipboard>
+            )}
+
+          <Button icon={<Trash />} onClick={deleteItems}/>
         </Box>
+      </Router>
 
-
-        <Router history={listHistory}>
-          <FilledSwipable >
-            <DataTable columns={columns}
-              rowProps={rowStyles}
-              data={dataIncludingNew}
-              onClickRow={onItemSelect}
-              primaryKey="id"
-              pad="xxsmall"
-            />
-          </FilledSwipable>
-
-          <Box direction="row" justify="center" margin="medium">
-            <Button icon={<Add />} onClick={addNewItem} />
-            {selectedIDs.size > 0 &&
-              (
-                <CopyToClipboard text={linksToCopy}>
-                  <Button icon={<Copy />} />
-                </CopyToClipboard>
-              )}
-          </Box>
-        </Router>
-
-      </ListContainer>
-    </Keyboard>
-  );
+    </ListContainer>
+  </Keyboard>
+);
 };
 
 export default withRouter(List);
