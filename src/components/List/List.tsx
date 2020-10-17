@@ -46,8 +46,7 @@ const List = ({ history }) => {
   const [isAscDate, setAscDate] = useState(false);
   const [hasHadInitialFilter, setHasHadInitialFilter] = useState(false);
   const [filteredData, setFilteredData] = useState([] as IItem[]);
-  const [newItem, setNewItem] = useState({} as IEditableItem);
-  const [dataIncludingNew, setDataIncludingNew] = useState(filteredData);
+  // const [dataIncludingNew, setDataIncludingNew] = useState(filteredData);
   const [reload, triggerReload] = useState(0);
 
   const toggleSortQty = () => setAscQty(!isAscQty);
@@ -98,7 +97,7 @@ const List = ({ history }) => {
       .sort(sortDate);
 
     setFilteredData(data);
-  }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter, newItem]);
+  }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter]);
 
 
 
@@ -121,12 +120,12 @@ const List = ({ history }) => {
     };
 
     itemsDB.add(newItem).then(item => {
-      setNewItem({
-        ...newItem,
-        ...item,
-        id: item.id,
-        isNewItem: true
-      });
+      // setNewItem({
+      //   ...newItem,
+      //   ...item,
+      //   id: item.id,
+      // });
+      triggerReload(reload + 1);
     });
   };
 
@@ -179,14 +178,14 @@ const List = ({ history }) => {
     }, {
       property: 'actions',
       header: <></>,
-      render: datum => <ActionsCell datum={datum} selectedIDs={selectedIDs} history={history} refresh={() => triggerReload(reload + 1)} onSave={onSaveNew} selectedID={selectedIDs} setSelectedID={setSelectedIDs} />
+      render: datum => <ActionsCell datum={datum} selectedIDs={selectedIDs} history={history} refresh={() => triggerReload(reload + 1)}  selectedID={selectedIDs} setSelectedID={setSelectedIDs} />
     }];
 
-  const onSaveNew = () => {
-    setNewItem({} as IEditableItem);
-    triggerReload(reload + 1);
-    setSelectedIDs(new Set([]));
-  }
+  // const onSaveNew = () => {
+  //   setNewItem({} as IEditableItem);
+  //   triggerReload(reload + 1);
+  //   setSelectedIDs(new Set([]));
+  // }
 
   const [selectedIDs, setSelectedIDs] = useState(new Set([] as string[]));
 
@@ -202,9 +201,9 @@ const List = ({ history }) => {
     setSelectedIDs(_selectedIDs);
   }
 
-  useEffect(() => {
-    setDataIncludingNew(newItem.id ? [newItem, ...filteredData] : filteredData);
-  }, [filteredData, newItem]);
+  // useEffect(() => {
+  //   setDataIncludingNew(newItem.id ? [newItem, ...filteredData] : filteredData);
+  // }, [filteredData, newItem]);
 
   const goToCamera = () => {
     history.push('/');
@@ -263,7 +262,7 @@ const List = ({ history }) => {
           <FilledSwipable >
             <DataTable columns={columns}
               rowProps={rowStyles}
-              data={dataIncludingNew}
+              data={filteredData}
               onClickRow={onItemSelect}
               primaryKey="id"
               pad="xxsmall"

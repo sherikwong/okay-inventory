@@ -14,7 +14,7 @@ padding: 0;
 `;
 
 const ActionsCell = props => {
-  const { datum, refresh, onSave, selectedID, setSelectedID, history } = props;
+  const { datum, refresh, selectedID, setSelectedID, history } = props;
 
 
   const navigateToItem = () => {
@@ -23,7 +23,7 @@ const ActionsCell = props => {
 
   return (
     <Box direction="row">
-      <Button icon={<Checkmark />} onClick={() => onSave()} />
+      {/* <Button icon={<Checkmark />} onClick={() => onSave()} /> */}
       <Button icon={<Next />} onClick={navigateToItem} isVisible={selectedID.has(datum.id)} />
     </Box>
   );
