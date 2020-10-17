@@ -250,8 +250,9 @@ const List = ({ history }) => {
           const _selectedIDs = new Set(selectedIDs);
           _selectedIDs.delete(id);
           setSelectedIDs(_selectedIDs);
+          refresh();
         });
-  })
+  });
 }
 
 return (
