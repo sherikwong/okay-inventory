@@ -14,6 +14,20 @@ class ItemsDB extends BaseDB<IItem> implements IItemsDB {
     super(ITEMS);
   }
 
+  public add(data: Partial<IItem>): Promise<any> {
+    const newEntry = this._db.push();
+
+    // TODO: SK: Revisit bracket notation;
+    data.id = newEntry.key as any;
+    data.dateCreated = new Date();
+    data.quantity = 1;
+
+    return newEntry.set(data)
+      .then(res => {
+        return data;
+      });
+  }
+
 }
 
 export const itemsDB = new ItemsDB();

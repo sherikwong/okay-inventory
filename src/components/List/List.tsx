@@ -37,7 +37,6 @@ const FilledSwipable = styled(Swipeable)`
 `;
 
 interface IEditableItem extends IItem {
-  isNewItem?: boolean;
   index?: number;
 }
 
@@ -46,7 +45,6 @@ const List = ({ history }) => {
   const [isAscDate, setAscDate] = useState(false);
   const [hasHadInitialFilter, setHasHadInitialFilter] = useState(false);
   const [filteredData, setFilteredData] = useState([] as IItem[]);
-  // const [dataIncludingNew, setDataIncludingNew] = useState(filteredData);
   const [reload, triggerReload] = useState(0);
 
   const toggleSortQty = () => setAscQty(!isAscQty);
@@ -93,8 +91,8 @@ const List = ({ history }) => {
         }
         return { ...item, date: new Date(item.date), index };
       })
-      .sort(sortQty)
-      .sort(sortDate);
+      // .sort(sortQty)
+      // .sort(sortDate);
 
     setFilteredData(data);
   }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter]);
@@ -103,7 +101,6 @@ const List = ({ history }) => {
 
   const updateDatum = (newItem: IEditableItem, triggerUpdate = true) => {
     const sanitizedItem: IEditableItem = { ...newItem };
-    delete sanitizedItem.isNewItem;
     delete sanitizedItem.index;
 
     itemsDB.update(newItem.id, sanitizedItem);
@@ -120,11 +117,6 @@ const List = ({ history }) => {
     };
 
     itemsDB.add(newItem).then(item => {
-      // setNewItem({
-      //   ...newItem,
-      //   ...item,
-      //   id: item.id,
-      // });
       triggerReload(reload + 1);
     });
   };

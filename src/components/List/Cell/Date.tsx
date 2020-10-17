@@ -9,11 +9,9 @@ const DateCell = ({ datum, selectedIDs, updateDatum }) => {
   const dateOpts = { month: 'short', day: 'numeric' };
   const [showDatepicker, toggleDatepicker] = useState(false);
 
-  // useEffect(() => {
-  //   if (!selectedIDs.has(datum.id)) {
-  //     toggleDatepicker(false);
-  //   }
-  // }, [selectedIDs, datum])
+  useEffect(() => {
+    console.log(showDatepicker);
+  }, [showDatepicker])
 
   const onDatePicked = date => {
     toggleDatepicker(false);
@@ -37,11 +35,13 @@ const DateCell = ({ datum, selectedIDs, updateDatum }) => {
   return (<Box onClick={editDate}>
     <span>{new Date(datum.date).toLocaleDateString("en-US", dateOpts)}</span>
 
-    {showDatepicker && <BlackOverlay percent="90%">
+    {showDatepicker &&
+    // <BlackOverlay percent="90%">
 
-      <Button icon={<Close />} onClick={closeDatepicker} />
+      // <Button icon={<Close />} onClick={closeDatepicker} />
       <DayPicker selectedDays={[datum.date || new Date()]} onDayClick={onDatePicked} />
-    </BlackOverlay>}
+    // </BlackOverlay>
+  }
 
   </Box>
   );
