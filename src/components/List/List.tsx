@@ -195,7 +195,6 @@ const List = ({ history }) => {
   const [selectedIDs, setSelectedIDs] = useState(new Set([] as string[]));
 
   const onItemSelect = ({ datum }: { datum: IEditableItem }) => {
-    console.log(datum);
     const _selectedIDs = new Set(selectedIDs);
 
     if (selectedIDs.has(datum.id)) {
