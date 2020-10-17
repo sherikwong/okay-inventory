@@ -1,5 +1,5 @@
-import { Box, Button, DataTable, TextInput } from 'grommet';
-import { Add, Camera, Down, Up, Refresh } from 'grommet-icons';
+import { Box, Button, DataTable } from 'grommet';
+import { Add, Camera, Down, Refresh, Up } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import { intersection } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -7,17 +7,15 @@ import { Router, withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import styled from 'styled-components';
 import { itemsDB } from '../../database/items';
+import useItems from '../../hooks/useItems';
 import { IItem } from '../../models/items';
-import Tags from '../reusable/Tags/Tags';
+import ActionsCell from './Cell/actions';
+import NameCell from './Cell/Name';
+import QuantityCell from './Cell/Quantity';
+import TagsCell from './Cell/Tags';
 import ListNameFilter from './Filters/name';
 import ListTagsFilter from './Filters/tags';
-import { DEFAULT_MAX_VERSION } from 'tls';
-import QuantityCell from './Cell/Quantity';
-import useItems from '../../hooks/useItems';
-import NameCell from './Cell/Name';
 import './List.scss';
-import TagsCell from './Cell/Tags';
-import ActionsCell from './Cell/actions';
 
 export const listHistory = createBrowserHistory();
 
@@ -46,21 +44,16 @@ const List = ({ history }) => {
   const [newItem, setNewItem] = useState({} as IEditableItem);
   const [dataIncludingNew, setDataIncludingNew] = useState(filteredData);
   const [isEditMode, toggleEditMode] = useState(false);
-  const [triggerReload, updateTriggerReload] = useState(0);
+  const [reload, triggerReload] = useState(0);
 
   const toggleSortQty = () => setAscQty(!isAscQty);
   const toggleSortDate = () => setAscDate(!isAscDate);
 
 
 
-  const items = useItems({ dependencies: triggerReload });
+  const items = useItems({ dependencies: reload });
 
 
-  const navigateToItem = ({ datum }: { datum: IEditableItem }) => {
-    if (!datum.isNewItem && !isEditMode) {
-      // history.push(`/item/${datum.id}`);
-    }
-  };
 
   const [filter, setFilter] = useState({
   } as ListFilters | undefined);
@@ -118,7 +111,7 @@ const List = ({ history }) => {
     itemsDB.update(newItem.id, sanitizedItem);
 
     if (triggerUpdate) {
-      updateTriggerReload(triggerReload + 1);
+      refresh();
     }
   }
 
@@ -182,13 +175,24 @@ const List = ({ history }) => {
     }, {
       property: 'actions',
       header: <></>,
-      render: datum => <ActionsCell datum={datum}  refresh={refresh}/>
+      render: datum => <ActionsCell datum={datum}  history={history} refresh={refresh} onSave={onSaveNew} selectedID={selectedID} setSelectedID={setSelectedID}/>
     }];
 
   const refresh = () => {
-    updateTriggerReload(triggerReload + 1);
+    triggerReload(reload + 1);
   }
 
+  const onSaveNew = () => {
+    setNewItem({} as IEditableItem);
+    refresh();
+    setSelectedID('');
+  }
+
+  const [selectedID, setSelectedID] = useState('');
+
+  const onItemSelect = ({datum}) => {
+    setSelectedID(datum.id);
+  }
 
   useEffect(() => {
     setDataIncludingNew([newItem, ...filteredData]);
@@ -210,8 +214,7 @@ const List = ({ history }) => {
         <FilledSwipable >
           <DataTable columns={columns}
             data={dataIncludingNew}
-            onClickRow={navigateToItem}
-            // onSelect={onRowSelect}
+            onClickRow={onItemSelect}
             primaryKey="id"
             pad="xxsmall"
           />

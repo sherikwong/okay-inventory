@@ -10,6 +10,7 @@ const useItems = ({dependencies}) => {
     itemsDB.getAll()
       .then(_items => {
         if (_items) {
+          console.log('Fetched items', items);
           setItems(_items);
         }
       }).catch(error => console.error(error));
