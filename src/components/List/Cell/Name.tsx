@@ -1,18 +1,35 @@
-import { TextInput } from 'grommet';
-import React from 'react';
+import { TextInput, Box } from 'grommet';
+import React, { useState } from 'react';
+import { Swipeable } from 'react-swipeable';
 
-const NameCell = props => {
-  const { datum, updateDatum } = props;
+const NameCell = ({ datum, updateDatum, selectedIDs, history }) => {
+  const [name, setName] = useState(datum.name);
+
+  const navigateToItem = () => {
+    history.push(`/item/${datum.id}`);
+  };
 
   const updateName = ({ target }) => {
+    const name = target.value;
+
+    setName(name);
+
     updateDatum({
       ...datum,
-      name: target.value
+      name
     }, false)
   };
 
-  return datum.isNewItem ? (
-    <TextInput placeholder="Name" onChange={updateName} />
-  ) : <span>{datum.name || 'N/A'}</span>
+  const clickEdit = event => {
+    event.stopPropagation();
+  }
+
+  return (
+    <Swipeable onSwipedRight={navigateToItem}>
+      <Box onClick={clickEdit}>
+        <TextInput placeholder="Name" onChange={updateName} value={name} />
+      </Box>
+    </Swipeable>
+  );
 }
 export default NameCell;

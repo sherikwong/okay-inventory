@@ -110,7 +110,7 @@ const List = ({ history }) => {
     itemsDB.update(newItem.id, sanitizedItem);
 
     if (triggerUpdate) {
-      refresh();
+      triggerReload(reload + 1);
     }
   }
 
@@ -157,7 +157,7 @@ const List = ({ history }) => {
       header: (
         <ListNameFilter onFilter={onFilter} />
       ),
-      render: datum => <NameCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum} />
+      render: datum => <NameCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum} history={history}/>
     },
     {
       property: 'tags',
@@ -179,16 +179,12 @@ const List = ({ history }) => {
     }, {
       property: 'actions',
       header: <></>,
-      render: datum => <ActionsCell datum={datum} selectedIDs={selectedIDs} history={history} refresh={refresh} onSave={onSaveNew} selectedID={selectedIDs} setSelectedID={setSelectedIDs} />
+      render: datum => <ActionsCell datum={datum} selectedIDs={selectedIDs} history={history} refresh={() => triggerReload(reload + 1)} onSave={onSaveNew} selectedID={selectedIDs} setSelectedID={setSelectedIDs} />
     }];
-
-  const refresh = () => {
-    triggerReload(reload + 1);
-  }
 
   const onSaveNew = () => {
     setNewItem({} as IEditableItem);
-    refresh();
+    triggerReload(reload + 1);
     setSelectedIDs(new Set([]));
   }
 
@@ -259,7 +255,7 @@ const List = ({ history }) => {
       <ListContainer fill={true}>
         <Box direction="row" margin="medium" justify="between">
           <Button icon={<Camera />} onClick={goToCamera} />
-          <Button icon={<Refresh />} onClick={refresh} />
+          <Button icon={<Refresh />} onClick={() => triggerReload(reload + 1)} />
         </Box>
 
 

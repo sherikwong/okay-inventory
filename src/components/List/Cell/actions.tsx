@@ -1,7 +1,17 @@
 import React from 'react';
-import { Box, Button } from 'grommet';
+import { Box, Button as _Button } from 'grommet';
 import { Trash, Checkmark, Next } from 'grommet-icons';
 import { itemsDB } from '../../../database/items';
+import styled from 'styled-components';
+
+interface IButton {
+  isVisible: boolean;
+}
+
+const Button = styled(_Button) <IButton>`
+${({ isVisible }) => `opacity: ${isVisible ? 1 : 0}`};
+padding: 0;
+`;
 
 const ActionsCell = props => {
   const { datum, refresh, onSave, selectedID, setSelectedID, history } = props;
@@ -11,19 +21,12 @@ const ActionsCell = props => {
     history.push(`/item/${datum.id}`);
   };
 
-  return selectedID.has(datum.id) ? (
+  return (
     <Box direction="row">
-      {datum.isNewItem
-        ? <Button icon={<Checkmark />} onClick={() => onSave()} />
-        : (
-          <>
-            <Button icon={<Next />} onClick={navigateToItem} />
-          </>
-        )
-      }
+      <Button icon={<Checkmark />} onClick={() => onSave()} />
+      <Button icon={<Next />} onClick={navigateToItem} isVisible={selectedID.has(datum.id)} />
     </Box>
-  ) : (<></>)
-
+  );
 }
 
 export default ActionsCell;
