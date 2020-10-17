@@ -18,6 +18,7 @@ import ListTagsFilter from './Filters/tags';
 import './List.scss';
 import SelectedCell from './Cell/Selected';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import DateCell from './Cell/Date';
 
 export const listHistory = createBrowserHistory();
 
@@ -99,8 +100,6 @@ const List = ({ history }) => {
   }, [filter, items, isAscQty, isAscDate, hasHadInitialFilter, newItem]);
 
 
-  const dateOpts = { month: 'short', day: 'numeric' };
-
 
   const updateDatum = (newItem: IEditableItem, triggerUpdate = true) => {
     const sanitizedItem: IEditableItem = { ...newItem };
@@ -128,15 +127,13 @@ const List = ({ history }) => {
         isNewItem: true
       });
     });
-
-    console.log(newItem);
   };
 
   let columns = [
     {
       property: 'selected',
       header: (<></>),
-      render: datum => <SelectedCell datum={datum} selectedIDs={selectedIDs} />
+      render: datum => <SelectedCell datum={datum} selectedIDs={selectedIDs}  />
     },
     {
       property: 'date',
@@ -146,7 +143,7 @@ const List = ({ history }) => {
           <Button icon={isAscDate ? <Up /> : <Down />} onClick={toggleSortDate} />
         </Box>
       ),
-      render: datum => datum.date ? (<span>{new Date(datum.date).toLocaleDateString("en-US", dateOpts)}</span>) : <></>
+      render: datum => <DateCell datum={datum} selectedIDs={selectedIDs} updateDatum={updateDatum}/>
     },
     {
       property: 'id',
@@ -197,6 +194,7 @@ const List = ({ history }) => {
   const [selectedIDs, setSelectedIDs] = useState(new Set([] as string[]));
 
   const onItemSelect = ({ datum }: { datum: IEditableItem }) => {
+    console.log(datum);
     const _selectedIDs = new Set(selectedIDs);
 
     if (selectedIDs.has(datum.id)) {
@@ -209,7 +207,7 @@ const List = ({ history }) => {
   }
 
   useEffect(() => {
-    setDataIncludingNew([newItem, ...filteredData]);
+    setDataIncludingNew(newItem.id ? [newItem, ...filteredData] : filteredData);
   }, [filteredData, newItem]);
 
   const goToCamera = () => {
@@ -221,6 +219,7 @@ const List = ({ history }) => {
   const selectedStyle = {
     background: 'rgba(255, 255, 255, .1)'
   };
+
 
   const [rowStyles, setRowStyles] = useState({});
   const [linksToCopy, setLinksToCopy] = useState('');
@@ -250,9 +249,9 @@ const List = ({ history }) => {
           const _selectedIDs = new Set(selectedIDs);
           _selectedIDs.delete(id);
           setSelectedIDs(_selectedIDs);
-          refresh();
         });
-  });
+      });
+      triggerReload(reload + 1);
 }
 
 return (
