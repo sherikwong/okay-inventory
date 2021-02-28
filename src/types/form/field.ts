@@ -16,6 +16,7 @@ export enum EFieldType {
   CHECKBOX = 'checkbox',
   NUMBER = 'number',
   SELECT = 'select',
+  RADIO_GROUP = 'radioGroup',
 }
 
 export type Fields = IField[];

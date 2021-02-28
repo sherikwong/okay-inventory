@@ -10,7 +10,7 @@ const fields: IField[] = [
   },
   {
     name: 'type',
-    type: EFieldType.SELECT,
+    type: EFieldType.RADIO_GROUP,
     options: transformEnumToSelectOptions(EFieldType),
   },
 ];

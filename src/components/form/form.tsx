@@ -14,7 +14,8 @@ export const Form = ({ fields }: IFormProps) => {
       {fields?.map((field) => {
         const Input = fieldTypeMap.get(field.type);
         const selectConfig =
-          field.type === EFieldType.SELECT
+          field.type === EFieldType.SELECT ||
+          field.type == EFieldType.RADIO_GROUP
             ? {
                 labelKey: 'value',
                 valueKey: 'label',
