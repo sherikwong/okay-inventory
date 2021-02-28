@@ -2,11 +2,9 @@
   overflow: hidden;
 }
 
-
 .z-index-100 {
   z-index: 100;
 }
-
 
 .text-white {
   color: white;
@@ -17,12 +15,14 @@ body {
 }
 
 #root > div {
-  &, & .div {
+  &,
+  & .div {
     height: 100%;
   }
 }
 
-span {
+span,
+label {
   color: white;
 }
 
