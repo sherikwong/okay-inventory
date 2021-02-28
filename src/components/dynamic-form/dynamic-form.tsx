@@ -1,5 +1,5 @@
 import { EFieldType, IField } from '../../types/form/field';
-import { fieldTypeMap } from './form.variables';
+import { fieldTypeMap } from './dynamic-form.variables';
 import React from 'react';
 import { titleCase } from 'voca';
 import { FormField } from 'grommet';
@@ -8,7 +8,7 @@ interface IFormProps {
   fields: IField[];
 }
 
-export const Form = ({ fields }: IFormProps) => {
+export const DynamicForm = ({ fields }: IFormProps) => {
   return (
     <>
       {fields?.map((field) => {
