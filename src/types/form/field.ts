@@ -8,6 +8,9 @@ export class IField {
   type = EFieldType.TEXT;
   required? = false;
   options?: ISelectOption[];
+  order?: number;
+  value?: any;
+  onChange?: any;
 }
 
 export enum EFieldType {

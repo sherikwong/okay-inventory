@@ -2,11 +2,12 @@ import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { EFieldType, IField } from '../../../../types/form/field';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { transformEnumToSelectOptions } from '../../../../utils/transformEnumToSelectOptions';
-import { Box, Button, Form } from 'grommet';
+import { Box, Button, Form, FormField, TextInput } from 'grommet';
+import { modelsDB } from '../../../../database/models';
 
-const newModelForm: IField[] = [
+const newFieldForm: IField[] = [
   {
-    name: 'name',
+    name: 'Name',
     type: EFieldType.TEXT,
   },
   {
@@ -22,6 +23,7 @@ interface IReducer {
 }
 
 export const NewModel = () => {
+  const [modelName, setModelName] = useState('');
   const [fields, setFields] = useReducer<
     Reducer<Map<string, IField>, IReducer>
   >((previous, { action, field }) => {
@@ -43,20 +45,41 @@ export const NewModel = () => {
     console.log(fields);
   }, [fields]);
 
+  const fieldsAsArray = Array.from(fields).map(([, value]) => value);
+
   const addField = ({ value }) => {
     setFields({ action: 'add', field: value });
+  };
+
+  const newModelForm: IField[] = [
+    {
+      name: 'Form Name',
+      type: EFieldType.TEXT,
+      value: modelName,
+      onChange: (value) => setModelName(value.target.value),
+    },
+  ];
+
+  const onSubmit = () => {
+    modelsDB.add({
+      name: modelName,
+      fields: fieldsAsArray
+    });
   };
 
   return (
     <>
       <h1>New Model</h1>
+
+      <DynamicForm fields={newModelForm} />
+
       {fields && (
         <Box
           direction="row"
           border={{ color: 'brand', size: 'small' }}
           pad="medium"
         >
-          <DynamicForm fields={Array.from(fields).map(([, value]) => value)} />
+          <DynamicForm fields={fieldsAsArray} />
         </Box>
       )}
 
@@ -66,10 +89,12 @@ export const NewModel = () => {
         pad="medium"
       >
         <Form onSubmit={addField}>
-          <DynamicForm fields={newModelForm} />
+          <DynamicForm fields={newFieldForm} />
           <Button type="submit" label="Add" />
         </Form>
       </Box>
+
+      <Button label="Save" onClick={onSubmit}/>
     </>
   );
 };
