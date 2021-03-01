@@ -87,11 +87,10 @@ export const NewModel = () => {
   };
 
   const onSubmit = () => {
-    console.log(modelName, fieldsAsArray);
-    // modelsDB.add({
-    //   name: modelName,
-    //   fields: fieldsAsArray,
-    // });
+    modelsDB.add({
+      name: modelName,
+      fields: fieldsAsArray,
+    });
   };
 
   const newModelForm: IField[] = [
