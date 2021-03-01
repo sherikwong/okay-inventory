@@ -5,7 +5,7 @@ export const transformEnumToSelectOptions = (itemToParse: {
 }) => {
   return Object.entries(itemToParse).map(([key, value]) => ({
     label: titleCase(value),
-    value: value.toLowerCase(),
+    value: value,
   }));
 };
 

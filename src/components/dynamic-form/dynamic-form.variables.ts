@@ -8,9 +8,9 @@ import {
 } from 'grommet';
 import { EFieldType } from '../../types/form/field';
 export const fieldTypeMap = new Map<EFieldType, any>([
-  [EFieldType.TEXT, TextInput],
-  [EFieldType.RANGE, RangeInput],
-  [EFieldType.CHECKBOX, CheckBox],
-  [EFieldType.SELECT, Select],
-  [EFieldType.RADIO_GROUP, RadioButtonGroup],
+  [EFieldType.text, TextInput],
+  [EFieldType.range, RangeInput],
+  [EFieldType.checkbox, CheckBox],
+  [EFieldType.select, Select],
+  [EFieldType.radioGroup, RadioButtonGroup],
 ]);

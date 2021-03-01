@@ -5,7 +5,7 @@ export interface ISelectOption {
 
 export class IField {
   name = '';
-  type = EFieldType.TEXT;
+  type? = EFieldType.text;
   required? = false;
   options?: ISelectOption[];
   order?: number;
@@ -14,12 +14,12 @@ export class IField {
 }
 
 export enum EFieldType {
-  TEXT = 'text',
-  RANGE = 'range',
-  CHECKBOX = 'checkbox',
-  NUMBER = 'number',
-  SELECT = 'select',
-  RADIO_GROUP = 'radioGroup',
+  text = 'text',
+  range = 'range',
+  checkbox = 'checkbox',
+  number = 'number',
+  select = 'select',
+  radioGroup = 'radioGroup',
 }
 
 export type Fields = IField[];
