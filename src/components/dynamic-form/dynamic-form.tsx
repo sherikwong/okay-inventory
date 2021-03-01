@@ -12,9 +12,9 @@ interface IFormProps {
 export const DynamicForm = ({ fields: _fields }: IFormProps) => {
   const fields = isArray(_fields)
     ? _fields
-    : Object.entries(_fields).sort(([keyA], [keyB]) =>
-        +keyA > +keyB ? 1 : -1 || 0
-      );
+    : Object.entries(_fields)
+        .sort(([keyA], [keyB]) => (+keyA > +keyB ? 1 : -1 || 0))
+        .map(([key, value]) => value);
   return (
     <Box>
       {(fields as IField[])?.map((field) => {
