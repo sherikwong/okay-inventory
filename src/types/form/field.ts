@@ -22,4 +22,4 @@ export enum EFieldType {
   radioGroup = 'radioGroup',
 }
 
-export type Fields = IField[];
+export type Fields = { [key: string]: IField } | IField[];

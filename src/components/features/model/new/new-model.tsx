@@ -1,13 +1,13 @@
-import { DynamicForm } from '../../../dynamic-form/dynamic-form';
+import { Button, Form } from 'grommet';
+import React, { Reducer, useEffect, useReducer, useState } from 'react';
+import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
-  ISelectOption,
+  ISelectOption
 } from '../../../../types/form/field';
-import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { transformEnumToSelectOptions } from '../../../../utils/transformEnumToSelectOptions';
-import { Box, Button, Form, FormField, TextInput } from 'grommet';
-import { modelsDB } from '../../../../database/models';
+import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
 
 interface IReducer {
