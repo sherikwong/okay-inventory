@@ -1,12 +1,14 @@
 import { Box } from 'grommet';
 import React from 'react';
 
-export const Container = ({ children }) => {
+interface IContainerProps {
+  children: any;
+  style?: any;
+}
+
+export const Container = ({ children, style }: IContainerProps) => {
   return (
-    <Box
-      border={{ color: 'brand', size: 'small' }}
-      pad="medium"
-    >
+    <Box border={{ color: 'brand', size: 'small' }} pad="medium" style={style}>
       {children}
     </Box>
   );

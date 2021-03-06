@@ -1,4 +1,4 @@
-import { Button, Form } from 'grommet';
+import { Button, Form, Layer } from 'grommet';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import Draggable from 'react-draggable';
 import { modelsDB } from '../../../../database/models';
@@ -46,37 +46,69 @@ export const NewModel = () => {
 
   const [fields, setFields] = useReducer<
     Reducer<Map<string, IField>, IReducer>
-  >((previous, { action, field }) => {
-    const shallowCopy = new Map(previous);
+  >(
+    (previous, { action, field }) => {
+      const shallowCopy = new Map(previous);
 
-    switch (action) {
-      case 'add':
-        let _field = { ...field };
+      switch (action) {
+        case 'add':
+          let _field = { ...field };
 
-        if (hasOptions(field.type)) {
-          _field = { ..._field, options };
-        }
+          if (hasOptions(field.type)) {
+            _field = { ..._field, options };
+          }
 
-        shallowCopy.set(field.name, _field);
-        // setOptions([]);
-        break;
-      case 'delete':
-        shallowCopy.delete(field.name);
-        break;
-      case 'modify':
-        const gottenField = shallowCopy.get(field.name);
-        shallowCopy.set(field.name, {
-          ...gottenField,
-          ...field,
-        });
-    }
+          shallowCopy.set(field.name, _field);
+          // setOptions([]);
+          break;
+        case 'delete':
+          shallowCopy.delete(field.name);
+          break;
+        case 'modify':
+          const gottenField = shallowCopy.get(field.name);
+          shallowCopy.set(field.name, {
+            ...gottenField,
+            ...field,
+          });
+      }
 
-    return shallowCopy;
-  }, new Map([]));
-
-  useEffect(() => {
-    console.log(fields);
-  }, [fields]);
+      return shallowCopy;
+    },
+    new Map([
+      [
+        'A',
+        {
+          name: 'A',
+          type: EFieldType.checkbox,
+          sort: 100000,
+        },
+      ],
+      [
+        'B',
+        {
+          name: 'B',
+          type: EFieldType.checkbox,
+          sort: 100000,
+        },
+      ],
+      [
+        'C',
+        {
+          name: 'C',
+          type: EFieldType.checkbox,
+          sort: 100000,
+        },
+      ],
+      [
+        'D',
+        {
+          name: 'D',
+          type: EFieldType.text,
+          sort: 100,
+        },
+      ],
+    ])
+  );
 
   const fieldsAsArray = Array.from(fields).map(([, value]) => value);
 
@@ -116,39 +148,43 @@ export const NewModel = () => {
     <>
       {' '}
       <h1>New Model</h1>
-      <DynamicForm fields={newModelForm} />
+      {/* <DynamicForm fields={newModelForm} /> */}
       <DynamicForm
         fields={fieldsAsArray}
-        draggable={true}
-        renderFieldWrapper={(fieldInput) => <Container>{fieldInput}</Container>}
-      />
-      <Container>
-        <Form onSubmit={addField} onChange={onChange}>
-          <DynamicForm fields={newFieldForm} />
-          <Button type="submit" label="Add Field" />
-        </Form>
-      </Container>
-      {options.length && (
+        sortable={true}
+        onEmitSortedFields={(fields) => console.log(fields)}
+      ></DynamicForm>
+      {/*
+      <Layer position="bottom" modal={false} style={{ background: 'black' }}>
         <Container>
-          <h1>Options</h1>
-          {options.map(({ value, label }) => (
-            <>
-              {label}: {value}
-            </>
-          ))}
-        </Container>
-      )}
-      {optionsFields.length && (
-        <Container>
-          <Form onSubmit={onAddOption}>
-            <Container>
-              <DynamicForm fields={optionsFields} />
-              <Button type="submit" label="Add Option" />
-            </Container>
+          <Form onSubmit={addField} onChange={onChange}>
+            <DynamicForm fields={newFieldForm} />
+            <Button type="submit" label="Add Field" />
           </Form>
         </Container>
-      )}
-      <Button label="Save" onClick={onSubmit} />
+
+        {options.length && (
+          <Container>
+            <h1>Options</h1>
+            {options.map(({ value, label }) => (
+              <>
+                {label}: {value}
+              </>
+            ))}
+          </Container>
+        )}
+        {optionsFields.length && (
+          <Container>
+            <Form onSubmit={onAddOption}>
+              <Container>
+                <DynamicForm fields={optionsFields} />
+                <Button type="submit" label="Add Option" />
+              </Container>
+            </Form>
+          </Container>
+        )}
+      </Layer> */}
+      {/* <Button label="Save" onClick={onSubmit} /> */}
     </>
   );
 };

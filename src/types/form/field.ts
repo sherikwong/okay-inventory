@@ -11,6 +11,7 @@ export class IField {
   order?: number;
   value?: any;
   onChange?: any;
+  sort?: number;
 }
 
 export enum EFieldType {
