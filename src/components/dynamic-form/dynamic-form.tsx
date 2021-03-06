@@ -1,7 +1,6 @@
 import { Box, FormField, TextInput } from 'grommet';
 import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import Draggable from 'react-draggable';
 import {
   arrayMove,
   SortableContainer,
@@ -10,19 +9,23 @@ import {
 import { titleCase } from 'voca';
 import { EFieldType, Fields, IField } from '../../types/form/field';
 import { fieldTypeMap } from './dynamic-form.variables';
+
+interface IFormStyle {
+  field: any;
+}
 interface IFormProps {
   fields: Fields;
   direction?: 'row' | 'column';
-  renderFieldWrapper?: (field: any) => any;
   sortable?: boolean;
   onEmitSortedFields?: (fields: IField[]) => void;
+  style?: IFormStyle;
 }
 
 export const DynamicForm = ({
   fields: _fields,
-  renderFieldWrapper,
   sortable,
   onEmitSortedFields: onEmitFields,
+  style,
 }: IFormProps) => {
   const [fields, setFields] = useState<IField[]>([]);
 
@@ -61,14 +64,18 @@ export const DynamicForm = ({
     const options = hasOptions ? field.options : undefined;
 
     const fieldJSX = (
-      <FormField label={titleCase(field.name)}>
-        <Input
-          value={field.value}
-          {...selectConfig}
-          options={options}
-          name={field.name}
-        />
-      </FormField>
+      <Box {...(style?.field || {})}>
+        <FormField label={titleCase(field.name)}>
+          <Input
+            value={field.value}
+            placeholder={field.placeholder}
+            required={field.required}
+            {...selectConfig}
+            options={options}
+            name={field.name}
+          />
+        </FormField>
+      </Box>
     );
 
     return fieldJSX;

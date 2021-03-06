@@ -85,8 +85,7 @@ const App = () => {
   return (
     // <Grommet theme={theme} themeMode="dark">
     <Grommet theme={theme}>
-      <NewModel />
-      {/* {!logoHasPlayed ? (
+      {!logoHasPlayed ? (
         <Box fill={true} alignContent="center" justify="center">
           <Logo animated={true} width="100%" />
         </Box>
@@ -106,7 +105,7 @@ const App = () => {
             <Authentication setAuthenticated={setAuthenticated} />
           )}
         </Router>
-      )} */}
+      )}
     </Grommet>
   );
 };

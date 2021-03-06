@@ -10,7 +10,9 @@ export class IField {
   options?: ISelectOption[];
   order?: number;
   value?: any;
+  placeholder?: string;
   onChange?: any;
+  onBlur?: any;
   sort?: number;
 }
 
