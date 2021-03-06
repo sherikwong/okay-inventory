@@ -1,15 +1,22 @@
-import { EFieldType, Fields, IField } from '../../types/form/field';
-import { fieldTypeMap } from './dynamic-form.variables';
-import React from 'react';
-import { titleCase } from 'voca';
 import { Box, FormField, TextInput } from 'grommet';
 import { isArray } from 'lodash';
+import React from 'react';
+import Draggable from 'react-draggable';
+import { titleCase } from 'voca';
+import { EFieldType, Fields, IField } from '../../types/form/field';
+import { fieldTypeMap } from './dynamic-form.variables';
 interface IFormProps {
   fields: Fields;
   direction?: 'row' | 'column';
+  renderFieldWrapper?: (field: any) => any;
+  draggable?: boolean;
 }
 
-export const DynamicForm = ({ fields: _fields }: IFormProps) => {
+export const DynamicForm = ({
+  fields: _fields,
+  renderFieldWrapper,
+  draggable,
+}: IFormProps) => {
   const fields = isArray(_fields)
     ? _fields
     : Object.entries(_fields)
@@ -31,9 +38,9 @@ export const DynamicForm = ({ fields: _fields }: IFormProps) => {
             }
           : {};
 
-        const options = hasOptions ? field.options || ['hello'] : undefined;
+        const options = hasOptions ? field.options : undefined;
 
-        return (
+        const fieldJSX = (
           <FormField label={titleCase(field.name)}>
             <Input
               value={field.value}
@@ -43,6 +50,23 @@ export const DynamicForm = ({ fields: _fields }: IFormProps) => {
             />
           </FormField>
         );
+
+        const dragWrapper = (children) => (
+          <Draggable
+            axis="y"
+            grid={[25, 25]}
+            scale={1}
+            onStart={(val) => console.log(val)}
+          >
+            {children}
+          </Draggable>
+        );
+
+        const wrapped = renderFieldWrapper?.(fieldJSX);
+        const draggableEvaluated =
+          draggable && dragWrapper(wrapped || fieldJSX);
+
+        return draggableEvaluated || fieldJSX;
       })}
     </Box>
   );

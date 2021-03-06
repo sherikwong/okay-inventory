@@ -1,10 +1,11 @@
 import { Button, Form } from 'grommet';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
+import Draggable from 'react-draggable';
 import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
-  ISelectOption
+  ISelectOption,
 } from '../../../../types/form/field';
 import { transformEnumToSelectOptions } from '../../../../utils/transformEnumToSelectOptions';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
@@ -113,23 +114,20 @@ export const NewModel = () => {
 
   return (
     <>
+      {' '}
       <h1>New Model</h1>
-
       <DynamicForm fields={newModelForm} />
-
-      {fields && (
-        <Container>
-          <DynamicForm fields={fieldsAsArray} />
-        </Container>
-      )}
-
+      <DynamicForm
+        fields={fieldsAsArray}
+        draggable={true}
+        renderFieldWrapper={(fieldInput) => <Container>{fieldInput}</Container>}
+      />
       <Container>
         <Form onSubmit={addField} onChange={onChange}>
           <DynamicForm fields={newFieldForm} />
           <Button type="submit" label="Add Field" />
         </Form>
       </Container>
-
       {options.length && (
         <Container>
           <h1>Options</h1>
@@ -140,7 +138,6 @@ export const NewModel = () => {
           ))}
         </Container>
       )}
-
       {optionsFields.length && (
         <Container>
           <Form onSubmit={onAddOption}>
@@ -151,7 +148,6 @@ export const NewModel = () => {
           </Form>
         </Container>
       )}
-
       <Button label="Save" onClick={onSubmit} />
     </>
   );
