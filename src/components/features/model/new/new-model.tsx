@@ -26,29 +26,37 @@ const optionsForm = [
   },
 ];
 
-const newFieldForm: IField[] = [
-  {
-    name: 'name',
-    required: true,
-  },
-  {
-    name: 'type',
-    type: EFieldType.radioGroup,
-    options: transformEnumToSelectOptions(EFieldType),
-    required: true,
-  },
-  {
-    name: 'multiple',
-    type: EFieldType.checkbox,
-    required: true,
-  },
-];
-
 export const NewModel = () => {
   const [optionsFields, setOptionsFields] = useState<IField[]>([]);
   const [options, setOptions] = useState<ISelectOption[]>([]);
   const [modelField, updateModelName] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
+
+  const [newFieldForm, updateNewFieldForm] = useReducer(
+    (fields, [key, value]) => {
+      return {
+        ...fields,
+        [key]: value,
+      };
+    },
+    [
+      {
+        name: 'name',
+        required: true,
+      },
+      {
+        name: 'type',
+        type: EFieldType.radioGroup,
+        options: transformEnumToSelectOptions(EFieldType),
+        required: true,
+      },
+      {
+        name: 'multiple',
+        type: EFieldType.checkbox,
+        required: true,
+      },
+    ]
+  );
 
   const hasOptions = (type) =>
     type === EFieldType.select || type === EFieldType.radioGroup;
@@ -100,9 +108,11 @@ export const NewModel = () => {
   };
 
   const onChange = (values: any) => {
-    const { type, label, value, name } = values;
+    // Object.entries(values).forEach(([key, value]) => {
+    //   updateNewFieldForm([key, value]);
+    // });
 
-    setOptionsFields(hasOptions(type) ? optionsForm : []);
+    setOptionsFields(hasOptions(values.type) ? optionsForm : []);
   };
 
   const onAddOption: any = ({ value }) => {
