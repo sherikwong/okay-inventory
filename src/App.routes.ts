@@ -19,7 +19,10 @@ export const routes = {
       bottom: [],
     },
   },
-  '/models/new': {
+  '/model/new': {
+    component: NewModel,
+  },
+  '/model/:id': {
     component: NewModel,
   },
   '/models': {
