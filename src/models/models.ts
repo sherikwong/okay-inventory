@@ -4,4 +4,5 @@ import { IField, Fields } from './../types/form/field';
 export interface IModel extends IBaseModel {
   name: string;
   fields: Fields;
+  entries: any;
 }
