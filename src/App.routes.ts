@@ -1,23 +1,26 @@
 import { List, Menu } from 'grommet';
+import { Entry } from './components/features/entry/entry';
 import { Model } from './components/features/model/model';
 import { NewModel } from './components/features/model/new/new-model';
 import { Models } from './components/features/models/models';
-import ItemRouter from './components/item/Router';
 
 export const routes = {
-  '/item/:id': {
-    component: ItemRouter,
-    buttons: {
-      top: [],
-      bottom: [],
-    },
-  },
+  // '/item/:id': {
+  //   component: ItemRouter,
+  //   buttons: {
+  //     top: [],
+  //     bottom: [],
+  //   },
+  // },
   '/list': {
     component: List,
     buttons: {
       top: [],
       bottom: [],
     },
+  },
+  '/entry/:id': {
+    component: Entry,
   },
   '/model/new': {
     component: NewModel,

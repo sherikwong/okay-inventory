@@ -1,51 +1,89 @@
 import { Box, Button, Collapsible, DataTable, Form } from 'grommet';
-import { Add } from 'grommet-icons';
+import { Add, Edit } from 'grommet-icons';
+import { entries } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { entriesDB } from '../../../database/entry';
 import { modelsDB } from '../../../database/models';
+import { IEntry } from '../../../models/entry';
+import { IModel } from '../../../models/models';
 import { IField } from '../../../types/form/field';
 import { DynamicForm } from '../../dynamic-form/dynamic-form';
 import { Container } from '../../reusable/container';
 import { useExistingModel } from './new/new-model.utils';
-export const Model = ({ match }) => {
+
+const leftColumns = [
+  {
+    property: 'dateCreated',
+    header: 'Date',
+  },
+];
+
+export const Model = ({ match, history }) => {
   const modelID = match.params.id;
   const existingModel = useExistingModel(match);
-  const [columns, setColumns] = useState<any[]>([]);
+  const [columnsFromDB, setColumnsFromDB] = useState<any[]>([]);
   const [showAddEntryForm, setShowAddEntryForm] = useState(false);
+  const [data, setData] = useState<IEntry[]>([]);
 
-  useEffect(() => {
+  const mapColumns = (existingModel: IModel) => {
     if (existingModel) {
       const _columns = (existingModel.fields as IField[]).map(({ name }) => ({
         property: name,
         header: name,
       }));
 
-      setColumns(_columns);
+      setColumnsFromDB(_columns);
     }
+  };
+
+  const getEntries = (existingModel: IModel) => {
+    if (existingModel) {
+      const allEntriesGetterPromise = Object.values(
+        existingModel.entries
+      ).map((entry) => entriesDB.get(entry));
+
+      Promise.all(allEntriesGetterPromise).then((items) => {
+        setData(items);
+      });
+    }
+  };
+
+  useEffect(() => {
+    mapColumns(existingModel);
+    getEntries(existingModel);
   }, [existingModel]);
 
   const onSubmit = ({ value }) => {
     if (Object.entries(value).length) {
-      // const existingItem = existingModel?.entries?.[modelID] || {};
-
-      // if (!existingItem) {
-      entriesDB.add(value).then((entry) => {
+      entriesDB.add({ ...value, modelID }).then((entry) => {
         modelsDB
           .update(match.params.id, {
             ...existingModel,
-            entries: { ...existingModel.entries, [entry.id]: entry },
+            entries: { ...existingModel.entries, [entry.id]: entry.id },
           })
           .then((res) => {
             setShowAddEntryForm(false);
           });
       });
-      // }
     }
   };
 
+  const columns = [
+    ...leftColumns,
+    ...columnsFromDB,
+    {
+      property: 'edit',
+      render: ({ id }) => {
+        const onClick = () => history.push(`/entry/${id}`);
+
+        return <Button icon={<Edit />} onClick={onClick} />;
+      },
+    },
+  ];
+
   return (
     <>
-      <DataTable columns={columns} />
+      <DataTable columns={columns} data={data} />
       <Box margin={{ vertical: 'large' }} alignContent="center">
         <Button
           style={{ textAlign: 'center' }}
