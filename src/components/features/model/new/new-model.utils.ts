@@ -1,3 +1,7 @@
+import { IModel } from './../../../../models/models';
+import { modelsDB } from './../../../../database/models';
+import { useEffect, useState } from 'react';
+
 export const fieldsReducer = (hasOptions, options) => (
   previous,
   { action, field }
@@ -26,4 +30,12 @@ export const fieldsReducer = (hasOptions, options) => (
   }
 
   return shallowCopy;
+};
+
+export const useExistingModel = (match: any) => {
+  const [model, setModel] = useState<IModel>();
+  useEffect(() => {
+    modelsDB.get(match.params.id).then((model) => setModel(model));
+  }, [match]);
+  return (model as unknown) as IModel;
 };

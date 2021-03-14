@@ -29,7 +29,7 @@ export const routes = {
     component: Models,
   },
   '/': {
-    component: Scan,
+    component: Models,
     buttons: {
       top: [
         {

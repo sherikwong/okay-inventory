@@ -7,7 +7,11 @@ import CloseButton from '../../reusable/CloseButton/CloseButton';
 export const Models = ({ history }) => {
   const [models, setModels] = useState<any[]>([]);
   useEffect(() => {
-    modelsDB.getAll().then((models) => setModels(Object.values(models)));
+    modelsDB
+      .getAll()
+      .then((models) =>
+        setModels(Object.values(models).filter((model) => model.id))
+      );
   }, []);
 
   useEffect(() => {

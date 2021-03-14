@@ -1,23 +1,23 @@
 import { Box, Button, Collapsible, Form, TextInput } from 'grommet';
-import { LinkPrevious, Save, Add } from 'grommet-icons';
-import React, { Reducer, useReducer, useState } from 'react';
+import { Add, LinkPrevious, Save } from 'grommet-icons';
+import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
   ISelectOption,
 } from '../../../../types/form/field';
-import transformEnumToSelectOptions from '../../../../utils/transformEnumToSelectOptions';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
-import { newFieldForm, newModelForm, optionsForm } from './new-model.form';
+import { newFieldForm, optionsForm } from './new-model.form';
 import { IReducer } from './new-model.types';
-import { fieldsReducer } from './new-model.utils';
+import { fieldsReducer, useExistingModel } from './new-model.utils';
 
-export const NewModel = () => {
+export const NewModel = ({ match }) => {
+  const existingModel = useExistingModel(match);
   const [optionsFields, setOptionsFields] = useState<IField[]>([]);
   const [options, setOptions] = useState<ISelectOption[]>([]);
-  const [modelField, updateModelName] = useState('');
+  const [modelName, updateModelName] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
 
   const hasOptions = (type) =>
@@ -38,20 +38,30 @@ export const NewModel = () => {
 
   const onSubmit = (values) => {
     modelsDB.add({
-      // name: modelName,
+      name: modelName,
       fields: fieldsAsArray,
     });
   };
 
   const onChange = ({ target }: any) => {
-    if (target.name === 'type') {
-      setOptionsFields(hasOptions(target.value) ? optionsForm : []);
+    switch (target.name) {
+      case 'type':
+        setOptionsFields(hasOptions(target.value) ? optionsForm : []);
+        break;
+      case 'name':
+        updateModelName(target.value);
     }
   };
 
   const onAddOption: any = ({ value }) => {
     setOptions([...options, value]);
   };
+
+  useEffect(() => {
+    if (existingModel) {
+      setFields({ action: 'modify', field: existingModel });
+    }
+  }, [existingModel]);
 
   return (
     <Box>
@@ -64,7 +74,7 @@ export const NewModel = () => {
         <TextInput
           name="modelName"
           placeholder="Model Name"
-          value={modelField}
+          value={modelName}
           style={{ textAlign: 'center' }}
           required={true}
         />
