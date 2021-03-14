@@ -1,5 +1,5 @@
 import { Button, Form } from 'grommet';
-import React, { Reducer, useEffect, useReducer, useState } from 'react';
+import React, { Reducer, useReducer, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
@@ -8,7 +8,7 @@ import {
 } from '../../../../types/form/field';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
-import { newFieldForm, optionsForm } from './new-model.form';
+import { newFieldForm, newModelForm, optionsForm } from './new-model.form';
 import { IReducer } from './new-model.types';
 import { fieldsReducer } from './new-model.utils';
 
@@ -40,14 +40,6 @@ export const NewModel = () => {
     });
   };
 
-  const newModelForm: IField[] = [
-    {
-      name: 'Form Name',
-      value: modelName,
-      onChange: (value) => setModelName(value.target.value),
-    },
-  ];
-
   const onChange = (values: any) => {
     const { type, label, value, name } = values;
 
@@ -62,7 +54,7 @@ export const NewModel = () => {
     <>
       <h1>New Model</h1>
 
-      <DynamicForm fields={newModelForm} />
+      <DynamicForm fields={newModelForm(modelName, setModelName)} />
 
       {fields && (
         <Container>

@@ -20,3 +20,11 @@ export const newFieldForm: IField[] = [
     options: transformEnumToSelectOptions(EFieldType),
   },
 ];
+
+export const newModelForm = (modelName: any, setModelName: any): IField[] => [
+  {
+    name: 'Form Name',
+    value: modelName,
+    onChange: (value) => setModelName(value.target.value),
+  },
+];

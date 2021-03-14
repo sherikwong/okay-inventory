@@ -13,7 +13,6 @@ export const fieldsReducer = (hasOptions, options) => (
       }
 
       shallowCopy.set(field.name, _field);
-      // setOptions([]);
       break;
     case 'delete':
       shallowCopy.delete(field.name);
