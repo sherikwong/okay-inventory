@@ -1,40 +1,18 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Form,
-  Layer,
-  Nav,
-  TextInput,
-  Sidebar,
-  Collapsible,
-} from 'grommet';
-import { Add, LinkPrevious, Save } from 'grommet-icons';
-import React, { Reducer, useEffect, useReducer, useState } from 'react';
-import Draggable from 'react-draggable';
+import { Box, Button, Collapsible, Form, TextInput } from 'grommet';
+import { LinkPrevious, Save, Add } from 'grommet-icons';
+import React, { Reducer, useReducer, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
   ISelectOption,
 } from '../../../../types/form/field';
-import { transformEnumToSelectOptions } from '../../../../utils/transformEnumToSelectOptions';
+import transformEnumToSelectOptions from '../../../../utils/transformEnumToSelectOptions';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
-
-interface IReducer {
-  action: 'increment' | 'decrement' | 'add' | 'delete' | 'modify';
-  field: IField;
-}
-
-const optionsForm = [
-  {
-    name: 'label',
-  },
-  {
-    name: 'value',
-  },
-];
+import { newFieldForm, newModelForm, optionsForm } from './new-model.form';
+import { IReducer } from './new-model.types';
+import { fieldsReducer } from './new-model.utils';
 
 export const NewModel = () => {
   const [optionsFields, setOptionsFields] = useState<IField[]>([]);
@@ -42,56 +20,12 @@ export const NewModel = () => {
   const [modelField, updateModelName] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
 
-  const newFieldForm = [
-    {
-      name: 'name',
-      required: true,
-    },
-    {
-      name: 'type',
-      type: EFieldType.radioGroup,
-      options: transformEnumToSelectOptions(EFieldType),
-      required: true,
-    },
-    {
-      name: 'multiple',
-      type: EFieldType.checkbox,
-      required: true,
-    },
-  ];
-
   const hasOptions = (type) =>
     type === EFieldType.select || type === EFieldType.radioGroup;
 
   const [fields, setFields] = useReducer<
     Reducer<Map<string, IField>, IReducer>
-  >((previous, { action, field }) => {
-    const shallowCopy = new Map(previous);
-
-    switch (action) {
-      case 'add':
-        let _field = { ...field };
-
-        if (hasOptions(field.type)) {
-          _field = { ..._field, options };
-        }
-
-        shallowCopy.set(field.name, _field);
-        // setOptions([]);
-        break;
-      case 'delete':
-        shallowCopy.delete(field.name);
-        break;
-      case 'modify':
-        const gottenField = shallowCopy.get(field.name);
-        shallowCopy.set(field.name, {
-          ...gottenField,
-          ...field,
-        });
-    }
-
-    return shallowCopy;
-  }, new Map([]));
+  >(fieldsReducer(hasOptions, options), new Map([]));
 
   const fieldsAsArray = Array.from(fields).map(([, value]) => value);
 
@@ -109,9 +43,10 @@ export const NewModel = () => {
     });
   };
 
-  const onChange = ({ type, modelName, name }: any) => {
-    updateModelName(modelName);
-    setOptionsFields(hasOptions(type) ? optionsForm : []);
+  const onChange = ({ target }: any) => {
+    if (target.name === 'type') {
+      setOptionsFields(hasOptions(target.value) ? optionsForm : []);
+    }
   };
 
   const onAddOption: any = ({ value }) => {
@@ -137,7 +72,6 @@ export const NewModel = () => {
         <DynamicForm
           fields={fieldsAsArray}
           sortable={true}
-          onEmitSortedFields={(fields) => console.log(fields)}
           style={{
             field: {
               border: { color: 'brand', size: 'small' },
@@ -157,7 +91,7 @@ export const NewModel = () => {
 
         <Collapsible direction="vertical" open={showAddForm}>
           <Container>
-            <Form onSubmit={addField} onChange={onChange}>
+            <Form onSubmit={addField} onChangeCapture={onChange}>
               <DynamicForm fields={newFieldForm} />
               <Button type="submit" label="Add Field" />
             </Form>
