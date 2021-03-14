@@ -1,8 +1,8 @@
 import { List, Menu } from 'grommet';
-import { Scan } from 'grommet-icons';
-import ItemRouter from './components/item/Router';
+import { Model } from './components/features/model/model';
 import { NewModel } from './components/features/model/new/new-model';
 import { Models } from './components/features/models/models';
+import ItemRouter from './components/item/Router';
 
 export const routes = {
   '/item/:id': {
@@ -22,8 +22,11 @@ export const routes = {
   '/model/new': {
     component: NewModel,
   },
-  '/model/:id': {
+  '/model/:id/edit': {
     component: NewModel,
+  },
+  '/model/:id': {
+    component: Model,
   },
   '/models': {
     component: Models,

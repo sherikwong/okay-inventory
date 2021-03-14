@@ -14,9 +14,9 @@ export const Models = ({ history }) => {
       );
   }, []);
 
-  useEffect(() => {
-    console.log(models);
-  }, [models]);
+  const goToModel = ({ datum }) => {
+    history.push(`/model/${datum.id}`);
+  };
 
   const columns = [
     {
@@ -43,7 +43,7 @@ export const Models = ({ history }) => {
       <DataTable
         columns={columns}
         data={models}
-        // onClickRow={}
+        onClickRow={goToModel}
         primaryKey="id"
         pad="xxsmall"
       />
