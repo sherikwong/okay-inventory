@@ -1,6 +1,7 @@
 import { Box, Button, Collapsible, DataTable, Form } from 'grommet';
 import { Add } from 'grommet-icons';
 import React, { useEffect, useState } from 'react';
+import { entriesDB } from '../../../database/entry';
 import { modelsDB } from '../../../database/models';
 import { IField } from '../../../types/form/field';
 import { DynamicForm } from '../../dynamic-form/dynamic-form';
@@ -11,7 +12,6 @@ export const Model = ({ match }) => {
   const existingModel = useExistingModel(match);
   const [columns, setColumns] = useState<any[]>([]);
   const [showAddEntryForm, setShowAddEntryForm] = useState(false);
-
 
   useEffect(() => {
     if (existingModel) {
@@ -26,13 +26,20 @@ export const Model = ({ match }) => {
 
   const onSubmit = ({ value }) => {
     if (Object.entries(value).length) {
+      // const existingItem = existingModel?.entries?.[modelID] || {};
 
-      const existingItem = existingModel?.entries?.[modelID] || {};
-
-      modelsDB.update(match.params.id, {
-        ...existingItem,
-        entries: { ...existingItem, ...value },
+      // if (!existingItem) {
+      entriesDB.add(value).then((entry) => {
+        modelsDB
+          .update(match.params.id, {
+            ...existingModel,
+            entries: { ...existingModel.entries, [entry.id]: entry },
+          })
+          .then((res) => {
+            setShowAddEntryForm(false);
+          });
       });
+      // }
     }
   };
 
@@ -50,7 +57,7 @@ export const Model = ({ match }) => {
 
       <Collapsible direction="vertical" open={showAddEntryForm}>
         <Container>
-          <Form onSubmit={onSubmit} >
+          <Form onSubmit={onSubmit}>
             <DynamicForm fields={existingModel?.fields || []} />
             <Button type="submit" label="Add Field" />
           </Form>

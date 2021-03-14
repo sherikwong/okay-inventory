@@ -4,7 +4,7 @@ import { BaseDB, IBaseDB } from './base';
 export interface IEntryDB extends IBaseDB<IEntry> {}
 
 const ENTRIES = 'entries';
-class ModelsDB extends BaseDB<IEntry> implements IEntryDB {
+class EntriesDB extends BaseDB<IEntry> implements IEntryDB {
   constructor() {
     super(ENTRIES);
   }
@@ -22,4 +22,4 @@ class ModelsDB extends BaseDB<IEntry> implements IEntryDB {
   }
 }
 
-export const modelsDB = new ModelsDB();
+export const entriesDB = new EntriesDB();
