@@ -1,3 +1,5 @@
+import { Button, Form } from 'grommet';
+import { Save } from 'grommet-icons';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { entriesDB } from '../../../database/entry';
@@ -23,5 +25,14 @@ export const Entry = ({ match }) => {
     });
   }, [match]);
 
-  return <DynamicForm fields={model?.fields || []} />;
+  const updateEntry = ({ value }) => {
+    entriesDB.update(entryID, { ...entry, ...value });
+  };
+
+  return (
+    <Form onSubmit={updateEntry}>
+      <DynamicForm fields={model?.fields || []} />
+      <Button icon={<Save />} type="submit" />
+    </Form>
+  );
 };
