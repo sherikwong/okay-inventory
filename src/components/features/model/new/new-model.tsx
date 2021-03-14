@@ -1,5 +1,15 @@
-import { Box, Button, Form, Layer, TextInput } from 'grommet';
-import { Add } from 'grommet-icons';
+import {
+  Avatar,
+  Box,
+  Button,
+  Form,
+  Layer,
+  Nav,
+  TextInput,
+  Sidebar,
+  Collapsible,
+} from 'grommet';
+import { Add, LinkPrevious, Save } from 'grommet-icons';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import Draggable from 'react-draggable';
 import { modelsDB } from '../../../../database/models';
@@ -32,31 +42,23 @@ export const NewModel = () => {
   const [modelField, updateModelName] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
 
-  const [newFieldForm, updateNewFieldForm] = useReducer(
-    (fields, [key, value]) => {
-      return {
-        ...fields,
-        [key]: value,
-      };
+  const newFieldForm = [
+    {
+      name: 'name',
+      required: true,
     },
-    [
-      {
-        name: 'name',
-        required: true,
-      },
-      {
-        name: 'type',
-        type: EFieldType.radioGroup,
-        options: transformEnumToSelectOptions(EFieldType),
-        required: true,
-      },
-      {
-        name: 'multiple',
-        type: EFieldType.checkbox,
-        required: true,
-      },
-    ]
-  );
+    {
+      name: 'type',
+      type: EFieldType.radioGroup,
+      options: transformEnumToSelectOptions(EFieldType),
+      required: true,
+    },
+    {
+      name: 'multiple',
+      type: EFieldType.checkbox,
+      required: true,
+    },
+  ];
 
   const hasOptions = (type) =>
     type === EFieldType.select || type === EFieldType.radioGroup;
@@ -100,19 +102,16 @@ export const NewModel = () => {
     });
   };
 
-  const onSubmit = () => {
+  const onSubmit = (values) => {
     modelsDB.add({
       // name: modelName,
       fields: fieldsAsArray,
     });
   };
 
-  const onChange = (values: any) => {
-    // Object.entries(values).forEach(([key, value]) => {
-    //   updateNewFieldForm([key, value]);
-    // });
-
-    setOptionsFields(hasOptions(values.type) ? optionsForm : []);
+  const onChange = ({ type, modelName, name }: any) => {
+    updateModelName(modelName);
+    setOptionsFields(hasOptions(type) ? optionsForm : []);
   };
 
   const onAddOption: any = ({ value }) => {
@@ -120,35 +119,43 @@ export const NewModel = () => {
   };
 
   return (
-    <Box margin="large">
-      <TextInput
-        onChange={($event) => updateModelName($event.target.value)}
-        placeholder="Model Name"
-        value={modelField}
-      />
-
-      <DynamicForm
-        fields={fieldsAsArray}
-        sortable={true}
-        onEmitSortedFields={(fields) => console.log(fields)}
-        style={{
-          field: {
-            border: { color: 'brand', size: 'small' },
-            pad: 'medium',
-          },
-        }}
-      ></DynamicForm>
-
-      <Box margin="large" alignContent="center">
-        <Button
-          icon={<Add />}
-          size="small"
-          onClick={() => setShowAddForm(!showAddForm)}
-        />
+    <Box>
+      <Box direction="row" margin="medium" justify="between">
+        <Button icon={<LinkPrevious />} />
+        <Button icon={<Save />} onClick={onSubmit} />
       </Box>
 
-      {showAddForm ? (
-        <>
+      <Box margin="large">
+        <TextInput
+          name="modelName"
+          placeholder="Model Name"
+          value={modelField}
+          style={{ textAlign: 'center' }}
+          required={true}
+        />
+
+        <DynamicForm
+          fields={fieldsAsArray}
+          sortable={true}
+          onEmitSortedFields={(fields) => console.log(fields)}
+          style={{
+            field: {
+              border: { color: 'brand', size: 'small' },
+              pad: 'medium',
+            },
+          }}
+        ></DynamicForm>
+
+        <Box margin={{ vertical: 'large' }} alignContent="center">
+          <Button
+            style={{ textAlign: 'center' }}
+            icon={<Add />}
+            size="small"
+            onClick={() => setShowAddForm(!showAddForm)}
+          />
+        </Box>
+
+        <Collapsible direction="vertical" open={showAddForm}>
           <Container>
             <Form onSubmit={addField} onChange={onChange}>
               <DynamicForm fields={newFieldForm} />
@@ -168,18 +175,14 @@ export const NewModel = () => {
           ) : null}
           {optionsFields.length ? (
             <Container>
-              <Form onSubmit={onAddOption}>
-                <Container>
-                  <DynamicForm fields={optionsFields} />
-                  <Button type="submit" label="Add Option" />
-                </Container>
-              </Form>
+              <Container>
+                <DynamicForm fields={optionsFields} />
+                <Button type="submit" label="Add Option" />
+              </Container>
             </Container>
           ) : null}
-        </>
-      ) : null}
-
-      <Button label="Save" onClick={onSubmit} />
+        </Collapsible>
+      </Box>
     </Box>
   );
 };
