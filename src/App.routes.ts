@@ -2,6 +2,7 @@ import { List, Menu } from 'grommet';
 import { Scan } from 'grommet-icons';
 import ItemRouter from './components/item/Router';
 import { NewModel } from './components/features/model/new/new-model';
+import { Models } from './components/features/models/models';
 
 export const routes = {
   '/item/:id': {
@@ -20,6 +21,9 @@ export const routes = {
   },
   '/models/new': {
     component: NewModel,
+  },
+  '/models': {
+    component: Models,
   },
   '/': {
     component: Scan,
