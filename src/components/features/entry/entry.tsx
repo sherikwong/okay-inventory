@@ -1,12 +1,13 @@
-import { Button, Form } from 'grommet';
-import { Save } from 'grommet-icons';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import { Box, Button, Form } from 'grommet';
+import { Save, Trash } from 'grommet-icons';
+import React, { useEffect, useState } from 'react';
 import { entriesDB } from '../../../database/entry';
 import { modelsDB } from '../../../database/models';
 import { IEntry } from '../../../models/entry';
 import { IModel } from '../../../models/models';
 import { DynamicForm } from '../../dynamic-form/dynamic-form';
+import BackButton from '../../reusable/BackButton/BackButton';
+import NavBox from '../../reusable/NavBox/NavBox';
 
 export const Entry = ({ match }) => {
   const entryID = match.params.id;
@@ -29,10 +30,19 @@ export const Entry = ({ match }) => {
     entriesDB.update(entryID, { ...entry, ...value });
   };
 
+  const deleteEntry = () => {
+    entriesDB.delete(entryID);
+  };
+
   return (
-    <Form onSubmit={updateEntry}>
-      <DynamicForm fields={model?.fields || []} />
-      <Button icon={<Save />} type="submit" />
-    </Form>
+    <>
+      <NavBox>
+        <Button icon={<Trash />} onClick={deleteEntry} />
+      </NavBox>
+      <Form onSubmit={updateEntry}>
+        <DynamicForm fields={model?.fields || []} />
+        <Button icon={<Save />} type="submit" />
+      </Form>
+    </>
   );
 };
