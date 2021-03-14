@@ -1,5 +1,5 @@
 import { Box, Button, Collapsible, Form, TextInput } from 'grommet';
-import { Add, LinkPrevious, Save } from 'grommet-icons';
+import { Add, Close, LinkPrevious, Save } from 'grommet-icons';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import {
@@ -33,6 +33,13 @@ export const NewModel = ({ match }) => {
     setFields({
       action: 'add',
       field: value,
+    });
+  };
+
+  const deleteField = (field) => () => {
+    setFields({
+      action: 'delete',
+      field,
     });
   };
 
@@ -82,12 +89,17 @@ export const NewModel = ({ match }) => {
         <DynamicForm
           fields={fieldsAsArray}
           sortable={true}
-          style={{
-            field: {
-              border: { color: 'brand', size: 'small' },
-              pad: 'medium',
-            },
-          }}
+          render={({ children, field }) => (
+            <Box
+              direction="row"
+              border={{ color: 'brand' }}
+              pad="medium"
+              justify="between"
+            >
+              {children}
+              <Button icon={<Close />} onClick={deleteField(field)} />
+            </Box>
+          )}
         ></DynamicForm>
 
         <Box margin={{ vertical: 'large' }} alignContent="center">

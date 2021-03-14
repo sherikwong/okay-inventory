@@ -19,6 +19,7 @@ interface IFormProps {
   sortable?: boolean;
   onEmitSortedFields?: (fields: IField[]) => void;
   style?: IFormStyle;
+  render?: Function;
 }
 
 export const DynamicForm = ({
@@ -26,6 +27,7 @@ export const DynamicForm = ({
   sortable,
   onEmitSortedFields: onEmitFields,
   style,
+  render: Render,
 }: IFormProps) => {
   const [fields, setFields] = useState<IField[]>([]);
 
@@ -82,7 +84,15 @@ export const DynamicForm = ({
     return fieldJSX;
   };
 
-  const SortableItem = SortableElement(({ value }) => <Item field={value} />);
+  const SortableItem = SortableElement(({ value: field }) =>
+    Render ? (
+      <Render field={field}>
+        <Item field={field} />
+      </Render>
+    ) : (
+      <Item field={field} />
+    )
+  );
   const SortableItems = SortableContainer(({ items }) => (
     <Box>
       {items.map((field, i) => (
