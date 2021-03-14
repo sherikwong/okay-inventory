@@ -1,27 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Grommet, Box } from 'grommet';
+import { Box, Grommet } from 'grommet';
 import { createBrowserHistory } from 'history';
-import React, {
-  ComponentClass,
-  createFactory,
-  useState,
-  useEffect,
-} from 'react';
-import { Route, Router, withRouter } from 'react-router-dom';
-import { FirebaseAuthProvider } from 'use-firebase-auth';
+import React, { ComponentClass, createFactory, useState } from 'react';
+import { Route, Router } from 'react-router-dom';
+import { routes } from './App.routes';
 import './App.scss';
 import Authentication, {
   IS_AUTHENTICATED,
 } from './components/authentication/authentication';
-import { db } from './database';
-// import { List } from '../node_modules/grommet-icons/icons';
-import List from './components/List/List';
-import { Menu } from 'grommet-icons';
-import ItemRouter from './components/item/Router';
-import { cookies } from './index';
-import Scan from './components/scan/scan';
 import Logo from './components/reusable/logo/logo';
-import { NewModel } from './components/features/model/new/new-model';
+import { cookies } from './index';
 
 const theme = {
   calendar: {
@@ -39,37 +27,6 @@ export interface IRoute {
   component: ComponentClass;
   buttons?: { [key: string]: INavButton[] };
 }
-
-export const routes = {
-  '/item/:id': {
-    component: ItemRouter,
-    buttons: {
-      top: [],
-      bottom: [],
-    },
-  },
-  '/list': {
-    component: List,
-    buttons: {
-      top: [],
-      bottom: [],
-    },
-  },
-  '/models/new': {
-    component: NewModel,
-  },
-  '/': {
-    component: Scan,
-    buttons: {
-      top: [
-        {
-          icon: Menu,
-        },
-      ],
-      bottom: [],
-    },
-  },
-};
 
 const history = createBrowserHistory();
 
