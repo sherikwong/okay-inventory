@@ -10,6 +10,7 @@ export const Model = ({ match }) => {
     if (existingModel) {
       const _columns = (existingModel.fields as IField[]).map(({ name }) => ({
         property: name,
+        header: name
       }));
 
       setColumns(_columns);
