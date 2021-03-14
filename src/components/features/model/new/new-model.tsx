@@ -4,36 +4,13 @@ import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
-  ISelectOption
+  ISelectOption,
 } from '../../../../types/form/field';
-import { transformEnumToSelectOptions } from '../../../../utils/transformEnumToSelectOptions';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
-
-interface IReducer {
-  action: 'increment' | 'decrement' | 'add' | 'delete' | 'modify';
-  field: IField;
-}
-
-const optionsForm = [
-  {
-    name: 'label',
-  },
-  {
-    name: 'value',
-  },
-];
-
-const newFieldForm: IField[] = [
-  {
-    name: 'name',
-  },
-  {
-    name: 'type',
-    type: EFieldType.radioGroup,
-    options: transformEnumToSelectOptions(EFieldType),
-  },
-];
+import { newFieldForm, optionsForm } from './new-model.form';
+import { IReducer } from './new-model.types';
+import { fieldsReducer } from './new-model.utils';
 
 export const NewModel = () => {
   const [modelName, setModelName] = useState('');
@@ -45,37 +22,7 @@ export const NewModel = () => {
 
   const [fields, setFields] = useReducer<
     Reducer<Map<string, IField>, IReducer>
-  >((previous, { action, field }) => {
-    const shallowCopy = new Map(previous);
-
-    switch (action) {
-      case 'add':
-        let _field = { ...field };
-
-        if (hasOptions(field.type)) {
-          _field = { ..._field, options };
-        }
-
-        shallowCopy.set(field.name, _field);
-        // setOptions([]);
-        break;
-      case 'delete':
-        shallowCopy.delete(field.name);
-        break;
-      case 'modify':
-        const gottenField = shallowCopy.get(field.name);
-        shallowCopy.set(field.name, {
-          ...gottenField,
-          ...field,
-        });
-    }
-
-    return shallowCopy;
-  }, new Map([]));
-
-  useEffect(() => {
-    console.log(fields);
-  }, [fields]);
+  >(fieldsReducer(hasOptions, options), new Map([]));
 
   const fieldsAsArray = Array.from(fields).map(([, value]) => value);
 
