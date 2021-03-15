@@ -1,9 +1,10 @@
 import {
+  Calendar,
   CheckBox,
   RadioButtonGroup,
   RangeInput,
   Select,
-  TextInput
+  TextInput,
 } from 'grommet';
 import { EFieldType } from '../../types/form/field';
 export const fieldTypeMap = new Map<EFieldType, any>([
@@ -12,4 +13,5 @@ export const fieldTypeMap = new Map<EFieldType, any>([
   [EFieldType.checkbox, CheckBox],
   [EFieldType.select, Select],
   [EFieldType.radioGroup, RadioButtonGroup],
+  [EFieldType.date, Calendar],
 ]);

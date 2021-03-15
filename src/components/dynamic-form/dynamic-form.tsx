@@ -75,6 +75,7 @@ export const DynamicForm = ({
             {...selectConfig}
             options={options}
             name={field.name}
+            size="medium"
           />
         </FormField>
       </Box>

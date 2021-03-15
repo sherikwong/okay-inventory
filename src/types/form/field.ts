@@ -10,6 +10,7 @@ export enum EFieldType {
   number = 'number',
   select = 'select',
   radioGroup = 'radioGroup',
+  date = 'date',
 }
 
 export class IField {
