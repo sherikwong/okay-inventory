@@ -68,15 +68,17 @@ export const NewModel = ({ match }) => {
     const oldOptions = fields.get(name)?.options || [];
     setFields({
       action: 'modify',
-      field: { name, options: [...oldOptions, ...value] },
+      field: { name, options: [...oldOptions, value] },
     });
   };
 
   const addOptionsForm = (name: string) => (
-    <Form onSubmit={onAddOption(name)}>
-      <DynamicForm fields={optionsFields} />
-      <Button type="submit" label="Add Option" />
-    </Form>
+    <Container>
+      <Form onSubmit={onAddOption(name)}>
+        <DynamicForm fields={optionsForm} />
+        <Button type="submit" icon={<Add />} />
+      </Form>
+    </Container>
   );
 
   useEffect(() => {
@@ -117,8 +119,10 @@ export const NewModel = ({ match }) => {
                 pad="medium"
                 justify="between"
               >
-                {children}
-                {hasOptions(field.type) ? addOptionsForm(field.name) : null}
+                <Box>
+                  {children}
+                  {hasOptions(field.type) ? addOptionsForm(field.name) : null}
+                </Box>
                 <Button icon={<Close />} onClick={deleteField(field)} />
               </Box>
             );
