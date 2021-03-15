@@ -9,6 +9,7 @@ import {
 } from '../../../../types/form/field';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
+import NavBox from '../../../reusable/NavBox/NavBox';
 import { newFieldForm, optionsForm } from './new-model.form';
 import { IReducer } from './new-model.types';
 import { fieldsReducer, useExistingModel } from './new-model.utils';
@@ -72,10 +73,9 @@ export const NewModel = ({ match }) => {
 
   return (
     <Box>
-      <Box direction="row" margin="medium" justify="between">
-        <Button icon={<LinkPrevious />} />
+      <NavBox>
         <Button icon={<Save />} onClick={onSubmit} />
-      </Box>
+      </NavBox>
 
       <Box margin="large">
         <TextInput

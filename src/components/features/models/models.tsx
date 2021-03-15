@@ -1,8 +1,9 @@
-import { Box, Button, DataTable } from 'grommet';
-import { Edit } from 'grommet-icons';
+import { Box, Button, DataTable, Header } from 'grommet';
+import { Edit, LinkNext } from 'grommet-icons';
 import React, { useEffect, useState } from 'react';
 import { modelsDB } from '../../../database/models';
 import CloseButton from '../../reusable/CloseButton/CloseButton';
+import NavBox from '../../reusable/NavBox/NavBox';
 
 export const Models = ({ history }) => {
   const [models, setModels] = useState<any[]>([]);
@@ -30,16 +31,25 @@ export const Models = ({ history }) => {
     {
       property: 'edit',
       render: ({ id }) => {
-        const onClick = () => history.push(`model/${id}`);
+        const onClick = () => history.push(`model/${id}/edit`);
 
         return <Button icon={<Edit />} onClick={onClick} />;
+      },
+    },
+    {
+      property: 'goTo',
+      render: ({ id }) => {
+        const onClick = () => history.push(`model/${id}`);
+
+        return <Button icon={<LinkNext />} onClick={onClick} />;
       },
     },
   ];
 
   return (
     <>
-      Models
+      <NavBox />
+      <Header>Models</Header>
       <DataTable
         columns={columns}
         data={models}
