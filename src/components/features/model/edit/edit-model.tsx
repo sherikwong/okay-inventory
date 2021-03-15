@@ -13,16 +13,16 @@ import NavBox from '../../../reusable/NavBox/NavBox';
 import { newFieldForm, optionsForm } from './edit-model.variables';
 import { IReducer } from './edit-model.types';
 import { fieldsReducer, useExistingModel } from './edit-model.utils';
+import { EditModelNameForm } from './components/edit-model-name';
+import { AddFieldForm } from './components/add-field-form';
+import { AddOptionForm } from './components/add-option-form';
 
 export const EditModel = ({ match }) => {
   const id = match.params.id;
   const existingModel = useExistingModel(match);
-  const [optionsFields, setOptionsFields] = useState<IField[]>([]);
-  // const [options, setOptions] = useState<ISelectOption[]>([]);
+  // const [optionsFields, setOptionsFields] = useState<IField[]>([]);
   const [options] = useState<ISelectOption[]>([]);
   const [modelName, setModelName] = useState('');
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [fieldFormValues, setFieldFormValues] = useState();
 
   const hasOptions = (type) =>
     type === EFieldType.select || type === EFieldType.radioGroup;
@@ -72,15 +72,6 @@ export const EditModel = ({ match }) => {
     });
   };
 
-  const addOptionsForm = (name: string) => (
-    <Container>
-      <Form onSubmit={onAddOption(name)}>
-        <DynamicForm fields={optionsForm} />
-        <Button type="submit" icon={<Add />} />
-      </Form>
-    </Container>
-  );
-
   useEffect(() => {
     if (existingModel) {
       setFields({ action: 'overwrite', fields: existingModel.fields });
@@ -96,16 +87,7 @@ export const EditModel = ({ match }) => {
 
       <Box margin="large">
         {/* Name Form */}
-        <TextInput
-          name="modelName"
-          placeholder="Model Name"
-          value={modelName}
-          style={{ textAlign: 'center' }}
-          required={true}
-          onChange={({ target }) => {
-            setModelName(target.value);
-          }}
-        />
+        <EditModelNameForm modelName={modelName} setModelName={setModelName} />
 
         {/* Existing Fields */}
         <DynamicForm
@@ -122,7 +104,12 @@ export const EditModel = ({ match }) => {
               >
                 <Box>
                   {children}
-                  {hasOptions(field.type) ? addOptionsForm(field.name) : null}
+                  {hasOptions(field.type) ? (
+                    <AddOptionForm
+                      name={field.name}
+                      onSubmit={onAddOption}
+                    />
+                  ) : null}
                 </Box>
                 <Button icon={<Close />} onClick={deleteField(field)} />
               </Box>
@@ -130,35 +117,8 @@ export const EditModel = ({ match }) => {
           }}
         ></DynamicForm>
 
-        <Box margin={{ vertical: 'large' }} alignContent="center">
-          <Button
-            style={{ textAlign: 'center' }}
-            icon={<Add />}
-            size="small"
-            onClick={() => setShowAddForm(!showAddForm)}
-          />
-        </Box>
-
         {/* New Field Form */}
-        <Collapsible direction="vertical" open={showAddForm}>
-          <Container>
-            <Form onSubmit={addField}>
-              <DynamicForm fields={newFieldForm} />
-              <Button type="submit" label="Add Field" />
-            </Form>
-          </Container>
-
-          {options.length ? (
-            <Container>
-              <h1>Options</h1>
-              {options.map(({ value, label }) => (
-                <>
-                  {label}: {value}
-                </>
-              ))}
-            </Container>
-          ) : null}
-        </Collapsible>
+        <AddFieldForm onSubmit={addField} />
       </Box>
     </Box>
   );
