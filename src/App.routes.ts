@@ -22,10 +22,10 @@ export const routes = {
   '/entry/:id': {
     component: Entry,
   },
-  '/model/new': {
+  '/model/:id/edit': {
     component: NewModel,
   },
-  '/model/:id/edit': {
+  '/model/new': {
     component: NewModel,
   },
   '/model/:id': {

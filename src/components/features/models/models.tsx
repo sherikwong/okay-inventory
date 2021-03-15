@@ -1,5 +1,5 @@
 import { Box, Button, DataTable, Header } from 'grommet';
-import { Edit, LinkNext } from 'grommet-icons';
+import { Add, Edit, LinkNext } from 'grommet-icons';
 import React, { useEffect, useState } from 'react';
 import { modelsDB } from '../../../database/models';
 import CloseButton from '../../reusable/CloseButton/CloseButton';
@@ -41,6 +41,10 @@ export const Models = ({ history }) => {
     },
   ];
 
+  const goToAddModel = () => {
+    history.push('/model/new');
+  };
+
   return (
     <>
       <NavBox />
@@ -52,6 +56,7 @@ export const Models = ({ history }) => {
         primaryKey="id"
         pad="xxsmall"
       />
+      <Button icon={<Add />} onClick={goToAddModel} />
     </>
   );
 };
