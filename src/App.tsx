@@ -40,8 +40,7 @@ const App = () => {
   }, 3000);
 
   return (
-    // <Grommet theme={theme} themeMode="dark">
-    <Grommet theme={theme}>
+    <Grommet theme={theme} themeMode="dark">
       {/* {!logoHasPlayed ? ( */}
       {false ? (
         <Box fill={true} alignContent="center" justify="center">
