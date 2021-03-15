@@ -18,7 +18,7 @@ export const NewModel = ({ match }) => {
   const existingModel = useExistingModel(match);
   const [optionsFields, setOptionsFields] = useState<IField[]>([]);
   const [options, setOptions] = useState<ISelectOption[]>([]);
-  const [modelName, updateModelName] = useState('');
+  const [modelName, setModelName] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
 
   const hasOptions = (type) =>
@@ -57,7 +57,7 @@ export const NewModel = ({ match }) => {
         setOptionsFields(hasOptions(target.value) ? optionsForm : []);
         break;
       case 'name':
-        updateModelName(target.value);
+        setModelName(target.value);
     }
   };
 
@@ -68,6 +68,7 @@ export const NewModel = ({ match }) => {
   useEffect(() => {
     if (existingModel) {
       setFields({ action: 'modify', field: existingModel });
+      setModelName(existingModel.name);
     }
   }, [existingModel]);
 
@@ -78,13 +79,19 @@ export const NewModel = ({ match }) => {
       </NavBox>
 
       <Box margin="large">
-        <TextInput
-          name="modelName"
-          placeholder="Model Name"
-          value={modelName}
-          style={{ textAlign: 'center' }}
-          required={true}
-        />
+        <Form
+          onChange={(values: any) => {
+            setModelName(values?.modelName);
+          }}
+        >
+          <TextInput
+            name="modelName"
+            placeholder="Model Name"
+            value={modelName}
+            style={{ textAlign: 'center' }}
+            required={true}
+          />
+        </Form>
 
         <DynamicForm
           fields={fieldsAsArray}

@@ -39,14 +39,6 @@ export const Models = ({ history }) => {
         return <Button icon={<Edit />} onClick={onClick} />;
       },
     },
-    // {
-    //   property: 'goTo',
-    //   render: ({ id }) => {
-    //     const onClick = () => history.push(`model/${id}`);
-
-    //     return <Button icon={<LinkNext />} onClick={onClick} />;
-    //   },
-    // },
   ];
 
   return (
