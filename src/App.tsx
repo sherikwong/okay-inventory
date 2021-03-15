@@ -17,6 +17,13 @@ const theme = {
       daySize: 'calc(100vw/8)',
     },
   },
+  radioButton: {
+    border: {
+      color: {
+        dark: 'white'
+      },
+    },
+  },
 };
 
 export interface INavButton {

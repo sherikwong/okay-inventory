@@ -64,10 +64,20 @@ export const NewModel = ({ match }) => {
     }
   };
 
-  // TODO: Add options not working
-  // const onAddOption: any = ({ value }) => {
-  //   setOptions([...options, value]);
-  // };
+  const onAddOption: any = (name) => ({ value }) => {
+    const oldOptions = fields.get(name)?.options || [];
+    setFields({
+      action: 'modify',
+      field: { name, options: [...oldOptions, ...value] },
+    });
+  };
+
+  const addOptionsForm = (name: string) => (
+    <Form onSubmit={onAddOption(name)}>
+      <DynamicForm fields={optionsFields} />
+      <Button type="submit" label="Add Option" />
+    </Form>
+  );
 
   useEffect(() => {
     if (existingModel) {
@@ -99,17 +109,20 @@ export const NewModel = ({ match }) => {
         <DynamicForm
           fields={fieldsAsArray}
           sortable={true}
-          render={({ children, field }) => (
-            <Box
-              direction="row"
-              border={{ color: 'brand' }}
-              pad="medium"
-              justify="between"
-            >
-              {children}
-              <Button icon={<Close />} onClick={deleteField(field)} />
-            </Box>
-          )}
+          render={({ children, field }) => {
+            return (
+              <Box
+                direction="row"
+                border={{ color: 'brand' }}
+                pad="medium"
+                justify="between"
+              >
+                {children}
+                {hasOptions(field.type) ? addOptionsForm(field.name) : null}
+                <Button icon={<Close />} onClick={deleteField(field)} />
+              </Box>
+            );
+          }}
         ></DynamicForm>
 
         <Box margin={{ vertical: 'large' }} alignContent="center">
@@ -140,15 +153,6 @@ export const NewModel = ({ match }) => {
               ))}
             </Container>
           ) : null}
-
-          {/* <Container
-            style={{ display: optionsFields.length ? 'block' : 'none' }}
-          >
-            <Form>
-              <DynamicForm fields={optionsFields} />
-              <Button type="submit" label="Add Option" />
-            </Form>
-          </Container> */}
         </Collapsible>
       </Box>
     </Box>

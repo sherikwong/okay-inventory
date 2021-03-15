@@ -63,7 +63,7 @@ export const DynamicForm = ({
         }
       : {};
 
-    const options = hasOptions ? field.options : undefined;
+    const options = hasOptions ? (field.options || []) : undefined;
 
     const fieldJSX = (
       <Box {...(style?.field || {})}>
