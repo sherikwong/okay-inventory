@@ -1,4 +1,4 @@
-import { BaseDB, IBaseDB, IBaseModel } from './base';
+import { BaseDB, IBaseModel } from './base';
 export const USERS = 'users';
 
 export interface ITag extends IBaseModel {

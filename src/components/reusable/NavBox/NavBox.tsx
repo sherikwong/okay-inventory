@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, Clock, Nav, Sidebar } from 'grommet';
-import { Analytics, Camera, Close, Help, Menu, Projects } from 'grommet-icons';
+import { Box, Button, Nav, Sidebar } from 'grommet';
+import { Analytics, Camera, Close, Menu } from 'grommet-icons';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../BackButton/BackButton';

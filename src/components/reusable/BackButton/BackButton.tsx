@@ -1,5 +1,5 @@
 import { Button } from 'grommet';
-import { Close, LinkPrevious } from 'grommet-icons';
+import { LinkPrevious } from 'grommet-icons';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 const BackButton = ({ history }) => {

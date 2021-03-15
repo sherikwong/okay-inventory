@@ -1,6 +1,5 @@
 import { Box, Button, Collapsible, DataTable, Form } from 'grommet';
 import { Add, Edit } from 'grommet-icons';
-import { entries } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { entriesDB } from '../../../database/entry';
 import { modelsDB } from '../../../database/models';

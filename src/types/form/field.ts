@@ -3,6 +3,15 @@ export interface ISelectOption {
   value: string;
 }
 
+export enum EFieldType {
+  text = 'text',
+  range = 'range',
+  checkbox = 'checkbox',
+  number = 'number',
+  select = 'select',
+  radioGroup = 'radioGroup',
+}
+
 export class IField {
   name = '';
   type? = EFieldType.text;
@@ -14,15 +23,6 @@ export class IField {
   onChange?: any;
   onBlur?: any;
   sort?: number;
-}
-
-export enum EFieldType {
-  text = 'text',
-  range = 'range',
-  checkbox = 'checkbox',
-  number = 'number',
-  select = 'select',
-  radioGroup = 'radioGroup',
 }
 
 export type Fields = { [key: string]: IField } | IField[];

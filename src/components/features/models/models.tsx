@@ -1,8 +1,7 @@
 import { Box, Button, DataTable, Header } from 'grommet';
-import { Add, Edit, LinkNext } from 'grommet-icons';
+import { Add, Edit } from 'grommet-icons';
 import React, { useEffect, useState } from 'react';
 import { modelsDB } from '../../../database/models';
-import CloseButton from '../../reusable/CloseButton/CloseButton';
 import NavBox from '../../reusable/NavBox/NavBox';
 
 export const Models = ({ history }) => {

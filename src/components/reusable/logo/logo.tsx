@@ -7,13 +7,12 @@ interface _ILogo {
   width: string;
 }
 
-const _Logo = styled.div`
-  background-image: url('${({url}: _ILogo) => url}');
+const InternalLogo = styled.div`
+  background-image: url('${({ url }: _ILogo) => url}');
   background-size: contain;
   background-repeat: no-repeat;
-  height: ${({size}: _ILogo) => `${size}px`};
-  width: ${({size, width}: _ILogo) => `${width || size}`};
-
+  height: ${({ size }: _ILogo) => `${size}px`};
+  width: ${({ size, width }: _ILogo) => `${width || size}`};
 `;
 
 interface ILogo {
@@ -22,14 +21,19 @@ interface ILogo {
   width?: string;
 }
 
-
-const Logo = ({size = '100px', animated = false, width}: ILogo) => {
-  const stillUrl = 'https://i.ibb.co/0QxPtMv/Screen-Shot-2020-10-13-at-12-59-11-AM.png';
+const Logo = ({ size = '100px', animated = false, width }: ILogo) => {
+  const stillUrl =
+    'https://i.ibb.co/0QxPtMv/Screen-Shot-2020-10-13-at-12-59-11-AM.png';
   const animatedUrl = 'https://s8.gifyu.com/images/okay-animated.gif';
 
   return (
-    <_Logo className="logo" id="logo" size={animated ? '400' : size} url={animated ? animatedUrl : stillUrl}/>
+    <InternalLogo
+      className="logo"
+      id="logo"
+      size={animated ? '400' : size}
+      url={animated ? animatedUrl : stillUrl}
+    />
   );
-}
+};
 
 export default Logo;

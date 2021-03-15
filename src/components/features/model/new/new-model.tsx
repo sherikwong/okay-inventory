@@ -1,11 +1,11 @@
 import { Box, Button, Collapsible, Form, TextInput } from 'grommet';
-import { Add, Close, LinkPrevious, Save } from 'grommet-icons';
+import { Add, Close, Save } from 'grommet-icons';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
-  ISelectOption,
+  ISelectOption
 } from '../../../../types/form/field';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
@@ -17,7 +17,8 @@ import { fieldsReducer, useExistingModel } from './new-model.utils';
 export const NewModel = ({ match }) => {
   const existingModel = useExistingModel(match);
   const [optionsFields, setOptionsFields] = useState<IField[]>([]);
-  const [options, setOptions] = useState<ISelectOption[]>([]);
+  // const [options, setOptions] = useState<ISelectOption[]>([]);
+  const [options] = useState<ISelectOption[]>([]);
   const [modelName, setModelName] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
 
@@ -59,9 +60,10 @@ export const NewModel = ({ match }) => {
     }
   };
 
-  const onAddOption: any = ({ value }) => {
-    setOptions([...options, value]);
-  };
+  // TODO: Add options not working
+  // const onAddOption: any = ({ value }) => {
+  //   setOptions([...options, value]);
+  // };
 
   useEffect(() => {
     if (existingModel) {
@@ -138,7 +140,7 @@ export const NewModel = ({ match }) => {
           {optionsFields.length ? (
             <Container>
               <Container>
-                <DynamicForm fields={optionsFields} />
+                <DynamicForm fields={optionsFields}/>
                 <Button type="submit" label="Add Option" />
               </Container>
             </Container>

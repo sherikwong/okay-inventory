@@ -54,7 +54,7 @@ export const DynamicForm = ({
   const Item = ({ field }) => {
     const Input = fieldTypeMap.get(field.type || EFieldType.text) || TextInput;
     const hasOptions =
-      field.type === EFieldType.select || field.type == EFieldType.radioGroup;
+      field.type === EFieldType.select || field.type === EFieldType.radioGroup;
 
     const selectConfig = hasOptions
       ? {

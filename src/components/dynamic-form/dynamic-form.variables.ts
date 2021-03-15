@@ -1,10 +1,9 @@
-import { ComponentClass } from 'react';
 import {
   CheckBox,
   RadioButtonGroup,
   RangeInput,
   Select,
-  TextInput,
+  TextInput
 } from 'grommet';
 import { EFieldType } from '../../types/form/field';
 export const fieldTypeMap = new Map<EFieldType, any>([
