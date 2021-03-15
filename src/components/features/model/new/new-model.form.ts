@@ -25,11 +25,3 @@ export const newFieldForm: IField[] = [
     required: true,
   },
 ];
-
-export const newModelForm = (modelName: any, setModelName: any): IField[] => [
-  {
-    name: 'Form Name',
-    value: modelName,
-    onChange: (value) => setModelName(value.target.value),
-  },
-];

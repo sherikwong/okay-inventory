@@ -75,7 +75,6 @@ export const DynamicForm = ({
             {...selectConfig}
             options={options}
             name={field.name}
-            onChange={(event) => console.log(event.target.value)}
           />
         </FormField>
       </Box>

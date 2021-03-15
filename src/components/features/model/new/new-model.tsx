@@ -56,8 +56,6 @@ export const NewModel = ({ match }) => {
       case 'type':
         setOptionsFields(hasOptions(target.value) ? optionsForm : []);
         break;
-      case 'name':
-        setModelName(target.value);
     }
   };
 
@@ -79,20 +77,20 @@ export const NewModel = ({ match }) => {
       </NavBox>
 
       <Box margin="large">
-        <Form
-          onChange={(values: any) => {
-            setModelName(values?.modelName);
+        {/* Name Form */}
+        <TextInput
+          name="modelName"
+          placeholder="Model Name"
+          value={modelName}
+          style={{ textAlign: 'center' }}
+          required={true}
+          onChange={({ target }) => {
+            console.log(target.value);
+            setModelName(target.value);
           }}
-        >
-          <TextInput
-            name="modelName"
-            placeholder="Model Name"
-            value={modelName}
-            style={{ textAlign: 'center' }}
-            required={true}
-          />
-        </Form>
+        />
 
+        {/* Existing Fields */}
         <DynamicForm
           fields={fieldsAsArray}
           sortable={true}
@@ -118,6 +116,7 @@ export const NewModel = ({ match }) => {
           />
         </Box>
 
+        {/* New Field Form */}
         <Collapsible direction="vertical" open={showAddForm}>
           <Container>
             <Form onSubmit={addField} onChangeCapture={onChange}>
