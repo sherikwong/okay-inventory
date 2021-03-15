@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import * as _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { IField } from '../../../../types/form/field';
 import { modelsDB } from './../../../../database/models';
@@ -37,7 +37,7 @@ export const fieldsReducer = (hasOptions, options) => (
     switch (action) {
       case 'overwrite':
         if (fields) {
-          const fieldsToArray = isObject(fields)
+          const fieldsToArray = _.isObject(fields)
             ? Object.values(fields)
             : fields;
           const innerMap = fieldsToArray.map((field) => [field.name, field]);

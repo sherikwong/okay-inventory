@@ -1,5 +1,5 @@
 import { Box, FormField, TextInput } from 'grommet';
-import { isArray } from 'lodash';
+import * as _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   arrayMove,
@@ -32,7 +32,7 @@ export const DynamicForm = ({
   const [fields, setFields] = useState<IField[]>([]);
 
   useEffect(() => {
-    const pendingFields = (isArray(_fields)
+    const pendingFields = (_.isArray(_fields)
       ? _fields
       : Object.values(_fields).map((value) => value)
     ).sort((a, b) => (a.sort && b.sort && (a.sort > b.sort ? 1 : -1)) || 0);
@@ -63,7 +63,7 @@ export const DynamicForm = ({
         }
       : {};
 
-    const options = hasOptions ? (field.options || []) : undefined;
+    const options = hasOptions ? field.options || [] : undefined;
 
     const fieldJSX = (
       <Box {...(style?.field || {})}>
