@@ -64,7 +64,7 @@ export const EditModel = ({ match }) => {
     }
   };
 
-  const onAddOption: any = (name) => ({ value }) => {
+  const onAddOption: any = (name: string) => ({ value }) => {
     const oldOptions = fields.get(name)?.options || [];
     setFields({
       action: 'modify',
@@ -105,10 +105,7 @@ export const EditModel = ({ match }) => {
                 <Box>
                   {children}
                   {hasOptions(field.type) ? (
-                    <AddOptionForm
-                      name={field.name}
-                      onSubmit={onAddOption}
-                    />
+                    <AddOptionForm onSubmit={onAddOption(field.name)} />
                   ) : null}
                 </Box>
                 <Button icon={<Close />} onClick={deleteField(field)} />

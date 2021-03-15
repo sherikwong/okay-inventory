@@ -5,11 +5,11 @@ import { DynamicForm } from '../../../../dynamic-form/dynamic-form';
 import { Container } from '../../../../reusable/container';
 import { optionsForm } from '../edit-model.variables';
 
-export const AddOptionForm = ({ onSubmit: _onSubmit, name }) => {
+export const AddOptionForm = ({ onSubmit: _onSubmit }) => {
   const [showForm, setShowForm] = useState(false);
-  const onSubmit = () => {
+  const onSubmit = ({ value }) => {
     setShowForm(false);
-    _onSubmit(name);
+    _onSubmit(value);
   };
   return (
     <>
