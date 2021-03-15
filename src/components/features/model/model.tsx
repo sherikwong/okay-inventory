@@ -37,13 +37,17 @@ export const Model = ({ match, history }) => {
 
   const getEntries = (existingModel: IModel) => {
     if (existingModel) {
-      const allEntriesGetterPromise = Object.values(
-        existingModel.entries
-      ).map((entry) => entriesDB.get(entry));
+      const allEntriesGetterPromise =
+        existingModel.entries &&
+        Object.values(existingModel.entries).map((entry) =>
+          entriesDB.get(entry)
+        );
 
-      Promise.all(allEntriesGetterPromise).then((items) => {
-        setData(items);
-      });
+      if (allEntriesGetterPromise) {
+        Promise.all(allEntriesGetterPromise).then((items) => {
+          setData(items);
+        });
+      }
     }
   };
 

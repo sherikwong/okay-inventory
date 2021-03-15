@@ -21,7 +21,6 @@ export const newFieldForm: IField[] = [
   },
   {
     name: 'multiple',
-    type: EFieldType.checkbox,
-    required: true,
+    type: EFieldType.checkbox
   },
 ];

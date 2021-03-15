@@ -1,12 +1,14 @@
-import { IModel } from './../../../../models/models';
-import { modelsDB } from './../../../../database/models';
+import { isObject } from 'lodash';
 import { useEffect, useState } from 'react';
+import { IField } from '../../../../types/form/field';
+import { modelsDB } from './../../../../database/models';
+import { IModel } from './../../../../models/models';
 
 export const fieldsReducer = (hasOptions, options) => (
   previous,
-  { action, field }
+  { action, field, fields }
 ) => {
-  const shallowCopy = new Map<any, any>(previous);
+  let shallowCopy = new Map<any, any>(previous);
 
   if (field) {
     switch (action) {
@@ -31,6 +33,19 @@ export const fieldsReducer = (hasOptions, options) => (
     }
   }
 
+  if (fields) {
+    switch (action) {
+      case 'overwrite':
+        if (fields) {
+          const fieldsToArray = isObject(fields)
+            ? Object.values(fields)
+            : fields;
+          const innerMap = fieldsToArray.map((field) => [field.name, field]);
+          shallowCopy = new Map(innerMap || []);
+        }
+        break;
+    }
+  }
   return shallowCopy;
 };
 

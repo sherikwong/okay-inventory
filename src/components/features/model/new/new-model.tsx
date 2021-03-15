@@ -1,11 +1,11 @@
 import { Box, Button, Collapsible, Form, TextInput } from 'grommet';
-import { Add, Close, Save } from 'grommet-icons';
+import { Add, Checkmark, Close } from 'grommet-icons';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
-  ISelectOption
+  ISelectOption,
 } from '../../../../types/form/field';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
@@ -15,19 +15,21 @@ import { IReducer } from './new-model.types';
 import { fieldsReducer, useExistingModel } from './new-model.utils';
 
 export const NewModel = ({ match }) => {
+  const id = match.params.id;
   const existingModel = useExistingModel(match);
   const [optionsFields, setOptionsFields] = useState<IField[]>([]);
   // const [options, setOptions] = useState<ISelectOption[]>([]);
   const [options] = useState<ISelectOption[]>([]);
   const [modelName, setModelName] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
+  const [fieldFormValues, setFieldFormValues] = useState();
 
   const hasOptions = (type) =>
     type === EFieldType.select || type === EFieldType.radioGroup;
 
   const [fields, setFields] = useReducer<
     Reducer<Map<string, IField>, IReducer>
-  >(fieldsReducer(hasOptions, options), new Map([]));
+  >(fieldsReducer(hasOptions, options) as any, new Map([]));
 
   const fieldsAsArray = Array.from(fields).map(([, value]) => value);
 
@@ -38,25 +40,27 @@ export const NewModel = ({ match }) => {
     });
   };
 
-  const deleteField = (field) => () => {
+  const deleteField = (field) => ($event) => {
     setFields({
       action: 'delete',
-      field,
+      field: { name: field.name },
     });
+
+    $event.stopPropagation();
   };
 
   const onSubmit = (values) => {
-    modelsDB.add({
+    const pending = {
       name: modelName,
       fields: fieldsAsArray,
-    });
-  };
-
-  const onChange = ({ target }: any) => {
-    switch (target.name) {
-      case 'type':
-        setOptionsFields(hasOptions(target.value) ? optionsForm : []);
-        break;
+    };
+    if (id) {
+      modelsDB.update(id, {
+        ...existingModel,
+        ...pending,
+      });
+    } else {
+      modelsDB.add(pending);
     }
   };
 
@@ -67,7 +71,7 @@ export const NewModel = ({ match }) => {
 
   useEffect(() => {
     if (existingModel) {
-      setFields({ action: 'modify', field: existingModel });
+      setFields({ action: 'overwrite', fields: existingModel.fields });
       setModelName(existingModel.name);
     }
   }, [existingModel]);
@@ -75,7 +79,7 @@ export const NewModel = ({ match }) => {
   return (
     <Box>
       <NavBox>
-        <Button icon={<Save />} onClick={onSubmit} />
+        <Button icon={<Checkmark />} onClick={onSubmit} />
       </NavBox>
 
       <Box margin="large">
@@ -87,7 +91,6 @@ export const NewModel = ({ match }) => {
           style={{ textAlign: 'center' }}
           required={true}
           onChange={({ target }) => {
-            console.log(target.value);
             setModelName(target.value);
           }}
         />
@@ -121,7 +124,7 @@ export const NewModel = ({ match }) => {
         {/* New Field Form */}
         <Collapsible direction="vertical" open={showAddForm}>
           <Container>
-            <Form onSubmit={addField} onChangeCapture={onChange}>
+            <Form onSubmit={addField}>
               <DynamicForm fields={newFieldForm} />
               <Button type="submit" label="Add Field" />
             </Form>
@@ -137,14 +140,15 @@ export const NewModel = ({ match }) => {
               ))}
             </Container>
           ) : null}
-          {optionsFields.length ? (
-            <Container>
-              <Container>
-                <DynamicForm fields={optionsFields}/>
-                <Button type="submit" label="Add Option" />
-              </Container>
-            </Container>
-          ) : null}
+
+          {/* <Container
+            style={{ display: optionsFields.length ? 'block' : 'none' }}
+          >
+            <Form>
+              <DynamicForm fields={optionsFields} />
+              <Button type="submit" label="Add Option" />
+            </Form>
+          </Container> */}
         </Collapsible>
       </Box>
     </Box>
