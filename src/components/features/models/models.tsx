@@ -31,19 +31,22 @@ export const Models = ({ history }) => {
     {
       property: 'edit',
       render: ({ id }) => {
-        const onClick = () => history.push(`model/${id}/edit`);
+        const onClick = ($event) => {
+          $event.stopPropagation();
+          history.push(`model/${id}/edit`);
+        };
 
         return <Button icon={<Edit />} onClick={onClick} />;
       },
     },
-    {
-      property: 'goTo',
-      render: ({ id }) => {
-        const onClick = () => history.push(`model/${id}`);
+    // {
+    //   property: 'goTo',
+    //   render: ({ id }) => {
+    //     const onClick = () => history.push(`model/${id}`);
 
-        return <Button icon={<LinkNext />} onClick={onClick} />;
-      },
-    },
+    //     return <Button icon={<LinkNext />} onClick={onClick} />;
+    //   },
+    // },
   ];
 
   return (
