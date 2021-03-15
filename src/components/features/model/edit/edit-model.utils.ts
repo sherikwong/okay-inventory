@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { IField } from '../../../../types/form/field';
-import { modelsDB } from './../../../../database/models';
-import { IModel } from './../../../../models/models';
+import { modelsDB } from '../../../../database/models';
+import { IModel } from '../../../../models/models';
 
 export const fieldsReducer = (hasOptions, options) => (
   previous,

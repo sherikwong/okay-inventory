@@ -1,4 +1,4 @@
-import { Fields as TFields } from './../../../../types/form/field';
+import { Fields as TFields } from '../../../../types/form/field';
 import { IField } from '../../../../types/form/field';
 
 export interface IReducer {

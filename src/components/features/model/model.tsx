@@ -8,7 +8,7 @@ import { IModel } from '../../../models/models';
 import { IField } from '../../../types/form/field';
 import { DynamicForm } from '../../dynamic-form/dynamic-form';
 import { Container } from '../../reusable/container';
-import { useExistingModel } from './new/new-model.utils';
+import { useExistingModel } from './edit/edit-model.utils';
 
 const leftColumns = [
   {

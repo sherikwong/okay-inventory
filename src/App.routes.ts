@@ -1,7 +1,7 @@
 import { List, Menu } from 'grommet';
 import { Entry } from './components/features/entry/entry';
 import { Model } from './components/features/model/model';
-import { NewModel } from './components/features/model/new/new-model';
+import { EditModel } from './components/features/model/edit/edit-model';
 import { Models } from './components/features/models/models';
 
 export const routes = {
@@ -23,10 +23,10 @@ export const routes = {
     component: Entry,
   },
   '/model/:id/edit': {
-    component: NewModel,
+    component: EditModel,
   },
   '/model/new': {
-    component: NewModel,
+    component: EditModel,
   },
   '/model/:id': {
     component: Model,

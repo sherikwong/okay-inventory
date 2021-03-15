@@ -10,11 +10,11 @@ import {
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
 import { Container } from '../../../reusable/container';
 import NavBox from '../../../reusable/NavBox/NavBox';
-import { newFieldForm, optionsForm } from './new-model.form';
-import { IReducer } from './new-model.types';
-import { fieldsReducer, useExistingModel } from './new-model.utils';
+import { newFieldForm, optionsForm } from './edit-model.variables';
+import { IReducer } from './edit-model.types';
+import { fieldsReducer, useExistingModel } from './edit-model.utils';
 
-export const NewModel = ({ match }) => {
+export const EditModel = ({ match }) => {
   const id = match.params.id;
   const existingModel = useExistingModel(match);
   const [optionsFields, setOptionsFields] = useState<IField[]>([]);
@@ -114,6 +114,7 @@ export const NewModel = ({ match }) => {
           render={({ children, field }) => {
             return (
               <Box
+                background="black"
                 direction="row"
                 border={{ color: 'brand' }}
                 pad="medium"
