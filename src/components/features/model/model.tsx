@@ -1,11 +1,10 @@
-import { Box, Button, Collapsible, DataTable, Form } from 'grommet';
-import { Add, Edit } from 'grommet-icons';
+import { Box, Button, Collapsible, DataTable, Form, Heading } from 'grommet';
+import { Add } from 'grommet-icons';
 import React, { useEffect, useState } from 'react';
 import { entriesDB } from '../../../database/entry';
 import { modelsDB } from '../../../database/models';
 import { IEntry } from '../../../models/entry';
 import { IModel } from '../../../models/models';
-import { IField } from '../../../types/form/field';
 import { navigateToPageID } from '../../../utils/goToPageByID';
 import { DynamicForm } from '../../dynamic-form/dynamic-form';
 import { Container } from '../../reusable/container';
@@ -59,10 +58,10 @@ export const Model = ({ match, history }) => {
   };
 
   useEffect(() => {
-    mapColumns(existingModel);
     getEntries(existingModel);
   }, [existingModel]);
 
+    mapColumns(existingModel);
   const onSubmit = ({ value }) => {
     if (Object.entries(value).length) {
       entriesDB.add({ ...value, modelID }).then((entry) => {
@@ -78,18 +77,6 @@ export const Model = ({ match, history }) => {
     }
   };
 
-  const columns = [
-    ...columnsFromDB,
-    // {
-    //   property: 'edit',
-    //   render: ({ id }) => {
-    //     const onClick = () => history.push(`/entry/${id}`);
-
-    //     return <Button icon={<Edit />} onClick={onClick} />;
-    //   },
-    // },
-  ];
-
   const onClickRow = ({ datum }) => {
     navigateToPageID(existingModel.pageID, datum.id, history);
   };
@@ -98,7 +85,12 @@ export const Model = ({ match, history }) => {
     <>
       <NavBox />
       <Box margin="medium">
-        <DataTable columns={columns} data={data} onClickRow={onClickRow} />
+        <Heading level={3}>{existingModel?.name}</Heading>
+        <DataTable
+          columns={columnsFromDB}
+          data={data}
+          onClickRow={onClickRow}
+        />
         <Box margin={{ vertical: 'large' }} alignContent="center">
           <Button
             style={{ textAlign: 'center' }}
