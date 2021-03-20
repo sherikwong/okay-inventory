@@ -23,6 +23,7 @@ export class IField {
   placeholder?: string;
   onChange?: any;
   onBlur?: any;
+  label?: string;
   sort?: number;
 }
 

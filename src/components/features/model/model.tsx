@@ -11,13 +11,6 @@ import { DynamicForm } from '../../dynamic-form/dynamic-form';
 import { Container } from '../../reusable/container';
 import { useExistingModel } from './edit/edit-model.utils';
 
-const leftColumns = [
-  {
-    property: 'dateCreated',
-    header: 'Date',
-  },
-];
-
 export const Model = ({ match, history }) => {
   const modelID = match.params.id;
   const existingModel = useExistingModel(match);
@@ -27,10 +20,12 @@ export const Model = ({ match, history }) => {
 
   const mapColumns = (existingModel: IModel) => {
     if (existingModel) {
-      const _columns = (existingModel.fields as IField[]).map(({ name }) => ({
-        property: name,
-        header: name,
-      }));
+      const _columns = (Object.values(existingModel.fields) as IField[]).map(
+        ({ name, label }) => ({
+          property: name,
+          header: label,
+        })
+      );
 
       setColumnsFromDB(_columns);
     }
@@ -73,7 +68,6 @@ export const Model = ({ match, history }) => {
   };
 
   const columns = [
-    ...leftColumns,
     ...columnsFromDB,
     // {
     //   property: 'edit',

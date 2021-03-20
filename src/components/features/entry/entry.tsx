@@ -32,7 +32,7 @@ export const Entry = ({ match }) => {
         <Button icon={<Trash />} onClick={deleteEntry} />
       </NavBox>
       <Form onSubmit={updateEntry}>
-        <DynamicForm fields={model?.fields || []} />
+        <DynamicForm fields={model?.fields || {}} />
         <Button icon={<Save />} type="submit" />
       </Form>
     </>

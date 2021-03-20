@@ -1,21 +1,19 @@
-import { Box, Button, Collapsible, Form, TextInput } from 'grommet';
-import { Add, Checkmark, Close } from 'grommet-icons';
+import { Box, Button } from 'grommet';
+import { Checkmark, Close } from 'grommet-icons';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import {
   EFieldType,
   IField,
-  ISelectOption,
+  ISelectOption
 } from '../../../../types/form/field';
 import { DynamicForm } from '../../../dynamic-form/dynamic-form';
-import { Container } from '../../../reusable/container';
 import NavBox from '../../../reusable/NavBox/NavBox';
-import { newFieldForm, optionsForm } from './edit-model.variables';
-import { IReducer } from './edit-model.types';
-import { fieldsReducer, useExistingModel } from './edit-model.utils';
-import { EditModelNameForm } from './components/edit-model-name';
 import { AddFieldForm } from './components/add-field-form';
 import { AddOptionForm } from './components/add-option-form';
+import { EditModelNameForm } from './components/edit-model-name';
+import { IReducer } from './edit-model.types';
+import { fieldsReducer, useExistingModel } from './edit-model.utils';
 
 export const EditModel = ({ match }) => {
   const id = match.params.id;
