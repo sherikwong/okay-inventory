@@ -1,10 +1,8 @@
-import { match } from 'assert';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { entriesDB } from '../database/entry';
-import { modelsDB } from '../database/models';
 import { IEntry } from '../models/entry';
 
-export const useEntry = (entryID: string) => {
+export const useEntry = <T = IEntry>(entryID: string): T | undefined => {
   const [entry, setEntry] = useState<IEntry | undefined>();
 
   useEffect(() => {
@@ -13,5 +11,5 @@ export const useEntry = (entryID: string) => {
     });
   }, [entryID]);
 
-  return entry;
+  return entry as T | undefined;
 };
