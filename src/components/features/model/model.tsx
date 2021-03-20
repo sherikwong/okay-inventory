@@ -9,6 +9,7 @@ import { IField } from '../../../types/form/field';
 import { navigateToPageID } from '../../../utils/goToPageByID';
 import { DynamicForm } from '../../dynamic-form/dynamic-form';
 import { Container } from '../../reusable/container';
+import NavBox from '../../reusable/NavBox/NavBox';
 import { useExistingModel } from './edit/edit-model.utils';
 
 export const Model = ({ match, history }) => {
@@ -20,12 +21,19 @@ export const Model = ({ match, history }) => {
 
   const mapColumns = (existingModel: IModel) => {
     if (existingModel) {
-      const _columns = (Object.values(existingModel.fields) as IField[]).map(
-        ({ name, label }) => ({
-          property: name,
-          header: label,
-        })
-      );
+      const shallowModel = { ...existingModel };
+      const dateColumn = shallowModel.fields['date'];
+      let fieldsAsArray = Object.values(shallowModel.fields) as IField[];
+
+      if (dateColumn) {
+        delete (shallowModel as any).date;
+        fieldsAsArray = [dateColumn, ...fieldsAsArray];
+      }
+
+      const _columns = fieldsAsArray.map(({ name, label }) => ({
+        property: name,
+        header: label,
+      }));
 
       setColumnsFromDB(_columns);
     }
@@ -85,24 +93,27 @@ export const Model = ({ match, history }) => {
 
   return (
     <>
-      <DataTable columns={columns} data={data} onClickRow={onClickRow} />
-      <Box margin={{ vertical: 'large' }} alignContent="center">
-        <Button
-          style={{ textAlign: 'center' }}
-          icon={<Add />}
-          size="small"
-          onClick={() => setShowAddEntryForm(!showAddEntryForm)}
-        />
-      </Box>
+      <NavBox />
+      <Box margin="medium">
+        <DataTable columns={columns} data={data} onClickRow={onClickRow} />
+        <Box margin={{ vertical: 'large' }} alignContent="center">
+          <Button
+            style={{ textAlign: 'center' }}
+            icon={<Add />}
+            size="small"
+            onClick={() => setShowAddEntryForm(!showAddEntryForm)}
+          />
+        </Box>
 
-      <Collapsible direction="vertical" open={showAddEntryForm}>
-        <Container>
-          <Form onSubmit={onSubmit}>
-            <DynamicForm fields={existingModel?.fields || []} />
-            <Button type="submit" label="Add Field" />
-          </Form>
-        </Container>
-      </Collapsible>
+        <Collapsible direction="vertical" open={showAddEntryForm}>
+          <Container>
+            <Form onSubmit={onSubmit}>
+              <DynamicForm fields={existingModel?.fields || []} />
+              <Button type="submit" label="Add Field" />
+            </Form>
+          </Container>
+        </Collapsible>
+      </Box>
     </>
   );
 };
