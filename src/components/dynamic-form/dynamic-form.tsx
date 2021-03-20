@@ -74,7 +74,7 @@ export const DynamicForm = ({
 
     const fieldJSX = (
       <Box {...(style?.field || {})}>
-        <FormField label={titleCase(field.name)} name={field.name}>
+        <FormField label={field.label} name={field.name}>
           <Input
             name={field.name}
             value={field.value}

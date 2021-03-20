@@ -32,6 +32,7 @@ export const EditModel = ({ match }) => {
   >(fieldsReducer(hasOptions, options) as any, new Map([]));
 
   const fieldsAsArray = Array.from(fields).map(([, value]) => value);
+  const fieldsAsObject = Object.fromEntries(fields);
 
   const addField = ({ value }) => {
     setFields({
@@ -52,7 +53,7 @@ export const EditModel = ({ match }) => {
   const onSubmit = (values) => {
     const pending = {
       name: modelName,
-      fields: fieldsAsArray,
+      fields: fieldsAsObject,
     };
     if (id) {
       modelsDB.update(id, {
@@ -91,7 +92,7 @@ export const EditModel = ({ match }) => {
 
         {/* Existing Fields */}
         <DynamicForm
-          fields={fieldsAsArray}
+          fields={fieldsAsObject}
           sortable={true}
           render={({ children, field }) => {
             return (
