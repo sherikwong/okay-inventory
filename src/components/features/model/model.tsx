@@ -23,14 +23,17 @@ export const Model = ({ match, history }) => {
     if (existingModel) {
       const shallowModel = { ...existingModel };
       const dateColumn = shallowModel.fields['date'];
-      let fieldsAsArray = Object.values(shallowModel.fields) as IField[];
 
       if (dateColumn) {
-        delete (shallowModel as any).date;
-        fieldsAsArray = [dateColumn, ...fieldsAsArray];
+        delete (shallowModel as any).fields.date;
       }
 
-      const _columns = fieldsAsArray.map(({ name, label }) => ({
+      const fieldsAsArray = Object.values(shallowModel.fields);
+      const fieldsWithDateSorted = dateColumn
+        ? [dateColumn, ...fieldsAsArray]
+        : fieldsAsArray;
+
+      const _columns = fieldsWithDateSorted.map(({ name, label }) => ({
         property: name,
         header: label,
       }));
