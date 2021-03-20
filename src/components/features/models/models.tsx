@@ -35,7 +35,11 @@ export const Models = ({ history }) => {
           history.push(`model/${id}/edit`);
         };
 
-        return <Button icon={<Edit />} onClick={onClick} />;
+        return (
+          <Box>
+            <Button alignSelf="end" icon={<Edit />} onClick={onClick} />
+          </Box>
+        );
       },
     },
   ];
@@ -47,7 +51,7 @@ export const Models = ({ history }) => {
   return (
     <>
       <NavBox />
-      <Header>Models</Header>
+      <Header alignSelf="center">Models</Header>
       <DataTable
         columns={columns}
         data={models}
@@ -55,7 +59,7 @@ export const Models = ({ history }) => {
         primaryKey="id"
         pad="xxsmall"
       />
-      <Button icon={<Add />} onClick={goToAddModel} />
+      <Button alignSelf="center" icon={<Add />} onClick={goToAddModel} />
     </>
   );
 };

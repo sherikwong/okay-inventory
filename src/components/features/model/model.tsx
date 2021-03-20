@@ -6,6 +6,7 @@ import { modelsDB } from '../../../database/models';
 import { IEntry } from '../../../models/entry';
 import { IModel } from '../../../models/models';
 import { IField } from '../../../types/form/field';
+import { navigateToPageID } from '../../../utils/goToPageByID';
 import { DynamicForm } from '../../dynamic-form/dynamic-form';
 import { Container } from '../../reusable/container';
 import { useExistingModel } from './edit/edit-model.utils';
@@ -74,19 +75,23 @@ export const Model = ({ match, history }) => {
   const columns = [
     ...leftColumns,
     ...columnsFromDB,
-    {
-      property: 'edit',
-      render: ({ id }) => {
-        const onClick = () => history.push(`/entry/${id}`);
+    // {
+    //   property: 'edit',
+    //   render: ({ id }) => {
+    //     const onClick = () => history.push(`/entry/${id}`);
 
-        return <Button icon={<Edit />} onClick={onClick} />;
-      },
-    },
+    //     return <Button icon={<Edit />} onClick={onClick} />;
+    //   },
+    // },
   ];
+
+  const onClickRow = ({ datum }) => {
+    navigateToPageID(existingModel.pageID, datum.id, history);
+  };
 
   return (
     <>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data} onClickRow={onClickRow} />
       <Box margin={{ vertical: 'large' }} alignContent="center">
         <Button
           style={{ textAlign: 'center' }}
