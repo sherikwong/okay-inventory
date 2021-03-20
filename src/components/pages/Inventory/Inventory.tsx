@@ -1,63 +1,97 @@
+import { query } from 'express';
 import { Box } from 'grommet';
-import React from 'react';
+import queryString from 'query-string';
+import React, { useEffect, useState } from 'react';
 import { Swipeable } from 'react-swipeable';
+import { entriesDB } from '../../../database/entry';
 import { useEntry } from '../../../hooks/useEntry';
 import { IFood } from '../../../models/food';
-import BouncingArrowOverlay from '../../item/Overlay/Overlay';
 import NavBox from '../../reusable/NavBox/NavBox';
-import Tags from '../../reusable/Tags/Tags';
 import { UnsplashBackground } from '../../reusable/UnsplashBackground/UnsplashBackground';
-import {
-  ContrastingText,
-  Header,
-  Number,
-  SizedUnsplash,
-} from './Inventory.styles';
+import { ContrastingText, Header, Number } from './Inventory.styles';
 
-export const Inventory = ({ match }) => {
-  const { name, date, quantity } =
-    useEntry<IFood>(match.params.id) || ({} as IFood);
+export const Inventory = ({ match, location }) => {
+  const entry = useEntry<IFood>(match.params.id) || ({} as IFood);
+  const { name, date, quantity, type, id } = entry;
+  const queryObj = queryString.parse(location.search);
+  const [hasInitialized, setInitialized] = useState(0);
+  const [updatedQuantity, setUpdatedQuantity] = useState<number | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    setInitialized(hasInitialized + 1);
+  }, []);
+
+  useEffect(() => {
+    if (updatedQuantity === undefined && quantity >= 0) {
+      setUpdatedQuantity(quantity);
+    }
+  }, [quantity, updatedQuantity]);
 
   const alterQty = (num, quan = quantity) => {
-    // const sanitizedQuantity = isNaN(+quan) ? 0 : +quan;
-    // const updatedNum = sanitizedQuantity + +num;
-    // const updatedDetails = {
-    //   ...details,
-    //   quantity: updatedNum,
-    // };
-    // setDetails(updatedDetails);
-    // itemsDB.update(id, updatedDetails);
+    const sanitizedQuantity = isNaN(+quan) ? 0 : +quan;
+
+    const updatedNum = sanitizedQuantity + +num;
+
+    const updatedDetails = {
+      ...entry,
+      quantity: updatedNum,
+    };
+
+    setUpdatedQuantity(updatedNum);
+
+    entriesDB
+      .update(id, updatedDetails)
+      .then((res) => console.log('Quantity altered.'));
   };
+
+  useEffect(() => {
+    if (name) {
+      if (queryObj && queryObj.qty) {
+        // setInitialized(true);
+        // Hack for 1/2 b/c rendering twice
+        alterQty(+queryObj.qty / 2);
+      }
+    }
+  }, [name, hasInitialized, queryObj, queryObj.qty]);
 
   return (
     <>
-      <UnsplashBackground value={name}>
-        <NavBox></NavBox>
+      <UnsplashBackground value={type}>
         <Swipeable
           onSwipedDown={() => alterQty(-1)}
           onSwipedUp={() => alterQty(1)}
+          style={{ height: '100%' }}
         >
-          <Box direction="column" fill={true} align="center" justify="center">
-            <Box align="center">
-              <Number> {quantity}</Number>
+          <NavBox></NavBox>
+          <Box
+            align="center"
+            fill={true}
+            justify="between"
+            style={{ height: '100%' }}
+          >
+            <span></span>
+            {/* <Box align="center"> */}
+            <Number> {Math.round(updatedQuantity || 0)}</Number>
 
-              <Header className="header-wrapper">{name}</Header>
+            <Header className="header-wrapper">{name}</Header>
 
-              <ContrastingText>
-                {date && new Date(date).toLocaleDateString('en-US')}
-              </ContrastingText>
-              {/* <CalendarIcon date={date} /> */}
+            <ContrastingText>
+              {date && new Date(date).toLocaleDateString('en-US')}
+            </ContrastingText>
+            {/* <CalendarIcon date={date} /> */}
 
-              {/* <Tags tags={tags} /> */}
-            </Box>
-          </Box>
+            {/* <Tags tags={tags} /> */}
+            {/* </Box> */}
 
-          {/* {queryObj && queryObj.qty && (
+            {/* {queryObj && queryObj.qty && (
           <BouncingArrowOverlay
             direction="down"
             className="animate__animated animate__fadeOut animate__slower"
           />
         )} */}
+          </Box>
         </Swipeable>
       </UnsplashBackground>
     </>

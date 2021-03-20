@@ -4,4 +4,5 @@ export interface IFood extends IBaseModel {
   name: string;
   date: string;
   quantity: number;
+  type: string;
 }

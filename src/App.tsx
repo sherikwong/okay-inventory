@@ -64,23 +64,23 @@ const App = () => {
           <Logo animated={true} width="100%" />
         </Box>
       ) : (
-        <Box pad="large">
-          <Router history={history}>
-            {true ? (
-              // hasAuthenticatedCookie || isAuthenticated
-              Object.entries(routes).map(([path, info]) => (
-                <Route
-                  path={path}
-                  key={path}
-                  component={createFactory(info.component as any)}
-                  exact
-                />
-              ))
-            ) : (
-              <Authentication setAuthenticated={setAuthenticated} />
-            )}
-          </Router>
-        </Box>
+        // <Box margin="large">
+        <Router history={history}>
+          {true ? (
+            // hasAuthenticatedCookie || isAuthenticated
+            Object.entries(routes).map(([path, info]) => (
+              <Route
+                path={path}
+                key={path}
+                component={createFactory(info.component as any)}
+                exact
+              />
+            ))
+          ) : (
+            <Authentication setAuthenticated={setAuthenticated} />
+          )}
+        </Router>
+        // </Box>
       )}
     </Grommet>
   );

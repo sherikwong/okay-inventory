@@ -14,11 +14,7 @@ const NavBox = ({ history, justify = 'between', children }: any) => {
 
   return (
     <>
-      <Box
-        direction="row"
-        justify={justify}
-        style={{ margin: '0 -24px 0 -24px' }}
-      >
+      <Box direction="row" justify={justify} margin="medium">
         <Box direction="row">
           <BackButton />
           <Button icon={<Menu />} onClick={() => setShowDrawer(true)} />

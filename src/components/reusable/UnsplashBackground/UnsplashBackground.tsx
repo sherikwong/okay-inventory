@@ -8,7 +8,10 @@ interface IUnsplashBackgroundProps {
   value?: string;
 }
 
-export const UnsplashBackground = ({ children, value }: IUnsplashBackgroundProps) => {
+export const UnsplashBackground = ({
+  children,
+  value,
+}: IUnsplashBackgroundProps) => {
   let keywords = '';
 
   if (value) {
@@ -17,12 +20,18 @@ export const UnsplashBackground = ({ children, value }: IUnsplashBackgroundProps
 
   return (
     <Stack fill={true} className="item-stack" id="item">
-      <SizedUnsplash
-        keywords={keywords}
-        width={window.screen.width}
-        height={window.screen.height}
-        style={{ backgroundPosition: 'center center' }}
-      />
+      {value && (
+        <SizedUnsplash
+          keywords={keywords}
+          width={window.screen.width}
+          height={window.screen.height}
+          style={{
+            backgroundPosition: 'center center',
+            width: '100vw',
+            height: '100vh',
+          }}
+        />
+      )}
 
       <BlackOverlay></BlackOverlay>
 
