@@ -1,9 +1,10 @@
-import { Inventory } from './components/pages/Inventory/Inventory';
-import { List, Menu } from 'grommet';
+import { List } from 'grommet';
 import { Entry } from './components/features/entry/entry';
-import { Model } from './components/features/model/model';
 import { EditModel } from './components/features/model/edit/edit-model';
+import { Model } from './components/features/model/model';
 import { Models } from './components/features/models/models';
+import { Inventory } from './components/pages/Inventory/Inventory';
+import Scan from './components/scan/scan';
 
 export const routes = {
   '/inventory/:id': {
@@ -28,6 +29,6 @@ export const routes = {
     component: Models,
   },
   '/': {
-    component: Models,
+    component: Scan,
   },
 };

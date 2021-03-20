@@ -1,4 +1,4 @@
-import { Box, Button, DataTable, Header, Heading } from 'grommet';
+import { Box, Button, DataTable, Heading } from 'grommet';
 import { Add, Edit } from 'grommet-icons';
 import React, { useEffect, useState } from 'react';
 import { modelsDB } from '../../../database/models';
@@ -51,17 +51,17 @@ export const Models = ({ history }) => {
   return (
     <>
       <NavBox />
-      <Box margin="medium">
-        <Heading level={3}>Models</Heading>
-        <DataTable
-          columns={columns}
-          data={models}
-          onClickRow={goToModel}
-          primaryKey="id"
-          pad="xxsmall"
-        />
-        <Button alignSelf="center" icon={<Add />} onClick={goToAddModel} />
-      </Box>
+      <Heading level={3} alignSelf="center">
+        Models
+      </Heading>
+      <DataTable
+        columns={columns}
+        data={models}
+        onClickRow={goToModel}
+        primaryKey="id"
+        pad="xxsmall"
+      />
+      <Button alignSelf="center" icon={<Add />} onClick={goToAddModel} />
     </>
   );
 };

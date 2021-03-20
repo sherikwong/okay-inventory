@@ -58,10 +58,10 @@ export const Model = ({ match, history }) => {
   };
 
   useEffect(() => {
+    mapColumns(existingModel);
     getEntries(existingModel);
   }, [existingModel]);
 
-    mapColumns(existingModel);
   const onSubmit = ({ value }) => {
     if (Object.entries(value).length) {
       entriesDB.add({ ...value, modelID }).then((entry) => {
@@ -85,7 +85,9 @@ export const Model = ({ match, history }) => {
     <>
       <NavBox />
       <Box margin="medium">
-        <Heading level={3}>{existingModel?.name}</Heading>
+        <Heading level={3} alignSelf="center">
+          {existingModel?.name}
+        </Heading>
         <DataTable
           columns={columnsFromDB}
           data={data}

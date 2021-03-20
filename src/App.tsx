@@ -58,16 +58,13 @@ const App = () => {
 
   return (
     <Grommet theme={theme} themeMode="dark">
-      {/* {!logoHasPlayed ? ( */}
-      {false ? (
+      {!logoHasPlayed ? (
         <Box fill={true} alignContent="center" justify="center">
           <Logo animated={true} width="100%" />
         </Box>
       ) : (
-        // <Box margin="large">
         <Router history={history}>
           {true ? (
-            // hasAuthenticatedCookie || isAuthenticated
             Object.entries(routes).map(([path, info]) => (
               <Route
                 path={path}
@@ -80,7 +77,6 @@ const App = () => {
             <Authentication setAuthenticated={setAuthenticated} />
           )}
         </Router>
-        // </Box>
       )}
     </Grommet>
   );
