@@ -16,12 +16,22 @@ const theme = {
     medium: {
       daySize: 'calc(100vw/8)',
     },
+    background: {
+      color: {
+        dark: 'black',
+      },
+    },
   },
   radioButton: {
     border: {
       color: {
-        dark: 'white'
+        dark: 'white',
       },
+    },
+  },
+  background: {
+    color: {
+      dark: 'black',
     },
   },
 };

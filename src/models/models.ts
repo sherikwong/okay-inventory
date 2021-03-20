@@ -5,4 +5,5 @@ export interface IModel extends IBaseModel {
   name: string;
   fields: Fields;
   entries: { [key: string]: string };
+  pageID: string;
 }

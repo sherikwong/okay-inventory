@@ -60,22 +60,28 @@ export const DynamicForm = ({
       ? {
           labelKey: 'value',
           valueKey: 'label',
+          options: field.options || [],
         }
       : {};
 
-    const options = hasOptions ? field.options || [] : undefined;
+    const dateConfig =
+      field.type === EFieldType.date
+        ? {
+            size: 'medium',
+            onSelect: (val) => console.log(val),
+          }
+        : {};
 
     const fieldJSX = (
       <Box {...(style?.field || {})}>
-        <FormField label={titleCase(field.name)}>
+        <FormField label={titleCase(field.name)} name={field.name}>
           <Input
+            name={field.name}
             value={field.value}
             placeholder={field.placeholder}
             required={field.required}
             {...selectConfig}
-            options={options}
-            name={field.name}
-            size="medium"
+            {...dateConfig}
           />
         </FormField>
       </Box>
