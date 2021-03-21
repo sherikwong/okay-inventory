@@ -1,20 +1,11 @@
-import { Button, Box } from 'grommet';
-import { Menu } from 'grommet-icons';
+import { Box } from 'grommet';
 import React, { useEffect, useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { itemsDB } from '../../database/items';
-import './scan.scss';
-import { ContrastingButton } from '../item/Item.styles';
-import Logo from '../reusable/logo/logo';
 import NavBox from '../reusable/NavBox/NavBox';
-
-const MenuButton = styled(ContrastingButton)`
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
+import './scan.scss';
 
 const Error = styled.div`
   z-index: 1000;
@@ -61,10 +52,6 @@ const Scan = (props) => {
     }
   };
 
-  const goToMenu = () => {
-    history.push('/list');
-  };
-
   useEffect(() => {
     setTransClass(getAnimationClass(hasError ? IN_UP : OUT_DOWN));
   }, [hasError]);
@@ -75,11 +62,21 @@ const Scan = (props) => {
         style={{ height: '100%' }}
         className="container"
         onScan={onScan}
-        onError={() => undefined}
-        onImageLoad={() => undefined}
-        onLoad={() => undefined}
+        onError={() => console.log('Hi')}
+        onImageLoad={() => console.log('Hi')}
+        onLoad={() => console.log('Hi')}
       />
-      <NavBox />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 2,
+          width: '100%',
+        }}
+      >
+        <NavBox />
+      </div>
 
       <Error className={errorTransitionClass}>
         <Box pad="medium">Try again</Box>

@@ -51,17 +51,19 @@ export const Models = ({ history }) => {
   return (
     <>
       <NavBox />
-      <Heading level={3} alignSelf="center">
-        Models
-      </Heading>
-      <DataTable
-        columns={columns}
-        data={models}
-        onClickRow={goToModel}
-        primaryKey="id"
-        pad="xxsmall"
-      />
-      <Button alignSelf="center" icon={<Add />} onClick={goToAddModel} />
+      <Box margin="medium">
+        <Heading level={3} alignSelf="center">
+          Models
+        </Heading>
+        <DataTable
+          columns={columns}
+          data={models}
+          onClickRow={goToModel}
+          primaryKey="id"
+          pad="xxsmall"
+        />
+        <Button alignSelf="center" icon={<Add />} onClick={goToAddModel} />
+      </Box>
     </>
   );
 };

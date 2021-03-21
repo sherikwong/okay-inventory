@@ -29,7 +29,6 @@ export const EditModel = ({ match }) => {
     Reducer<Map<string, IField>, IReducer>
   >(fieldsReducer(hasOptions, options) as any, new Map([]));
 
-  const fieldsAsArray = Array.from(fields).map(([, value]) => value);
   const fieldsAsObject = Object.fromEntries(fields);
 
   const addField = ({ value }) => {

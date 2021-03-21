@@ -4,9 +4,8 @@ import React, { useEffect, useState } from 'react';
 import {
   arrayMove,
   SortableContainer,
-  SortableElement,
+  SortableElement
 } from 'react-sortable-hoc';
-import { titleCase } from 'voca';
 import { EFieldType, Fields, IField } from '../../types/form/field';
 import { fieldTypeMap } from './dynamic-form.variables';
 

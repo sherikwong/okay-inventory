@@ -2,7 +2,18 @@ import { Box, Button, Nav, Sidebar } from 'grommet';
 import { Analytics, Camera, Close, Menu } from 'grommet-icons';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 import BackButton from '../BackButton/BackButton';
+
+const ContrastingButtonContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  svg {
+    stroke: white;
+    mix-blend-mode: difference;
+  }
+`;
 
 const buttons = {
   '/models': Analytics,
@@ -23,7 +34,7 @@ const NavBox = ({ history, justify = 'between', children }: any) => {
       </Box>
 
       {showDrawer && (
-        <div style={{ position: 'absolute', right: 0, top: 0 }}>
+        <ContrastingButtonContainer>
           <Sidebar background="brand" round="small" margin="medium">
             <Nav gap="small">
               <Button
@@ -40,7 +51,7 @@ const NavBox = ({ history, justify = 'between', children }: any) => {
               ))}
             </Nav>
           </Sidebar>
-        </div>
+        </ContrastingButtonContainer>
       )}
     </>
   );

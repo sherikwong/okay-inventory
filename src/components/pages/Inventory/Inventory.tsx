@@ -1,7 +1,6 @@
-import { query } from 'express';
 import { Box } from 'grommet';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Swipeable } from 'react-swipeable';
 import { entriesDB } from '../../../database/entry';
 import { useEntry } from '../../../hooks/useEntry';
@@ -14,14 +13,9 @@ export const Inventory = ({ match, location }) => {
   const entry = useEntry<IFood>(match.params.id) || ({} as IFood);
   const { name, date, quantity, type, id } = entry;
   const queryObj = queryString.parse(location.search);
-  const [hasInitialized, setInitialized] = useState(0);
   const [updatedQuantity, setUpdatedQuantity] = useState<number | undefined>(
     undefined
   );
-
-  useEffect(() => {
-    setInitialized(hasInitialized + 1);
-  }, []);
 
   useEffect(() => {
     if (updatedQuantity === undefined && quantity >= 0) {
@@ -29,32 +23,34 @@ export const Inventory = ({ match, location }) => {
     }
   }, [quantity, updatedQuantity]);
 
-  const alterQty = (num, quan = quantity) => {
-    const sanitizedQuantity = isNaN(+quan) ? 0 : +quan;
+  const alterQty = useCallback(
+    (num, quan = quantity) => {
+      const sanitizedQuantity = isNaN(+quan) ? 0 : +quan;
 
-    const updatedNum = sanitizedQuantity + +num;
+      const updatedNum = sanitizedQuantity + +num;
 
-    const updatedDetails = {
-      ...entry,
-      quantity: updatedNum,
-    };
+      const updatedDetails = {
+        ...entry,
+        quantity: updatedNum,
+      };
 
-    setUpdatedQuantity(updatedNum);
+      setUpdatedQuantity(updatedNum);
 
-    entriesDB
-      .update(id, updatedDetails)
-      .then((res) => console.log('Quantity altered.'));
-  };
+      entriesDB
+        .update(id, updatedDetails)
+        .then((res) => console.log('Quantity altered.'));
+    },
+    [entry, id, quantity]
+  );
 
   useEffect(() => {
     if (name) {
       if (queryObj && queryObj.qty) {
-        // setInitialized(true);
         // Hack for 1/2 b/c rendering twice
         alterQty(+queryObj.qty / 2);
       }
     }
-  }, [name, hasInitialized, queryObj, queryObj.qty]);
+  }, [name, queryObj, queryObj.qty, alterQty]);
 
   return (
     <>
