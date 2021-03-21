@@ -58,7 +58,8 @@ const App = () => {
 
   return (
     <Grommet theme={theme} themeMode="dark">
-      {!logoHasPlayed ? (
+      {/* {!logoHasPlayed ? ( */}
+      {false ? (
         <Box fill={true} alignContent="center" justify="center">
           <Logo animated={true} width="100%" />
         </Box>

@@ -18,6 +18,9 @@ export const Model = ({ match, history }) => {
   const [showAddEntryForm, setShowAddEntryForm] = useState(false);
   const [data, setData] = useState<IEntry[]>([]);
 
+  /**
+   * Takes columns from DB and maps them into Data Table columns
+   */
   const mapColumns = (existingModel: IModel) => {
     if (existingModel) {
       const shallowModel = { ...existingModel };
@@ -35,12 +38,16 @@ export const Model = ({ match, history }) => {
       const _columns = fieldsWithDateSorted.map(({ name, label }) => ({
         property: name,
         header: label,
+        sortable: true,
       }));
 
       setColumnsFromDB(_columns);
     }
   };
 
+  /**
+   * Gets entries from DB model
+   */
   const getEntries = (existingModel: IModel) => {
     if (existingModel) {
       const allEntriesGetterPromise =
@@ -57,6 +64,9 @@ export const Model = ({ match, history }) => {
     }
   };
 
+  /**
+   * If on load, a model already exists, then load.
+   */
   useEffect(() => {
     mapColumns(existingModel);
     getEntries(existingModel);
@@ -90,6 +100,7 @@ export const Model = ({ match, history }) => {
         </Heading>
         <DataTable
           columns={columnsFromDB}
+          sortable={true}
           data={data}
           onClickRow={onClickRow}
         />
