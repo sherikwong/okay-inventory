@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { modelsDB } from '../../../../database/models';
 import { IModel } from '../../../../models/models';
@@ -36,11 +35,11 @@ export const fieldsReducer = (hasOptions, options) => (
     switch (action) {
       case 'overwrite':
         if (fields) {
-          const fieldsToArray = _.isObject(fields)
-            ? Object.values(fields)
-            : fields;
+          const fieldsToArray = Array.isArray(fields)
+            ? fields
+            : Object.values(fields);
           const innerMap = fieldsToArray.map((field) => [field.name, field]);
-          shallowCopy = new Map(innerMap || []);
+          shallowCopy = new Map((innerMap || []) as any);
         }
         break;
     }

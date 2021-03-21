@@ -1,10 +1,9 @@
 import { Box, FormField, TextInput } from 'grommet';
-import * as _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   arrayMove,
   SortableContainer,
-  SortableElement
+  SortableElement,
 } from 'react-sortable-hoc';
 import { EFieldType, Fields, IField } from '../../types/form/field';
 import { fieldTypeMap } from './dynamic-form.variables';
@@ -31,7 +30,7 @@ export const DynamicForm = ({
   const [fields, setFields] = useState<IField[]>([]);
 
   useEffect(() => {
-    const pendingFields = (_.isArray(_fields)
+    const pendingFields = (Array.isArray(_fields)
       ? _fields
       : Object.values(_fields).map((value) => value)
     ).sort((a, b) => (a.sort && b.sort && (a.sort > b.sort ? 1 : -1)) || 0);

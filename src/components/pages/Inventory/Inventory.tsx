@@ -67,7 +67,6 @@ export const Inventory = ({ match, location }) => {
             justify="between"
             style={{ height: '100%' }}
           >
-            <span></span>
             {/* <Box align="center"> */}
             <Number> {Math.round(updatedQuantity || 0)}</Number>
 

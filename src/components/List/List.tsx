@@ -1,7 +1,6 @@
 import { Box, Button, DataTable, Keyboard } from 'grommet';
 import { Add, Camera, Down, Refresh, Up, Copy, Trash } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
-import * as _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Router, withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
@@ -73,11 +72,13 @@ const List = ({ history }) => {
           item.name && filter.name
             ? item.name.toLowerCase().includes(filter.name.toLowerCase())
             : false;
-        const hasMatchingTags =
-          filter.tags && filter.tags.size
-            ? !!_.intersection(item.tags, filter.tags ? [...filter.tags] : [])
-                .length
-            : true;
+        // const hasMatchingTags =
+        //   filter.tags && filter.tags.size
+        //     ? !!_.intersection(item.tags, filter.tags ? [...filter.tags] : [])
+        //         .length
+        //     : true;
+        // TODO: Fix
+        const hasMatchingTags = false;
 
         return hasMatchingName && hasMatchingTags;
       }

@@ -23,12 +23,10 @@ export const UnsplashBackground = ({
       {value && (
         <SizedUnsplash
           keywords={keywords}
-          width={window.screen.width}
-          height={window.screen.height}
+          width="1920px"
+          height="1080px"
           style={{
-            backgroundPosition: 'center center',
-            width: '100vw',
-            height: '100vh',
+            backgroundPosition: 'center center'
           }}
         />
       )}
