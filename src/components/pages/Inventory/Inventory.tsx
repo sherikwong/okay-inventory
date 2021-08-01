@@ -10,7 +10,7 @@ import NavBox from '../../reusable/NavBox/NavBox';
 import { UnsplashBackground } from '../../reusable/UnsplashBackground/UnsplashBackground';
 import { PrintableQRCode } from './components/QRCode';
 import { ContrastingText, Header, Number } from './Inventory.styles';
-
+import CalendarIcon from "react-calendar-icon";
 import ReactToPrint from 'react-to-print';
 
 export const Inventory = ({ match, location }) => {
@@ -80,20 +80,24 @@ return (
             justify="between"
             style={{ height: '100%' }}
           >
-            {/* <Box align="center"> */}
-            <Number> {Math.round(updatedQuantity || 0)}</Number>
-
-            <Header className="header-wrapper">{name}</Header>
+            <Box direction="row" align="center">
+              <Box direction="column" style={{transform: 'scale(.5)'}}>
+             <CalendarIcon date={date || new Date()} />
 
             <ReactToPrint
-        trigger={() => <button><PrintableQRCode ref={qrRef} id={match.params.id}/></button>}
+        trigger={() => <PrintableQRCode ref={qrRef} id={match.params.id}/>}
         content={() => qrRef.current}
       />
+
+              </Box>
+            <Number> {Math.round(updatedQuantity || 0)}</Number>
+            </Box>
+
+            <Header className="header-wrapper">{name}</Header>
 
             <ContrastingText>
               {date && new Date(date).toLocaleDateString('en-US')}
             </ContrastingText>
-            {/* <CalendarIcon date={date} /> */}
 
             {/* <Tags tags={tags} /> */}
             {/* </Box> */}

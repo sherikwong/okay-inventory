@@ -6,8 +6,7 @@ export class PrintableQRCode extends Component<any> {
   render() {
 return (
   <div>
-
-<QRCode value={this.props.id} />
+<QRCode value={this.props.id} size={90} style={{border: '5px solid white'}}/>
   </div>
 )
   }
