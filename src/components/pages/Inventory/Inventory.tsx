@@ -9,7 +9,7 @@ import { IFood } from '../../../models/food';
 import NavBox from '../../reusable/NavBox/NavBox';
 import { UnsplashBackground } from '../../reusable/UnsplashBackground/UnsplashBackground';
 import { PrintableQRCode } from './components/QRCode';
-import { ContrastingText, Header, Number } from './Inventory.styles';
+import {  ContrastingText, Header, Number } from './Inventory.styles';
 import CalendarIcon from "react-calendar-icon";
 import ReactToPrint from 'react-to-print';
 
@@ -63,7 +63,7 @@ export const Inventory = ({ match, location }) => {
   const qrRef = useRef<any>();
 return (
     <>
-      <UnsplashBackground value={type}>
+      {/* <UnsplashBackground value={type}> */}
         <Swipeable
           onSwipedDown={() => alterQty(-1)}
           onSwipedUp={() => alterQty(1)}
@@ -80,17 +80,20 @@ return (
             justify="between"
             style={{ height: '100%' }}
           >
-            <Box direction="row" align="center">
-              <Box direction="column" style={{transform: 'scale(.5)'}}>
+             <Number> {Math.round(updatedQuantity || 0)}</Number>
+
+            <Box direction="row" justify="between" align="center" style={{transform: 'scale(.8)', width: '100%'}}>
+
+
              <CalendarIcon date={date || new Date()} />
+
 
             <ReactToPrint
         trigger={() => <PrintableQRCode ref={qrRef} id={match.params.id}/>}
         content={() => qrRef.current}
       />
 
-              </Box>
-            <Number> {Math.round(updatedQuantity || 0)}</Number>
+
             </Box>
 
             <Header className="header-wrapper">{name}</Header>
@@ -110,7 +113,7 @@ return (
         )} */}
           </Box>
         </Swipeable>
-      </UnsplashBackground>
+      {/* </UnsplashBackground> */}
 
     </>
   );

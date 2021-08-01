@@ -11,6 +11,7 @@ export enum EFieldType {
   select = 'select',
   radioGroup = 'radioGroup',
   date = 'date',
+  tags ='tags',
 }
 
 export class IField {

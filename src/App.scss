@@ -20,9 +20,11 @@ body {
     height: 100%;
   }
 }
-div,
-span {
-  color: white;
+
+span,
+label,
+input {
+  color: white !important;
 }
 
 input {

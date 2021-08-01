@@ -76,4 +76,3 @@ export const SizedUnsplash = styled(Unsplash)`
   width: 100vh;
   }
 `;
-

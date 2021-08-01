@@ -7,6 +7,7 @@ import {
   TextInput,
 } from 'grommet';
 import { EFieldType } from '../../types/form/field';
+import { TagsInput } from './components/Tags/Tags';
 export const fieldTypeMap = new Map<EFieldType, any>([
   [EFieldType.text, TextInput],
   [EFieldType.range, RangeInput],
@@ -14,4 +15,5 @@ export const fieldTypeMap = new Map<EFieldType, any>([
   [EFieldType.select, Select],
   [EFieldType.radioGroup, RadioButtonGroup],
   [EFieldType.date, Calendar],
+  [EFieldType.tags, TagsInput]
 ]);
