@@ -1,17 +1,14 @@
-import { Box, Button } from 'grommet';
-import { Print } from 'grommet-icons';
+import { Box } from 'grommet';
 import queryString from 'query-string';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import CalendarIcon from "react-calendar-icon";
 import { Swipeable } from 'react-swipeable';
+import ReactToPrint from 'react-to-print';
 import { entriesDB } from '../../../database/entry';
 import { useEntry } from '../../../hooks/useEntry';
 import { IFood } from '../../../models/food';
-import NavBox from '../../reusable/NavBox/NavBox';
-import { UnsplashBackground } from '../../reusable/UnsplashBackground/UnsplashBackground';
 import { PrintableQRCode } from './components/QRCode';
-import {  ContrastingText, Header, Number } from './Inventory.styles';
-import CalendarIcon from "react-calendar-icon";
-import ReactToPrint from 'react-to-print';
+import { ContrastingText, Header, Number } from './Inventory.styles';
 
 export const Inventory = ({ match, location }) => {
   const entry = useEntry<IFood>(match.params.id) || ({} as IFood);
@@ -69,11 +66,6 @@ return (
           onSwipedUp={() => alterQty(1)}
           style={{ height: '100%' }}
         >
-          <NavBox>
-
-
-
-          </NavBox>
           <Box
             align="center"
             fill={true}

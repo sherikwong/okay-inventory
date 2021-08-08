@@ -9,6 +9,7 @@ import Authentication, {
   IS_AUTHENTICATED,
 } from './components/authentication/authentication';
 import Logo from './components/reusable/logo/logo';
+import NavBox from './components/reusable/NavBox/NavBox';
 import { cookies } from './index';
 
 const theme = {
@@ -65,6 +66,7 @@ const App = () => {
         </Box>
       ) : (
         <Router history={history}>
+          <NavBox />
           {true ? (
             Object.entries(routes).map(([path, info]) => (
               <Route

@@ -1,6 +1,6 @@
 import { Box, Button } from 'grommet';
+import { Down, Up } from 'grommet-icons';
 import React from 'react';
-import { Up, Down } from 'grommet-icons';
 import styled from 'styled-components';
 
 const DirectionArrows = styled(Button)`

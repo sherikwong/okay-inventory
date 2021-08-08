@@ -1,10 +1,16 @@
-import { List } from 'grommet';
 
+
+import List from './components/List/List';
 import { Inventory } from './components/pages/Inventory/Inventory';
 import Scan from './components/scan/scan';
 
+export enum Routes {
+  ENTRY = 'entry',
+  LIST = 'list'
+}
+
 export const routes = {
-  '/inventory/:id': {
+  '/item/:id': {
     component: Inventory,
   },
   '/list': {
