@@ -1,5 +1,6 @@
-import { Box, Button, DataTable, Keyboard } from 'grommet';
-import { Add, Camera, Down, Refresh, Up, Copy, Trash } from 'grommet-icons';
+import { Table } from 'antd';
+import { Box, Button, Keyboard } from 'grommet';
+import { Add, Trash } from 'grommet-icons';
 import { createBrowserHistory } from 'history';
 import React, { useEffect, useState } from 'react';
 import { Router, withRouter } from 'react-router-dom';
@@ -8,19 +9,8 @@ import styled from 'styled-components';
 import { itemsDB } from '../../database/items';
 import useItems from '../../hooks/useItems';
 import { IItem } from '../../models/items';
-import ActionsCell from './Cell/actions';
-import NameCell from './Cell/Name';
-import QuantityCell from './Cell/Quantity';
-import TagsCell from './Cell/Tags';
-import ListNameFilter from './Filters/name';
-import ListTagsFilter from './Filters/tags';
-import './List.scss';
-import SelectedCell from './Cell/Selected';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import DateCell from './Cell/Date';
-import { SmallButton } from './Cell/Selected';
-import {Table, Tag} from 'antd';
 import Tags from '../reusable/Tags/Tags';
+import './List.scss';
 
 export const listHistory = createBrowserHistory();
 
