@@ -2,7 +2,7 @@
 import { Box } from 'grommet';
 import React, { useEffect, useState } from 'react';
 import { ITag } from '../../../database/tags';
-import { CenteredBox, WhiteBgTextInput } from '../../item/EditItem/EditTags';
+
 import Tags, { getAllTags } from '../../reusable/Tags/Tags';
 
 const ListTagsFilter = props => {
@@ -62,13 +62,13 @@ const ListTagsFilter = props => {
       </Box>
 
       <Box pad={{ top: 'medium', bottom: 'large' }}>
-        <WhiteBgTextInput
+        {/* <input
           value={search}
           suggestions={removeExistingTags()}
           onSelect={onSelect}
           onChange={onType}
           placeholder="Tags"
-        />
+        /> */}
       </Box>
 
 
