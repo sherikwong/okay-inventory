@@ -66,17 +66,6 @@ const Scan = (props) => {
         onImageLoad={() => console.log('Hi')}
         onLoad={() => console.log('Hi')}
       />
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 2,
-          width: '100%',
-        }}
-      >
-        <NavBox />
-      </div>
 
       <Error className={errorTransitionClass}>
         <Box pad="medium">Try again</Box>

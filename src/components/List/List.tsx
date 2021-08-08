@@ -19,6 +19,8 @@ import SelectedCell from './Cell/Selected';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import DateCell from './Cell/Date';
 import { SmallButton } from './Cell/Selected';
+import {Table, Tag} from 'antd';
+import Tags from '../reusable/Tags/Tags';
 
 export const listHistory = createBrowserHistory();
 
@@ -287,27 +289,47 @@ const List = ({ history }) => {
     });
   };
 
+
+  const columnss = [
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+      render: (value: any) => ( <span>{new Date(value).toLocaleDateString("en-US", { month: 'short', day: 'numeric' })}</span>)
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Tags',
+      dataIndex: 'tags',
+      key: 'tags',
+      render: (values: any[]) => values ? <Tags tags={values}/> : <></>
+    },
+    {
+      title: 'Qty',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+  ];
+
   return (
     <Keyboard>
       <ListContainer fill={true}>
-        <Box direction="row" margin="medium" justify="between">
-          <Button icon={<Camera />} onClick={goToCamera} />
-          <Button
-            icon={<Refresh />}
-            onClick={() => triggerReload(reload + 1)}
-          />
-        </Box>
-
         <Router history={listHistory}>
           <FilledSwipable>
-            <DataTable
+          <Table dataSource={filteredData} columns={columnss} />;
+
+            {/* <DataTable
               columns={columns}
               rowProps={rowStyles}
               data={filteredData}
               onClickRow={onItemSelect}
               primaryKey="id"
               pad="xxsmall"
-            />
+            /> */}
           </FilledSwipable>
 
           <Box direction="row" justify="center" margin="medium">

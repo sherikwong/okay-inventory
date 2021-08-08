@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Box } from 'grommet';
+import { Box, TextInput } from 'grommet';
 import React, { useEffect, useState } from 'react';
 import { ITag } from '../../../database/tags';
 
@@ -62,13 +62,13 @@ const ListTagsFilter = props => {
       </Box>
 
       <Box pad={{ top: 'medium', bottom: 'large' }}>
-        {/* <input
+        <TextInput
           value={search}
           suggestions={removeExistingTags()}
           onSelect={onSelect}
           onChange={onType}
           placeholder="Tags"
-        /> */}
+        />
       </Box>
 
 

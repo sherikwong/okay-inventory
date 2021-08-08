@@ -2,7 +2,8 @@
 import { Box } from "grommet";
 import React, { useEffect, useState } from "react";
 import { ITag, tagsDB } from '../../../database/tags';
-import Tag from "./Tag";
+// import Tag from "./Tag";
+import {Tag} from 'antd';
 
 export const getAllTags = setAllTags => () => {
   tagsDB.getAll().then(res => {
@@ -41,10 +42,11 @@ const Tags = props => {
     <Box align="center" direction="row" wrap={true} pad={{ left: "xsmall" }}>
       {queriedTags && queriedTags.map((tag, i) => {
 
-        return <Tag key={tag.id} onRemove={onRemove ? () =>
-          onRemove(tag) : undefined}>
-          {tag.name}
-        </Tag>
+        // return <Tag key={tag.id} onRemove={onRemove ? () =>
+        //   onRemove(tag) : undefined}>
+        //   {tag.name}
+        // </Tag>
+        return <Tag color="#108ee9">{tag.name}</Tag>
       })}
     </Box>
   );
